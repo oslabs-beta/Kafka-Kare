@@ -6,13 +6,13 @@ const clusterController = {};
 clusterController.getClusters = async (req, res, next) => {
   // testing
   console.log('In clusterController.getClusters');
-  // console.log('req.body contains: ', req.body);
 
-  // Destructure variables from req.body
+  // Destructure variables from prior middleware
+  const userId = res.locals.userId;
 
   // Find clusters in database
   try {
-    const clusters = await Cluster.find({});
+    const clusters = await Cluster.find({ ownerId: userId });
     console.log('Clusters found in database: ', clusters); 
     res.locals.clusters = clusters;
     return next();
@@ -29,20 +29,12 @@ clusterController.getClusters = async (req, res, next) => {
 clusterController.addCluster = async (req, res, next) => {
   // testing
   console.log('In clusterController.addCluster');
-  console.log('req.body contains: ', req.body);
 
   // Destructure from req.body
   const { name, hostnameAndPort } = req.body;
 
-  // // // // // // // // // // //
-  // work in progress (wip) // 
-  // need to get ownerId variable from the token or cookie or some authentication
-  // ex. const ownerId = '239402938423423049'
-  
-  // testing
-  const ownerId = 'testUser';
-
-  // // // // // // // // // // //
+  // Destructure owner from prior middleware
+  const ownerId = res.locals.userId;
 
   // Add cluster to database
   try {
