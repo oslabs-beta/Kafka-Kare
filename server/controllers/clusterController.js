@@ -54,6 +54,4 @@ clusterController.addCluster = async (req, res, next) => {
 };
 
 // Export
-module.exports = {
-  clusterController
-};
+module.exports = clusterController;

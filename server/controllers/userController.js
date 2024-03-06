@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const User = require("../models/userModel.js");
 
 const userController = {};
@@ -41,15 +42,21 @@ userController.verifyUser = async (req, res, next) => {
   // Query database for user
   try {
     const user = await User.findOne({
-      username: username,
-      password: password
+      username: username
     })
-    // If no user is found
+    // No user found
     if (!user) {
+      console.log('Username was not found'); // testing 
       return res.status(401).json({ err: 'Invalid credentials.' });
     }
     else {
-      console.log('User found in database: ', user.username);
+      console.log('User found. Checking password...');
+      const result = await bcrypt.compare(password, user.password);
+      if (!result) {
+        console.log('Invalid password'); // testing
+        return res.status(401).json({ err: 'Invalid credentials.' });
+      }
+      console.log(`Password verified. ${user.username} logged in.`);
       res.locals.username = user.username;
       return next();
     }
@@ -63,6 +70,4 @@ userController.verifyUser = async (req, res, next) => {
 };
 
 // Export
-module.exports = {
-  userController,
-};
+module.exports = userController;
