@@ -58,6 +58,7 @@ userController.verifyUser = async (req, res, next) => {
       }
       console.log(`Password verified. ${user.username} logged in.`);
       res.locals.username = user.username;
+      res.locals.userId = user.id;
       return next();
     }
   } catch (err) {
