@@ -11,7 +11,7 @@ const clusterSchema = new Schema({
     type: String,
     required: true,
   },
-  owner: {
+  ownerId: {
     type: String,
     required: true
   },
