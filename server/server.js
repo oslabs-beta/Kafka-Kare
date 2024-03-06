@@ -10,7 +10,7 @@ require("dotenv").config();
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
-const clusterRoutes = require('./routes/clusterRoutes');
+const clustersRoutes = require('./routes/clustersRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -40,7 +40,7 @@ app.prepare().then(() => {
     return res.status(200).send('Hello world');
   });
   server.use('/auth', authRoutes); // endpoints at /auth/register and /auth/login
-  server.use('/clusters', clusterRoutes);
+  server.use('/clusters', clustersRoutes);
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express
