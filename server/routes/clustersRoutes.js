@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/clusterController");
+const clusterController = require("../controllers/clusterController");
 
 
 // Route for getting all clusters

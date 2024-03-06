@@ -1,4 +1,4 @@
-// const User = require("../models/userModel.js");
+const Cluster = require("../models/clusterModel.js");
 
 const clusterController = {};
 
