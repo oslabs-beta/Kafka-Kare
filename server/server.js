@@ -1,12 +1,15 @@
+// Import dependencies
 const express = require("express");
 const next = require("next");
 const path = require("path");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
-// const cookieParser = require("cookie-parser");
 // const jwt = require ("jsonwebtoken");
-// const cors = require("cors");
 
+// Import routes
+const authRoutes = require('./routes/authRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -15,29 +18,27 @@ const app = next({ dev }); // initializes an instance of a NextJS app
 const handle = app.getRequestHandler(); // handles page routing
 
 
-// Import controllers
-
-
 // Prepare to serve the NextJS app
 app.prepare().then(() => {
   const server = express();
 
-  // // Middleware
-  // server.use(cors());
-  // server.use(cookieParser());
-  // server.use(express.json());
-  // server.use(express.urlencoded({ extended: true }));
+  // Middleware
+  server.use(cors());
+  server.use(cookieParser());
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
 
-  // // Connect to mongoDB
-  // mongoose.connect('');
-  // mongoose.connection.once('open', () => {
-  //   console.log('Connected to Database');
-  // });
+  // Connect to mongoDB
+  mongoose.connect('mongodb+srv://KafkaKare:sHRtyVkFa7aOykcX@kafka-kare.e2s35ya.mongodb.net/?retryWrites=true&w=majority&appName=Kafka-Kare');
+  mongoose.connection.once('open', () => {
+    console.log('Connected to Database');
+  });
 
   // Custom routes
   server.get('/hello', (req, res) => {
     return res.status(200).send('Hello world');
   });
+  server.use('/auth', authRoutes); // endpoints at /auth/register and /auth/login
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express
