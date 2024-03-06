@@ -1,3 +1,6 @@
+// Access to environmental variables
+require("dotenv").config();
+
 // Import dependencies
 const express = require("express");
 const next = require("next");
@@ -5,8 +8,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-require("dotenv").config();
-// const jwt = require ("jsonwebtoken");
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -30,7 +31,8 @@ app.prepare().then(() => {
   server.use(express.urlencoded({ extended: true }));
 
   // Connect to mongoDB
-  mongoose.connect('mongodb+srv://KafkaKare:sHRtyVkFa7aOykcX@kafka-kare.e2s35ya.mongodb.net/?retryWrites=true&w=majority&appName=Kafka-Kare');
+  const mongoURI = process.env.MONGODB_URI;
+  mongoose.connect(mongoURI);
   mongoose.connection.once('open', () => {
     console.log('Connected to Database');
   });
@@ -40,12 +42,10 @@ app.prepare().then(() => {
     return res.status(200).send('Hello world');
   });
   server.use('/auth', authRoutes); // endpoints at /auth/register and /auth/login
-  server.use('/clusters', clustersRoutes);
+  server.use('/clusters', clustersRoutes); // endpoints at /clusters
 
   // Fallback route
-  // This line is crucial when integrating Next.js with a custom server like Express
-  // It ensures that all GET requests not explicitly handled by your custom server logic are forwarded to Next.js's own handler
-  // If the request matches a Next.js page or API route, Next.js will handle it. If not, a 404 page is automatically served.
+  // This line is crucial when integrating Next.js with a custom server like Express, handles 404
   server.get('*', (req, res) => {
     return handle(req, res);
   });
@@ -67,6 +67,3 @@ app.prepare().then(() => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 })
-
-
-// In NextJS, static files such as html files should be placed in the public directory at the root of your NextJS project

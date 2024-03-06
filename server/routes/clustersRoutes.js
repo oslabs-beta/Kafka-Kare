@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const clusterController = require("../controllers/clusterController");
+const tokenController = require("../controllers/tokenController");
 
 
 // Route for getting all clusters
@@ -12,8 +13,7 @@ router.get('/', clusterController.getClusters, (req, res) => {
 
 // Route for adding a cluster
 router.post('/', clusterController.addCluster, (req, res) => {
-    return res.status(201);
-    // return res.status(201).json(res.locals.newCluster);
+    return res.status(201).json(res.locals.newCluster);
 });
 
 module.exports = router;
