@@ -5,13 +5,15 @@ const clusterController = require("../controllers/clusterController");
 
 // Route for getting all clusters
 router.get('/', clusterController.getClusters, (req, res) => {
-    return res.status(201).json({ message: `Retrieving clusters` });
+    console.log('Sending clusters to client');
+    return res.status(200).json(res.locals.clusters);
 });
 
 
 // Route for adding a cluster
 router.post('/', clusterController.addCluster, (req, res) => {
-    return res.status(201).json({ message: 'Cluster added successfully' });
+    return res.status(201);
+    // return res.status(201).json(res.locals.newCluster);
 });
 
 module.exports = router;
