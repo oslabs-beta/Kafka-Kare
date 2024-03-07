@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 // Import routes
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
+const metricsRoutes = require("./routes/metricsRoutes");
 
 
 // Setup Next app
@@ -45,7 +46,7 @@ app.prepare().then(() => {
   });
   server.use("/auth", authRoutes); // endpoints at /auth/register and /auth/login
   server.use("/clusters", clustersRoutes); // endpoints at /clusters
-
+  server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404
