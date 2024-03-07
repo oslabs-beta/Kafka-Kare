@@ -1,1 +1,9 @@
-{"/_app":"pages/_app.js","/_error":"pages/_error.js","/404":"pages/404.html","/about":"pages/about.html","/graphs":"pages/graphs.html","/clusters":"pages/clusters.html","/home":"pages/home.html","/":"pages/index.html","/login":"pages/login.html","/signup":"pages/signup.html","/_document":"pages/_document.js"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/home": "pages/home.js",
+  "/login": "pages/login.js",
+  "/signup": "pages/signup.js"
+}
