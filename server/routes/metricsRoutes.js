@@ -15,3 +15,6 @@ router.get('/:clusterId', async (req, res) => {
     return res.status(500).send('Failed to fetch metrics');
   }
 })
+
+
+module.exports = router;
