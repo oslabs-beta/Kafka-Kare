@@ -38,7 +38,7 @@ app.prepare().then(() => {
     console.log("Connected to Database");
   });
 
-  
+
   // Custom routes
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
@@ -67,6 +67,6 @@ app.prepare().then(() => {
 
   // Start server
   server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Server launching on http://localhost:${PORT}`);
   });
 });
