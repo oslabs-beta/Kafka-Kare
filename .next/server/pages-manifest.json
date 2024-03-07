@@ -2,6 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/pages/clusters": "pages/pages/clusters.js",
-  "/pages/graphs": "pages/pages/graphs.js"
+  "/": "pages/index.js",
+  "/home": "pages/home.js",
+  "/clusters": "pages/clusters.js",
+  "/signup": "pages/signup.js",
+  "/login": "pages/login.js"
 }
