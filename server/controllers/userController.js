@@ -3,14 +3,11 @@ const User = require("../models/userModel.js");
 
 const userController = {};
 
-// Middleware function to handle user creation (registration)
+// ---------------------------- CREATE USER ---------------------------- //
 userController.createUser = async (req, res, next) => {
-  // testing
-  console.log('In userController.createUser');
+  console.log('In userController.createUser'); // testing
   console.log('req.body contains: ', req.body);
-
-  // Destructure variables from req.body
-  const { username, password } = req.body;
+  const { username, password } = req.body; // Destructure from req.body
 
   // Create user in database
   try {
@@ -19,6 +16,7 @@ userController.createUser = async (req, res, next) => {
       password: password
     });
     console.log('New user stored in database: ', user.username);
+    
     res.locals.username = user.username;
     return next();
   } catch (err) {
@@ -30,33 +28,30 @@ userController.createUser = async (req, res, next) => {
   }
 };
 
-// Middleware function to handle user verification (login)
+
+// ---------------------------- VERIFY USER ---------------------------- //
 userController.verifyUser = async (req, res, next) => {
-  // testing
-  console.log('In userController.verifyUser');
+  console.log('In userController.verifyUser'); // testing
   console.log('req.body contains: ', req.body);
+  const { username, password } = req.body; // Destructure from req.body
 
-  // Destructure from req.body
-  const { username, password } = req.body;
-
-  // Query database for user
+  // Find user in database
   try {
-    const user = await User.findOne({
-      username: username
-    })
+    const user = await User.findOne({ username: username })
     // No user found
     if (!user) {
-      console.log('Username was not found'); // testing 
       return res.status(401).json({ err: 'Invalid credentials.' });
     }
     else {
       console.log('User found. Checking password...');
       const result = await bcrypt.compare(password, user.password);
+
       if (!result) {
-        console.log('Invalid password'); // testing
         return res.status(401).json({ err: 'Invalid credentials.' });
       }
+
       console.log(`Password verified. ${user.username} logged in.`);
+
       res.locals.username = user.username;
       res.locals.userId = user.id;
       return next();
@@ -69,6 +64,7 @@ userController.verifyUser = async (req, res, next) => {
     });
   }
 };
+
 
 // Export
 module.exports = userController;

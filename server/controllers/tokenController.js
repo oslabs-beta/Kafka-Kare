@@ -3,14 +3,10 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 const tokenController = {};
 
-
-// Middleware function to handle issuing a token
+// ---------------------------- ISSUE TOKEN ---------------------------- //
 tokenController.issueToken = (req, res, next) => {
-  // testing
-  console.log("In tokenController.issueToken");
-
-  // Destructure variable from prior middleware
-  const userId = res.locals.userId;
+  console.log("In tokenController.issueToken"); // testing
+  const userId = res.locals.userId; // Destructure from prior middleware
 
   // Issue token
   const token = jwt.sign(
@@ -19,7 +15,7 @@ tokenController.issueToken = (req, res, next) => {
     { expiresIn: '1h' }
   );
 
-  // Determine if the app is running in a production environement
+  // Determine if running in a production environement
   const isProduction = process.env.NODE_ENV === 'production';
 
   // Store the token in HTTP-only cookie
@@ -27,24 +23,23 @@ tokenController.issueToken = (req, res, next) => {
     httpOnly: true, 
     secure: isProduction // use 'secure' flag only in production
   });
-
   console.log('Token issued');
 
   return next();
 };
 
-// Middleware function to handle verifying a token
-tokenController.verifyToken = (req, res, next) => {
-    // testing
-    console.log("In tokenController.verifyToken");
-  
-    // Destructure variable from cookies
-    const token = req.cookies.token;
 
+// ---------------------------- VERIFY TOKEN ---------------------------- //
+tokenController.verifyToken = (req, res, next) => {
+    console.log("In tokenController.verifyToken"); // testing
+    const token = req.cookies.token; // Destructure from cookies
+
+    // Check token
     if (!token) {
       return res.status(403).send('A token is required for authentication');
     }
 
+    // Verify token, extract userId
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
       console.log('Token verified');
@@ -54,6 +49,7 @@ tokenController.verifyToken = (req, res, next) => {
         return res.status(401).send('Invalid token');
     }
 };
+
 
 // Export
 module.exports = tokenController;

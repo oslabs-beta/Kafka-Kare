@@ -10,12 +10,13 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // Import routes
-const authRoutes = require('./routes/authRoutes');
-const clustersRoutes = require('./routes/clustersRoutes');
+const authRoutes = require("./routes/authRoutes");
+const clustersRoutes = require("./routes/clustersRoutes");
+
 
 // Setup Next app
 const PORT = 3001;
-const dev = process.env.NODE_ENV !== 'production'; // dev = true if node_env IS NOT production
+const dev = process.env.NODE_ENV !== "production"; // dev = true if node_env IS NOT production
 const app = next({ dev }); // initializes an instance of a NextJS app
 const handle = app.getRequestHandler(); // handles page routing
 
@@ -33,29 +34,31 @@ app.prepare().then(() => {
   // Connect to mongoDB
   const mongoURI = process.env.MONGODB_URI;
   mongoose.connect(mongoURI);
-  mongoose.connection.once('open', () => {
-    console.log('Connected to Database');
+  mongoose.connection.once("open", () => {
+    console.log("Connected to Database");
   });
 
+  
   // Custom routes
-  server.get('/hello', (req, res) => {
-    return res.status(200).send('Hello world');
+  server.get("/hello", (req, res) => {
+    return res.status(200).send("Hello world");
   });
-  server.use('/auth', authRoutes); // endpoints at /auth/register and /auth/login
-  server.use('/clusters', clustersRoutes); // endpoints at /clusters
+  server.use("/auth", authRoutes); // endpoints at /auth/register and /auth/login
+  server.use("/clusters", clustersRoutes); // endpoints at /clusters
+
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404
-  server.get('*', (req, res) => {
+  server.get("*", (req, res) => {
     return handle(req, res);
   });
 
   // Express global error handler
   server.use((err, req, res, next) => {
     const defaultObj = {
-      log: 'Express error handler caught unknown middleware error',
+      log: "Express error handler caught unknown middleware error",
       status: 500,
-      message: { err: 'An error occurred' },
+      message: { err: "An error occurred" },
     };
     const errObj = Object.assign({}, defaultObj, err);
     console.log(errObj.log);
@@ -66,4 +69,4 @@ app.prepare().then(() => {
   server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
-})
+});
