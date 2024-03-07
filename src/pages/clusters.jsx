@@ -252,7 +252,7 @@ export default function Home() {
                 </Stack>
               </CardBody>
               <CardFooter>
-              <Button w='100%' onClick={ () => push(path.join(__dirname, './pages/graphs')) }>Dashboard</Button>
+              <Button w='100%' onClick={ () => push(path.join(__dirname, './graphs')) }>Dashboard</Button>
               </CardFooter>
             </Card>
           ))}
