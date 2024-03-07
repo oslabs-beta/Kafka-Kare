@@ -6,11 +6,12 @@ const tokenController = {};
 // ---------------------------- ISSUE TOKEN ---------------------------- //
 tokenController.issueToken = (req, res, next) => {
   console.log("In tokenController.issueToken"); // testing
-  const userId = res.locals.userId; // Destructure from prior middleware
+
+  const { userId, username } = res.locals; // Destructure from prior middleware
 
   // Issue token
   const token = jwt.sign(
-    { userId: userId },
+    { userId: userId, username: username},
     SECRET_KEY,
     { expiresIn: '1h' }
   );
@@ -39,11 +40,12 @@ tokenController.verifyToken = (req, res, next) => {
       return res.status(403).send('A token is required for authentication');
     }
 
-    // Verify token, extract userId
+    // Verify token, extract userId and username
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
       console.log('Token verified');
       res.locals.userId = decoded.userId;
+      res.locals.username = decoded.username;
       return next();
     } catch (err) {
         return res.status(401).send('Invalid token');
