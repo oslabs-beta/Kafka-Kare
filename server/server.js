@@ -14,6 +14,8 @@ const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 
+// Import routes
+const authRoutes = require('./routes/authRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -26,6 +28,11 @@ const handle = app.getRequestHandler(); // handles page routing
 app.prepare().then(() => {
   const server = express();
 
+  // Middleware
+  server.use(cors());
+  server.use(cookieParser());
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
   // Middleware
   server.use(cors());
   server.use(cookieParser());
