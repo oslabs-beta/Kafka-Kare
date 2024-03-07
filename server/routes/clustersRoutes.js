@@ -24,4 +24,24 @@ router.post(
   }
 );
 
+// Route for deleting a cluster
+router.delete(
+  '/:clusterId',
+  tokenController.verifyToken,
+  clusterController.deleteCluster,
+  (req, res) => {
+    return res.status(200).json({ message: 'Cluster deleted successfully' });
+  }
+);
+
+// Route for updating a cluster
+router.patch(
+  '/:clusterId',
+  tokenController.verifyToken,
+  clusterController.updateCluster,
+  (req, res) => {
+    return res.status(200).json({ message: 'Cluster updated successfully' }); 
+  }
+)
+
 module.exports = router;
