@@ -14,8 +14,6 @@ const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
 
 // Setup Next app
 const PORT = 3001;
