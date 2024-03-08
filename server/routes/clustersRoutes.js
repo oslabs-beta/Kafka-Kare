@@ -5,7 +5,7 @@ const tokenController = require("../controllers/tokenController");
 
 // Route for getting all clusters
 router.get(
-  '/',
+  '/userClusters',
   tokenController.verifyToken,
   clusterController.getClusters,
   (req, res) => {
@@ -16,7 +16,7 @@ router.get(
 
 // Route for adding a cluster
 router.post(
-  '/',
+  '/addCluster',
   tokenController.verifyToken,
   clusterController.addCluster,
   (req, res) => {

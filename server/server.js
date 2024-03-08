@@ -14,9 +14,6 @@ const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-
 // Setup Next app
 const PORT = 3001;
 const dev = process.env.NODE_ENV !== "production"; // dev = true if node_env IS NOT production
@@ -33,11 +30,6 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
-  // Middleware
-  server.use(cors());
-  server.use(cookieParser());
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: true }));
 
   // Connect to mongoDB
   const mongoURI = process.env.MONGODB_URI;
@@ -46,12 +38,11 @@ app.prepare().then(() => {
     console.log("Connected to Database");
   });
 
-
   // Custom routes
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
   });
-  server.use("/auth", authRoutes); // endpoints at /auth/register and /auth/login
+  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
   server.use("/clusters", clustersRoutes); // endpoints at /clusters
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
 
