@@ -32,7 +32,9 @@ app.prepare().then(() => {
   server.use(express.urlencoded({ extended: true }));
 
   // Connect to mongoDB
-  const mongoURI = process.env.MONGODB_URI;
+  // Use either environmental variables (production) or literal string (development/testing)
+  // const mongoURI = process.env.MONGODB_URI;
+  const mongoURI = 'mongodb://KafkaKare:sHRtyVkFa7aOykcX@mongo:27017/kafka-kare?authSource=admin';
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
     console.log("Connected to Database");
