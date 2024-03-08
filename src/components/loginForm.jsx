@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
+// import { auth, signIn } from '../../NextAuth/auth.js';
 import { 
     Input,
     Flex,
@@ -20,6 +22,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+  // const session = await auth();
 
   // Function to handle form input changes
   const handleChange = (e) => {
@@ -31,29 +34,30 @@ const LoginForm = () => {
   const handleShowClick = () => setShowPassword(!showPassword);
   
 //handles click of submit and calls handleLogin
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // await signIn();
     handleLogin();
   };
   
   const { username, password } = formData;
 
   const handleLogin = async () => {
+    console.log('username: ', username);
+    console.log('password: ', password);
     try {
       // Send a POST request to the backend endpoint '/login' (assuming it's login)
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }), // Convert data to JSON format and send it in the request body
-      });
+      const response = await axios.post('http://localhost:3001/auth/login', 
+                       { username, password },
+                       {withCredentials: true}); // Convert data to JSON format and send it in the request body
+      console.log('response: ', response.data);
 
       // Parse the response data as JSON
-      const data = await response.json();
+      // const data = await response.json();
 
       // If the response is successful (status code 2xx), navigate to the clusters page
-      if (response.ok) {
+      if (response.status === 200) {
+        console.log('successful login')
         router.replace('/clusters');
       } else {
         // If there's an error response, log the error message to the console
@@ -62,14 +66,9 @@ const LoginForm = () => {
       }
     } catch (error) {
       // Handle any errors that occur during the fetch request
-      console.error('Error:', error);
+      console.log('Error:', error);
       router.push('/signup');
     }
-  };
-
-  // Function to handle signup navigation
-  const handleSignup = () => {
-    router.push('/signup');
   };
 
   return (
@@ -88,7 +87,9 @@ const LoginForm = () => {
             </InputRightElement>
           </InputGroup>
           {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
-          <Button borderRadius="9px" type="submit" variant="solid" colorScheme="brand" width="full">Login</Button>
+          <FormControl>
+            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Login</Button>
+          </FormControl>
         </Stack>
       </form>
     </FormControl>

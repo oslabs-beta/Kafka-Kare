@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+// import { auth, signIn } from '../../NextAuth/auth.js';
 import axios from 'axios'; // Import axios for making HTTP requests
 import {
   Stack,
@@ -14,28 +16,43 @@ import {
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 
-// const CFaUserAlt = chakra(FaUserAlt);
-// const CFaLock = chakra(FaLock);
 
 const SignupForm = ({ onSubmit }) => {
+  // const session = await auth();
   const [username, setUsername] = useState(''); // State to store username
   const [password, setPassword] = useState(''); // State to store password
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [errorMessage, setErrorMessage] = useState(''); // State to store error message
-
+  const router = useRouter();
   // Function to toggle password visibility
   const handleShowClick = () => setShowPassword(!showPassword);
 
   // Function to handle form submission
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
     // Validate input fields
     if (!username || !password) {
       setErrorMessage('All fields are required');
       return;
     }
-    // Call the onSubmit function with the form data
-    onSubmit({ username, password });
+
+    try {
+      const response = await axios.post('http://localhost:3001/auth/signup', {
+        username, password
+      });
+      
+      console.log('response: ', response.data);
+
+      if (response.data.message) {
+        console.log('signup successful!');
+        router.replace('/clusters')
+      } else {
+        setErrorMessage('Signup Failed');
+      }
+    } catch (error) {
+      console.error('error: ', error);
+      setErrorMessage('An error occurred during signup.')
+    }
   };
 
   return (
