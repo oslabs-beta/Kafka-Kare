@@ -4,7 +4,6 @@ import LoginForm from '../components/loginForm.jsx'
 import {
     Flex,
     Heading,
-    Avatar,
     Box,
     Stack,
     Link,

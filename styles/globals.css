@@ -26,34 +26,6 @@
     margin-right: 20px;
  }
 
-.menu-dropdown {
-    z-index: 100;
- } 
-  
-  .dropdown-container {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    pointer-events: auto;
-  }
-  
-  .dropdown-content {
-    display: flex;
-    justify-content: flex-start;
-    background-color: #fff; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    border: 1px solid #000; 
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    width: fit-content;
-  }
-  
-  .dropdown-inner {
-    padding: 1rem; 
-    width: 100%;
-    text-align: center;
-  }
-
   .menu-container {
     display: flex;
     justify-content: space-around;
