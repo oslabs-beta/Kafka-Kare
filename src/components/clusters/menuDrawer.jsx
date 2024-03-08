@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  Input, FormLabel, Box, Link, Code, 
+  FormLabel, Box, Link, Code, Textarea,
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
 
-const ClustersDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
+const MenuDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
   const slackWebhookSteps = [
     { title: 'First', description: () => (
       <>
@@ -44,8 +44,8 @@ const ClustersDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
         <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
         <DrawerBody mb={2}>
           <FormLabel >Slack Webhook URL</FormLabel>
-          <Input placeholder='https://hooks.slack.com/services/T... /B... /...' />
-          <FormLabel mt={8} >Get Slack Webhook URL through steps below:</FormLabel>
+          <Textarea placeholder='https://hooks.slack.com/services/T... /B... /...' resize='none' />
+          <FormLabel mt={4} >Get Slack Webhook URL through steps below:</FormLabel>
           <Stepper orientation='vertical' height='75%' gap='1'>
             {slackWebhookSteps.map((step, index) => (
               <Step key={index}>
@@ -86,4 +86,4 @@ const ClustersDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
   );
 };
 
-export default ClustersDrawer;
+export default MenuDrawer;
