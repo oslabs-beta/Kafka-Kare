@@ -16,11 +16,11 @@ metricsController.getMetrics = async (req, res, next) => {
   /* -------------------------------------------------------------------------- */
 
   try {
-    const response = await axios.get(
-      `http://prometheus:9090
-    /api/v1/query`, { // endpoint for executing instant queries in Prometheus. 
+    // endpoint for executing instant queries in Prometheus
+    const response = await axios.get(`http://prometheus:9090/api/v1/query`, { 
+        // simple special query that returns up(1) or down(0) to check health or availability of the services Prometheus is monitoring
         params: {
-          query: "up", // simple special query that returns up(1) or down(0) to check health or availability of the services Prometheus is monitoring
+          query: "up", 
         }
       });
 
