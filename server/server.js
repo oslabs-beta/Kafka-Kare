@@ -13,9 +13,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
-
-// Import routes
-const authRoutes = require('./routes/authRoutes');
+const testingRoutes = require("./routes/testingRoutes");
 
 // Setup Next app
 const PORT = 3001;
@@ -40,7 +38,9 @@ app.prepare().then(() => {
   server.use(express.urlencoded({ extended: true }));
 
   // Connect to mongoDB
-  const mongoURI = process.env.MONGODB_URI;
+  // Use either environmental variables (production) or literal string (development/testing)
+  // const mongoURI = process.env.MONGODB_URI;
+  const mongoURI = 'mongodb://KafkaKare:sHRtyVkFa7aOykcX@mongo:27017/kafka-kare?authSource=admin';
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
     console.log("Connected to Database");
@@ -51,9 +51,10 @@ app.prepare().then(() => {
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
   });
-  server.use("/auth", authRoutes); // endpoints at /auth/register and /auth/login
+  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
   server.use("/clusters", clustersRoutes); // endpoints at /clusters
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
+  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404

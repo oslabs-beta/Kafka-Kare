@@ -1,0 +1,73 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* STYLING FOR HOME PAGE */
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.menu-item {
+    cursor: pointer;
+    color: black;
+  }
+  
+  .menu-item:hover {
+    opacity: 0.9;
+  }
+
+ 
+ .menu-item-container {
+    display: inline-block;
+    margin-right: 20px;
+ }
+
+  .menu-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .menu-container:hover {
+    border-color: #000;
+  }
+
+  .hovered-link {
+    color: #3b82f6; /* Default text color */
+    transition: color 0.3s ease; /* Transition for color change on hover */
+  }
+  
+  .hovered-link:hover {
+    color: #000; /* Color on hover */
+  }
+
+.fixed-navbar {
+    position: fixed;
+    top: 10px;
+    inset: 0;
+    max-width: 2xl;
+    margin: 20 px auto 0;
+    z-index: 50;
+  }
+  
+  .menu-item-container {
+    padding: 1rem;
+  }
+
+  /* STYLING FOR LOGIN PAGE */
+  
+  
+  
+  
+
+  
