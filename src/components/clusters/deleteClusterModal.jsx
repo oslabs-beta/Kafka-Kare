@@ -5,21 +5,30 @@ import {
 import { clustersStore } from '../../store/clusters';
 
 const DeleteClusterModal = ({ handleDeleteCluster }) => {
-  const deletedClusterObj = clustersStore(state => state.deletedClusterObj);
+
+  // declare state variables
+  const oldClusterName = clustersStore((state) => state.oldClusterName);
+  const deleteClusterID = clustersStore(state => state.deleteClusterID);
   const isDeleteClusterOpen = clustersStore(state => state.isDeleteClusterOpen);
 
   return (
-    <Modal isOpen={isDeleteClusterOpen} onClose={ () => clustersStore.setState({isDeleteClusterOpen: false}) } motionPreset='slideInBottom'>
+
+    /* Delete Cluster Modal */
+    <Modal isOpen={isDeleteClusterOpen} onClose={() => clustersStore.setState({isDeleteClusterOpen: false})} motionPreset='slideInBottom'>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Delete Cluster: {deletedClusterObj.name}</ModalHeader>
+        <ModalHeader>Delete Cluster: {oldClusterName}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           Are you sure? You can't undo this action afterwards.
         </ModalBody>
         <ModalFooter>
-          <Button mr={3} onClick={ () => clustersStore.setState({isDeleteClusterOpen: false}) }>Cancel</Button>
-          <Button colorScheme='red' onClick={ () => handleDeleteCluster(deletedClusterObj) }>Delete</Button>
+
+          {/* Cancel Button */}
+          <Button mr={3} onClick={() => clustersStore.setState({isDeleteClusterOpen: false})}>Cancel</Button>
+
+          {/* Delete Button */}
+          <Button colorScheme='red' onClick={() => handleDeleteCluster(deleteClusterID)}>Delete</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

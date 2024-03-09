@@ -1,13 +1,22 @@
 import React from 'react';
 import {
-  FormLabel, Box, Link, Code, Textarea,
+  FormLabel, Box, Link, Code, Textarea, Flex, Icon, IconButton,
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
+import { RiSendPlane2Fill } from "react-icons/ri";
 import { clustersStore } from '../../store/clusters';
 
 const MenuDrawer = () => {
+
+  // declare state variables
   const isDrawerOpen = clustersStore(state => state.isDrawerOpen);
+
+  // declare reference modal initial focus
+  const initialRef = React.useRef(null);
+
+  // declare slack webhook step array
+  // { title: (String), description: (Function that returns JSX)}
   const slackWebhookSteps = [
     { title: 'First', description: () => (
       <>
@@ -40,33 +49,50 @@ const MenuDrawer = () => {
   ];
 
   return (
-    <Drawer placement='right' size='md' onClose={() => clustersStore.setState({isDrawerOpen: false})} isOpen={isDrawerOpen}>
+
+    /* Menu Drawer */
+    <Drawer placement='right' size='md' onClose={() => clustersStore.setState({isDrawerOpen: false})} isOpen={isDrawerOpen} initialFocusRef={initialRef}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
+
+        {/* Title */}
         <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
+
+        {/* Content */}
         <DrawerBody mb={2}>
+
+          {/* URL Subtitle */}
           <FormLabel >Slack Webhook URL</FormLabel>
-          <Textarea placeholder='https://hooks.slack.com/services/T... /B... /...' resize='none' />
+
+          <Flex width="full">
+
+            {/* URL Input */}
+            <Textarea placeholder='https://hooks.slack.com/services/T... /B... /...' resize='none' ref={initialRef}/>
+
+            {/* Submit URL Input */}
+            <IconButton
+              aria-label='submit slack url' h={20} colorScheme='twitter' ml={2}
+              icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {alert('Slack URL Sent')}}
+            />
+          </Flex>
+
+          {/* Step Subtitle */}
           <FormLabel mt={4} >Get Slack Webhook URL through steps below:</FormLabel>
+
+          {/* Slack Webhook Step */}
           <Stepper orientation='vertical' height='75%' gap='1'>
             {slackWebhookSteps.map((step, index) => (
               <Step key={index}>
                 <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber />}
-                  />
+                  <StepStatus complete={<StepIcon />} incomplete={<StepNumber />} active={<StepNumber />} />
                 </StepIndicator>
-
                 <Box flexShrink=''>
                   <StepTitle>{step.title}</StepTitle>
                   <StepDescription>
                     {step.description()}
                   </StepDescription>
                 </Box>
-
                 <StepSeparator />
               </Step>
             ))}
