@@ -6,8 +6,9 @@ const tokenController = require("../controllers/tokenController");
 
 // Route for user registration
 router.post(
-  '/register', 
+  '/signup', 
   userController.createUser, 
+  tokenController.issueToken,
   (req, res) => {
     return res.status(201).json({ message: `User registered successfully: ${res.locals.username}` });
 });
