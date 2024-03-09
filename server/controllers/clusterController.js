@@ -120,6 +120,13 @@ clusterController.updateCluster = async (req, res, next) => {
   }
 };
 
+// ---------------------------- FAVORITE CLUSTER ---------------------------- //
+clusterController.favoriteCluster = async (req, res, next) => {
+  console.log("In clusterController.favoriteCluster"); // testing
+  
+  
+
+}
 
 // Export
 module.exports = clusterController;
