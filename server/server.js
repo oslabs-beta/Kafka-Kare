@@ -40,7 +40,7 @@ app.prepare().then(() => {
   // Connect to mongoDB
   // Use either environmental variables (production) or literal string (development/testing)
   // const mongoURI = process.env.MONGODB_URI;
-  const mongoURI = 'mongodb://KafkaKare:sHRtyVkFa7aOykcX@mongo:27017/kafka-kare?authSource=admin';
+  const mongoURI = 'mongodb+srv://KafkaKare:sHRtyVkFa7aOykcX@kafka-kare.e2s35ya.mongodb.net/?retryWrites=true&w=majority&appName=Kafka-Kare';
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
     console.log("Connected to Database");
@@ -52,7 +52,7 @@ app.prepare().then(() => {
     return res.status(200).send("Hello world");
   });
   server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-  server.use("/clusters", clustersRoutes); // endpoints at /clusters
+  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites/
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
   server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 

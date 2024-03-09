@@ -121,9 +121,9 @@ clusterController.updateCluster = async (req, res, next) => {
 };
 
 
-// ---------------------------- FAVORITE CLUSTER ---------------------------- //
-clusterController.favoriteCluster = async (req, res, next) => {
-  console.log("In clusterController.favoriteCluster"); // testing
+/* ------------------------- CHANGE FAVORITE STATUS ------------------------- */
+clusterController.changeFavorite = async (req, res, next) => {
+  console.log("In clusterController.changeFavorite"); // testing
   
   const clusterId = req.params.clusterId; // // Destructure from req.params
   const { userId } = res.locals; // Destructure from prior middleware
@@ -151,15 +151,46 @@ clusterController.favoriteCluster = async (req, res, next) => {
     })
     console.log('Favorite clusters updated successfully');
     return next();
+
   } catch (err) {
     return next({
-      log: `clusterController.favoriteCluster: ERROR ${err}`,
+      log: `clusterController.changeFavorite: ERROR ${err}`,
       status: 400,
-      message: { err: "Error occurred in clusterController.favoriteCluster." },
+      message: { err: "Error occurred in clusterController.changeFavorite." },
     });
   }
 };
 
+
+/* -------------------------- GET FAVORITE CLUSTERS ------------------------- */
+
+clusterController.getFavorites = async (req, res, next) => {
+  console.log("In clusterController.getFavorites"); // testing
+  
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Get favorite clusters from database
+  try {
+    const favoriteClusters = await Cluster.find({
+      favorite: true,
+      ownerId: userId
+    });
+    if (!favoriteClusters) {
+      return res.status(404).send('Favorite clusters not found');
+    }
+    console.log('Favorite clusters found successfully');
+    res.locals.favoriteClusters = favoriteClusters;
+
+    return next();
+    
+  } catch (err) {
+    return next({
+      log: `clusterController.getFavorites: ERROR ${err}`,
+      status: 400,
+      message: { err: "Error occurred in clusterController.getFavorites." },
+    });
+  }
+};
 
 // Export
 module.exports = clusterController;
