@@ -44,4 +44,15 @@ router.patch(
   }
 )
 
+// Route for favoriting a cluster
+router.patch(
+  '/favorites/:clusterId',
+  tokenController.verifyToken,
+  clusterController.favoriteCluster,
+  (req, res) => {
+    return res.status(200).json({ message: 'Cluster favorites updated successfully' });
+  }
+)
+
+
 module.exports = router;
