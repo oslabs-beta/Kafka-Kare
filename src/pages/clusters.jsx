@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Box, Flex, SimpleGrid, Button, Spacer,
-  Input, InputGroup, InputLeftElement, InputRightElement, IconButton, Image,
+  Box, Flex, SimpleGrid, Button, Spacer, Image,
+  Input, InputGroup, InputLeftElement, InputRightElement, IconButton,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import path from 'path';
-import { userStore } from '../store/user';
+import { clustersStore } from '../store/clusters';
 import MenuDrawer from '../components/clusters/menuDrawer';
 import AddClusterModal from '../components/clusters/addClusterModal';
 import ClusterCard from '../components/clusters/clusterCard';
@@ -16,68 +16,65 @@ import DeleteClusterModal from '../components/clusters/deleteClusterModal';
 
 export default function Home() {
   const { push } = useRouter();
-  const [ clusterArray, setClusterArray ] = useState([]);
-  const [ clusterDisplayArray, setClusterDisplayArray ] = useState([]);
+  const clusterArray = clustersStore(state => state.clusterArray);
+  const clusterDisplayArray = clustersStore(state => state.clusterDisplayArray);
   useEffect(() => {
      const fetchClusters = async () => {
       try {
         const response = await axios('/clusters/userClusters', { credentials: 'include' });
         console.log(response.data);
-        setClusterArray(response.data);
-        setClusterDisplayArray(response.data);
+        clustersStore.setState({clusterArray: response.data});
+        clustersStore.setState({clusterDisplayArray: response.data});
       }
       catch (err) {console.log(err)}
     };
     fetchClusters();
   }, []);
 
-  // testing
-  const updateUser = userStore((state) => state.updateUsername);
-
-  const [ isNewClusterOpen, setIsNewClusterOpen ] = useState();
+  const isNewClusterOpen = clustersStore(state => state.isNewClusterOpen);
   const handleNewClusterClose = () => {
-    setClusterName('');
-    setClusterPort('');
-    setIsClusterNameEmpty(false);
-    setIsClusterPortEmpty(false);
-    setIsNewClusterOpen(false);
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isNewClusterOpen: false});
   }
   const handleNewCluster = async () => {
-    if (clusterName === '') setIsClusterNameEmpty(true);
-    if (clusterPort === '') setIsClusterPortEmpty(true);
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
       handleNewClusterClose();
       const response = await axios.post('/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort});
       console.log(response.data);
-      setClusterArray(clusterArray.concat(response.data));
-      setClusterDisplayArray(clusterArray.concat(response.data));
+      clustersStore.setState({clusterArray: clusterArray.concat(response.data)});
+      clustersStore.setState({clusterDisplayArray: clusterArray.concat(response.data)});
     }
   };
 
-  const [ editClusterID, seteditClusterID ] = useState();
-  const [ isEditClusterOpen, setIsEditClusterOpen ] = useState();
-  const [ oldClusterName, setOldClusterName ] = useState();
+  const editClusterID = clustersStore(state => state.editClusterID);
+  const isEditClusterOpen = clustersStore(state => state.isEditClusterOpen);
+  const oldClusterName = clustersStore(state => state.oldClusterName);
   const handleEditClusterClose = () => {
-    setClusterName('');
-    setClusterPort('');
-    setIsClusterNameEmpty(false);
-    setIsClusterPortEmpty(false);
-    setIsEditClusterOpen(false);
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isEditClusterOpen: false});
   }
   const handleEditCluster = async () => {
-    if (clusterName === '') setIsClusterNameEmpty(true);
-    if (clusterPort === '') setIsClusterPortEmpty(true);
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
       handleEditClusterClose();
       for (const [index, clusterObj] of clusterDisplayArray.entries()) {
         if (clusterObj._id === editClusterID) {
-          setClusterDisplayArray(clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], name: clusterName, hostnameAndPort: clusterPort}));
+          clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], name: clusterName, hostnameAndPort: clusterPort})});
           break;
         }
       }
       for (const [index, clusterObj] of clusterArray.entries()) {
         if (clusterObj._id === editClusterID) {
-          setClusterArray(clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], name: clusterName, hostnameAndPort: clusterPort}));
+          clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1, {...clusterArray[index], name: clusterName, hostnameAndPort: clusterPort})});
           break;
         }
       }
@@ -86,51 +83,46 @@ export default function Home() {
     }
   }
 
-  const [ deletedClusterObj, setDeletedClusterObj ] = useState({});
-  const [ isDeleteClusterOpen, setIsDeleteClusterOpen ] = useState(false);
   const handleDeleteCluster = async (deletedClusterObj) => {
     for (const [index, clusterObj] of clusterDisplayArray.entries()) {
       if (clusterObj.name === deletedClusterObj.name && clusterObj.hostnameAndPort === deletedClusterObj.hostnameAndPort) {
-        setClusterDisplayArray(clusterDisplayArray.toSpliced(index, 1));
+        clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1)});
         break;
       }
     }
     for (const [index, clusterObj] of clusterArray.entries()) {
       if (clusterObj.name === deletedClusterObj.name && clusterObj.hostnameAndPort === deletedClusterObj.hostnameAndPort) {
-        setClusterArray(clusterArray.toSpliced(index, 1));
+        clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1)});
         break;
       }
     }
-    setIsDeleteClusterOpen(false);
+    clustersStore.setState({isDeleteClusterOpen: false});
     const response = await axios.delete(`/clusters/${deletedClusterObj._id}`);
     console.log(response.data);
   }
 
-  const [ clusterName, setClusterName ] = useState('');
-  const [ isClusterNameEmpty, setIsClusterNameEmpty ] = useState(false);
+  const clusterName = clustersStore(state => state.clusterName);
   const handleClusterNameChange = (event) => {
-    setIsClusterNameEmpty(false);
-    setClusterName(event.target.value);
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({clusterName: event.target.value});
   };
-  const [ clusterPort, setClusterPort ] = useState('');
-  const [ isClusterPortEmpty, setIsClusterPortEmpty ] = useState(false);
+  const clusterPort = clustersStore(state => state.clusterPort);
   const handleClusterPortChange = (event) => {
-    setIsClusterPortEmpty(false);
-    setClusterPort(event.target.value);
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({clusterPort: event.target.value});
   };
-  const [ clusterSearchValue, setClusterSearchValue ] = useState('');
+  const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
   const handleClusterSearchValueChange = (curClusterSearchValue) => {
     const newClusterDisplayArray = [];
-    setClusterSearchValue(curClusterSearchValue);
+    clustersStore.setState({clusterSearchValue: curClusterSearchValue});
     clusterArray.map((clusterObj) => {
       if (clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
       || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1) {
         newClusterDisplayArray.push(clusterObj);
       }
     });
-    setClusterDisplayArray(newClusterDisplayArray);
+    clustersStore.setState({clusterDisplayArray: newClusterDisplayArray});
   }
-  const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
   // const drawerBtnRef = React.useRef();
 
   return (
@@ -142,41 +134,36 @@ export default function Home() {
           <InputLeftElement pointerEvents='none'>
             <Search2Icon  />
           </InputLeftElement>
-          <Input type='tel' placeholder='Name or Port' value={clusterSearchValue} onChange={(event) => handleClusterSearchValueChange(event.target.value)}/>
+          <Input type='tel' placeholder={'Name or Port'} value={clusterSearchValue}
+          onChange={(event) => handleClusterSearchValueChange(event.target.value)}/>
           <InputRightElement>
-          <IconButton _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500'/> } variant='ghost'
-          onClick = { () => handleClusterSearchValueChange('') }/>
+          <IconButton _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500'/> }
+          variant='ghost' onClick = { () => handleClusterSearchValueChange('') }/>
           </InputRightElement>
         </InputGroup>
         <Spacer />
-        <Button onClick={ () => setIsNewClusterOpen(true) } leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
+        <Button onClick={ () => clustersStore.setState({isNewClusterOpen: true}) } leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
           New Cluster
         </Button>
         <AddClusterModal
-          isNewClusterOpen={isNewClusterOpen} handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
-          isClusterNameEmpty={isClusterNameEmpty} clusterName={clusterName} handleClusterNameChange={handleClusterNameChange}
-          isClusterPortEmpty={isClusterPortEmpty} clusterPort={clusterPort} handleClusterPortChange={handleClusterPortChange}
+          handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
+          handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
         />
         <Spacer />
-        <IconButton aria-label='open drawer' icon={<HamburgerIcon onClick={() => setIsDrawerOpen(true)}/>} />
-        <MenuDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+        <IconButton aria-label='open drawer' icon={<HamburgerIcon onClick={() => clustersStore.setState({isDrawerOpen: true})}/>} />
+        <MenuDrawer />
       </Flex>
       <Box width="full" justifyContent="center" p={8} style={{height: 'calc(100% - 90px)'}} overflowY="scroll">
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
           {clusterDisplayArray.map((clusterObj, index) => (
-            <ClusterCard key={'clusterCard'+index} setOldClusterName={setOldClusterName}
-              index={index} clusterObj={clusterObj} setIsDeleteClusterOpen={setIsDeleteClusterOpen} setDeletedClusterObj={setDeletedClusterObj}
-              seteditClusterID={seteditClusterID} setIsEditClusterOpen={setIsEditClusterOpen} setClusterName={setClusterName} setClusterPort={setClusterPort}
+            <ClusterCard key={'clusterCard'+index}
+              index={index} clusterObj={clusterObj}
             />
           ))}
-          <EditClusterModal oldClusterName={oldClusterName}
-            isEditClusterOpen={isEditClusterOpen} handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
-            isClusterNameEmpty={isClusterNameEmpty} clusterName={clusterName} handleClusterNameChange={handleClusterNameChange}
-            isClusterPortEmpty={isClusterPortEmpty} clusterPort={clusterPort} handleClusterPortChange={handleClusterPortChange}
+          <EditClusterModal handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+            handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
           />
-          <DeleteClusterModal
-            isDeleteClusterOpen={isDeleteClusterOpen} setIsDeleteClusterOpen={setIsDeleteClusterOpen} deletedClusterObj={deletedClusterObj} handleDeleteCluster={handleDeleteCluster}
-          />
+          <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
         </SimpleGrid>
       </Box>
     </Box>

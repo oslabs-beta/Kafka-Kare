@@ -5,12 +5,17 @@ import {
 } from '@chakra-ui/react';
 import { SiApachekafka } from "react-icons/si";
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import { clustersStore } from '../../store/clusters';
 
 const EditClusterModal = ({
-  isEditClusterOpen, handleEditClusterClose, handleEditCluster, oldClusterName,
-  isClusterNameEmpty, clusterName, handleClusterNameChange,
-  isClusterPortEmpty, clusterPort, handleClusterPortChange
+  handleEditClusterClose, handleEditCluster, handleClusterNameChange, handleClusterPortChange
 }) => {
+  const clusterName = clustersStore(state => state.clusterName);
+  const isClusterNameEmpty = clustersStore(state => state.isClusterNameEmpty);
+  const clusterPort = clustersStore((state) => state.clusterPort);
+  const isClusterPortEmpty = clustersStore((state) => state.isClusterPortEmpty);
+  const isEditClusterOpen = clustersStore((state) => state.isEditClusterOpen);
+  const oldClusterName = clustersStore((state) => state.oldClusterName);
 
   return (
     <Modal isOpen={isEditClusterOpen} onClose={ handleEditClusterClose } >

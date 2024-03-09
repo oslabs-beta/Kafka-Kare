@@ -4,24 +4,22 @@ import {
   Card, CardHeader, CardBody, CardFooter,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { CloseIcon, EditIcon, StarIcon } from '@chakra-ui/icons';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { RxStar, RxStarFilled } from "react-icons/rx";
 import path from 'path';
+import { clustersStore } from '../../store/clusters';
 
-const ClusterCard = ({
-  index, clusterObj, setIsDeleteClusterOpen, setDeletedClusterObj, setIsEditClusterOpen,
-  seteditClusterID, setClusterName, setClusterPort, setOldClusterName
-}) => {
+const ClusterCard = ({ index, clusterObj }) => {
   const { push } = useRouter();
   const handleEditClusterOpen = () => {
-    setIsEditClusterOpen(true);
-    setClusterName(clusterObj.name);
-    setOldClusterName(clusterObj.name);
-    setClusterPort(clusterObj.hostnameAndPort);
-    seteditClusterID(clusterObj._id);
+    clustersStore.setState({isEditClusterOpen: true});
+    clustersStore.setState({clusterName: clusterObj.name});
+    clustersStore.setState({oldClusterName: clusterObj.name});
+    clustersStore.setState({clusterPort: clusterObj.hostnameAndPort});
+    clustersStore.setState({editClusterID: clusterObj._id});
   }
   const [ favoriteCluster, setFavoriteCluster ] = useState(false);
-  // <Icon as={HiOutlineStar} color={favoriteCluster ? 'black' : 'white'} boxSize={6}/>
+  
   return (
     <Card id={'cluster' + index} key={'clusterCard'+index}>
       <CardHeader>
@@ -32,7 +30,9 @@ const ClusterCard = ({
           onClick = { () => { setFavoriteCluster(!favoriteCluster) } }/>
           <Spacer />
           <IconButton _hover={''} isRound={true} aria-label='delete cluster' mr={1} icon={<CloseIcon color='gray.500'  boxSize={3}/> } variant='ghost'
-          onClick = { () => { setIsDeleteClusterOpen(true); setDeletedClusterObj(clusterObj); } }/>
+          onClick = { () => {
+            clustersStore.setState({isDeleteClusterOpen: true}); clustersStore.setState({deletedClusterObj: clusterObj}); }
+          }/>
         </Flex>
       </CardHeader>
       <CardBody>

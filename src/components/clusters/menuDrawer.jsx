@@ -4,8 +4,10 @@ import {
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
+import { clustersStore } from '../../store/clusters';
 
-const MenuDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
+const MenuDrawer = () => {
+  const isDrawerOpen = clustersStore(state => state.isDrawerOpen);
   const slackWebhookSteps = [
     { title: 'First', description: () => (
       <>
@@ -38,9 +40,10 @@ const MenuDrawer = ({isDrawerOpen, setIsDrawerOpen }) => {
   ];
 
   return (
-    <Drawer placement='right' size='md' onClose={() => setIsDrawerOpen(false)} isOpen={isDrawerOpen}>
+    <Drawer placement='right' size='md' onClose={() => clustersStore.setState({isDrawerOpen: false})} isOpen={isDrawerOpen}>
       <DrawerOverlay />
       <DrawerContent>
+        <DrawerCloseButton />
         <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
         <DrawerBody mb={2}>
           <FormLabel >Slack Webhook URL</FormLabel>
