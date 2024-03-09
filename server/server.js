@@ -48,7 +48,7 @@ app.prepare().then(() => {
   server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
   server.use("/clusters", clustersRoutes); // endpoints at /clusters
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
-  server.use("/testing", testingRoutes); //endpoints at /testing
+  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404
