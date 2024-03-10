@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   Box, Flex, SimpleGrid, Button, Spacer, Image,
   Input, InputGroup, InputLeftElement, InputRightElement, IconButton,
+  Tabs, TabList, TabPanels, Tab, TabPanel,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -115,6 +116,30 @@ export default function Home() {
   }
 
   /*
+   * Toogle Cluster Favorite
+   */
+  const handleFavoriteChange = async (favoriteClusterID) => {
+
+    // update states about user clusters
+    for (const [index, clusterObj] of clusterDisplayArray.entries()) {
+      if (clusterObj._id === favoriteClusterID) {
+        clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], favorite: !clusterDisplayArray[index].favorite})});
+        break;
+      }
+    }
+    for (const [index, clusterObj] of clusterArray.entries()) {
+      if (clusterObj._id === favoriteClusterID) {
+        clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1, {...clusterArray[index], favorite: !clusterArray[index].favorite})});
+        break;
+      }
+    }
+    try {
+      const response = await axios.patch(`/clusters/favorites/${favoriteClusterID}`, {});
+      console.log("Set Favorite Cluster Response:", response.data);
+    } catch (err) {console.log(err)}
+  }
+
+  /*
    * Delete Cluster Event
    */
   const handleDeleteCluster = async (deleteClusterID) => {
@@ -219,11 +244,25 @@ export default function Home() {
 
       {/* Cluster Display */}
       <Box width="full" justifyContent="center" p={8} style={{height: 'calc(100% - 90px)'}} overflowY="scroll">
+        <Tabs variant='line'>
+          <TabList>
+            <Tab>One</Tab>
+            <Tab>Two</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <p>one!</p>
+            </TabPanel>
+            <TabPanel>
+              <p>two!</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
           {clusterDisplayArray.map((clusterObj, index) => (
 
             /* Cluster Card */
-            <ClusterCard key={'clusterCard'+index} index={index} clusterObj={clusterObj} />
+            <ClusterCard key={'clusterCard'+index} index={index} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
           ))}
 
           {/* Edit Cluster Modal */}

@@ -15,6 +15,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  slackUrl: {
+    type: String,
+  }
 });
 
 // Pre-save hook to encrypt password using bcrypt.hash() 

@@ -121,5 +121,76 @@ clusterController.updateCluster = async (req, res, next) => {
 };
 
 
+/* ------------------------- CHANGE FAVORITE STATUS ------------------------- */
+clusterController.changeFavorite = async (req, res, next) => {
+  console.log("In clusterController.changeFavorite"); // testing
+  
+  const clusterId = req.params.clusterId; // // Destructure from req.params
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Update cluster in database
+  try {
+    const cluster = await Cluster.findById(clusterId);
+    if (!cluster) {
+      return res.status(404).send('Cluster not found');
+    }
+
+    // Check cluster owner
+    if (cluster.ownerId !== userId) {
+      return res.status(403).send('User is not authorized to update this cluster');
+    }
+
+    // Assign new value of favorite
+    cluster.favorite === false // if currently cluster.favorite is false
+    ? cluster.favorite = true // reassign to true
+    : cluster.favorite = false // reassign to false
+
+    // User is authorized, update the cluster
+    await Cluster.findByIdAndUpdate(clusterId, {
+      favorite: cluster.favorite
+    })
+    console.log('Favorite clusters updated successfully');
+    return next();
+
+  } catch (err) {
+    return next({
+      log: `clusterController.changeFavorite: ERROR ${err}`,
+      status: 400,
+      message: { err: "Error occurred in clusterController.changeFavorite." },
+    });
+  }
+};
+
+
+/* -------------------------- GET FAVORITE CLUSTERS ------------------------- */
+
+clusterController.getFavorites = async (req, res, next) => {
+  console.log("In clusterController.getFavorites"); // testing
+  
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Get favorite clusters from database
+  try {
+    const favoriteClusters = await Cluster.find({
+      favorite: true,
+      ownerId: userId
+    });
+    if (!favoriteClusters) {
+      return res.status(404).send('Favorite clusters not found');
+    }
+    console.log('Favorite clusters found successfully');
+    res.locals.favoriteClusters = favoriteClusters;
+
+    return next();
+    
+  } catch (err) {
+    return next({
+      log: `clusterController.getFavorites: ERROR ${err}`,
+      status: 400,
+      message: { err: "Error occurred in clusterController.getFavorites." },
+    });
+  }
+};
+
 // Export
 module.exports = clusterController;

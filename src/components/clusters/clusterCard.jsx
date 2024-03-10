@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Flex, Heading, Spacer, IconButton, Stack, StackDivider, Box, Text, Button, Icon,
   Card, CardHeader, CardBody, CardFooter,
@@ -9,10 +9,10 @@ import { RxStar, RxStarFilled } from "react-icons/rx";
 import path from 'path';
 import { clustersStore } from '../../store/clusters';
 
-const ClusterCard = ({ index, clusterObj }) => {
+const ClusterCard = ({ index, clusterObj, handleFavoriteChange }) => {
   const { push } = useRouter();
 
-  // actions when editClusterModal close
+  // actions when editClusterModal open
   const handleEditClusterOpen = () => {
     clustersStore.setState({isEditClusterOpen: true});
     clustersStore.setState({clusterName: clusterObj.name});
@@ -21,6 +21,7 @@ const ClusterCard = ({ index, clusterObj }) => {
     clustersStore.setState({editClusterID: clusterObj._id});
   }
 
+  // actions when deleteClusterModal open
   const handleDeleteClusterOpen = () => {
     clustersStore.setState({isDeleteClusterOpen: true});
     clustersStore.setState({oldClusterName: clusterObj.name});
@@ -29,6 +30,9 @@ const ClusterCard = ({ index, clusterObj }) => {
 
   // declare state variables
   const [ favoriteCluster, setFavoriteCluster ] = useState(false);
+  useEffect(() => {
+    setFavoriteCluster(clusterObj.favorite);
+  }, []);
   
   return (
 
@@ -45,7 +49,7 @@ const ClusterCard = ({ index, clusterObj }) => {
           <IconButton
             _hover={''} isRound={true} aria-label='add favorite cluster' variant='ghost'
             icon={favoriteCluster ? <Icon as={RxStarFilled} color='yellow.300' boxSize={6} /> : <Icon as={RxStar} boxSize={5} />}
-            onClick = {() => {setFavoriteCluster(!favoriteCluster)}}
+            onClick = {() => {setFavoriteCluster(!favoriteCluster); handleFavoriteChange(clusterObj._id);}}
           />
 
           <Spacer />
