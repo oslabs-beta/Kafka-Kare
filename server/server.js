@@ -26,13 +26,14 @@ const handle = app.getRequestHandler(); // handles page routing
 app.prepare().then(() => {
   const server = express();
 
+  // CORS middleware
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+  }
+  server.use(cors(corsOptions));
+
   // Middleware
-  server.use(cors());
-  server.use(cookieParser());
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: true }));
-  // Middleware
-  server.use(cors());
   server.use(cookieParser());
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));

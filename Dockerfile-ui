@@ -5,7 +5,10 @@ WORKDIR /app/ui
 
 # Copy package.json, package-lock.json, Next.js, Tailwind CSS configuration files
 # Necessary and differs from the backend for several reasons related to how Next.js and Tailwind CSS applications are built and run
-COPY package*.json next.config.js postcss.config.js tailwind.config.js ./
+COPY package*.json ./
+COPY configs/next.config.js ./
+COPY configs/postcss.config.js ./
+COPY configs/tailwind.config.js ./
 
 COPY . .
 RUN npm install

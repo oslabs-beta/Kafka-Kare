@@ -1,14 +1,14 @@
 version: '3.8'
 
 services: 
-  # kafka-kare-ui:
-  #   image: kafka-kare-ui1
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - kafka-kare-server
-  #   networks:
-  #     - kafka-kare-network
+  kafka-kare-ui:
+    image: kafka-kare-ui1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka-kare-server
+    networks:
+      - kafka-kare-network
 
   kafka-kare-server: 
     image: kafka-kare-server4

@@ -23,7 +23,7 @@ export default function Home() {
   useEffect(() => {
      const fetchClusters = async () => {
       try {
-        const response = await axios('/clusters/userClusters', { credentials: 'include' });
+        const response = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
         console.log(response.data);
         setClusterArray(response.data);
         setClusterDisplayArray(response.data);
@@ -51,7 +51,7 @@ export default function Home() {
       setIsClusterNameEmpty(false);
       setIsClusterPortEmpty(false);
       setIsNewClusterOpen(false);
-      const response = await axios.post('/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort});
+      const response = await axios.post('http://localhost:3001//clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
       console.log(response.data);
       setClusterArray(clusterArray.concat(response.data));
       setClusterDisplayArray(clusterArray.concat(response.data));
@@ -75,7 +75,7 @@ export default function Home() {
       setIsClusterNameEmpty(false);
       setIsClusterPortEmpty(false);
       setIsEditClusterOpen(false);
-      const response = await axios.patch(`/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort});
+      const response = await axios.patch(`http://localhost:3001//clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
       console.log(response.data);
       // setClusterArray(clusterArray.concat(response.data));
       // setClusterDisplayArray(clusterArray.concat(response.data));
@@ -101,7 +101,7 @@ export default function Home() {
       }
     }
     setIsDeleteClusterOpen(false);
-    const response = await axios.delete(`/clusters/${deletedClusterObj._id}`);
+    const response = await axios.delete(`http://localhost:3001//clusters/${deletedClusterObj._id}`);
     console.log(response.data);
   }
 
