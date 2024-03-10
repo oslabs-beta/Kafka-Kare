@@ -19,8 +19,12 @@ export default function Home() {
   const { push } = useRouter();
 
   // declare state variables
-  const clusterArray = clustersStore(state => state.clusterArray);
-  const clusterDisplayArray = clustersStore(state => state.clusterDisplayArray);
+  const clusterMap = clustersStore(state => state.clusterMap);
+  const clusterDisplayMap = clustersStore(state => state.clusterDisplayMap);
+  const clusterFavoriteMap = clustersStore(state => state.clusterFavoriteMap);
+  const clusterFavoriteDisplayMap = clustersStore(state => state.clusterFavoriteDisplayMap);
+  const clusterNotFavoriteMap = clustersStore(state => state.clusterNotFavoriteMap);
+  const clusterNotFavoriteDisplayMap = clustersStore(state => state.clusterNotFavoriteDisplayMap);
   const clusterName = clustersStore(state => state.clusterName);
   const clusterPort = clustersStore(state => state.clusterPort);
   const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
@@ -30,15 +34,38 @@ export default function Home() {
     // fetch user clusters when page loaded
     const fetchClusters = async () => {
       try {
-        const response = await axios('/clusters/userClusters', {credentials: 'include'});
+        const response = await axios('http://localhost:3001/clusters/userClusters', {credentials: 'include'});
         console.log('Get User Clusters Response:', response.data);
 
         // update states about user's clusters
-        clustersStore.setState({clusterArray: response.data});
-        clustersStore.setState({clusterDisplayArray: response.data});
+        clustersStore.setState({clusterMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
       } catch (err) {console.log(err)}
     };
+    const fetchFavoriteClusters = async () => {
+      try {
+        const response = await axios('http://localhost:3001/clusters/favorites', {credentials: 'include'});
+        console.log('Get User\'s Favorite Clusters Response:', response.data);
+
+        // update states about user's clusters
+        clustersStore.setState({clusterFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {console.log(err)}
+    };
+    const fetchNotFavoriteClusters = async () => {
+      try {
+        const response = await axios('http://localhost:3001/clusters/notFavorites', {credentials: 'include'});
+        console.log('Get User\'s Not Favorite Clusters Response:', response.data);
+
+        // update states about user's clusters
+        clustersStore.setState({clusterNotFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {console.log(err)}
+    };
+
     fetchClusters();
+    fetchFavoriteClusters();
+    fetchNotFavoriteClusters();
   }, []);
 
   // actions when addClusterModal close
@@ -63,12 +90,14 @@ export default function Home() {
       // actions when addClusterModal close
       handleNewClusterClose();
       try {
-        const response = await axios.post('/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort});
+        const response = await axios.post('http://localhost:3001//clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort});
         console.log('New Cluster Response:', response.data);
 
         // update states about user clusters
-        clustersStore.setState({clusterArray: clusterArray.concat(response.data)});
-        clustersStore.setState({clusterDisplayArray: clusterArray.concat(response.data)});
+        clustersStore.setState({clusterMap: new Map(clusterMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(response.data._id, response.data))});
       } catch (err) {console.log(err)}
     }
   };
@@ -96,20 +125,14 @@ export default function Home() {
       handleEditClusterClose();
 
       // update states about user clusters
-      for (const [index, clusterObj] of clusterDisplayArray.entries()) {
-        if (clusterObj._id === editClusterID) {
-          clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], name: clusterName, hostnameAndPort: clusterPort})});
-          break;
-        }
-      }
-      for (const [index, clusterObj] of clusterArray.entries()) {
-        if (clusterObj._id === editClusterID) {
-          clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1, {...clusterArray[index], name: clusterName, hostnameAndPort: clusterPort})});
-          break;
-        }
-      }
+      clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(editClusterID, {...clusterDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterFavoriteMap.has(editClusterID)) clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(editClusterID, {...clusterFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(editClusterID, {...clusterFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterNotFavoriteMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(editClusterID, {...clusterNotFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterNotFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(editClusterID, {...clusterNotFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       try {
-        const response = await axios.patch(`/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort});
+        const response = await axios.patch(`http://localhost:3001/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort});
         console.log("Edit Cluster Response:", response.data);
       } catch (err) {console.log(err)}
     }
@@ -121,20 +144,27 @@ export default function Home() {
   const handleFavoriteChange = async (favoriteClusterID) => {
 
     // update states about user clusters
-    for (const [index, clusterObj] of clusterDisplayArray.entries()) {
-      if (clusterObj._id === favoriteClusterID) {
-        clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1, {...clusterDisplayArray[index], favorite: !clusterDisplayArray[index].favorite})});
-        break;
-      }
-    }
-    for (const [index, clusterObj] of clusterArray.entries()) {
-      if (clusterObj._id === favoriteClusterID) {
-        clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1, {...clusterArray[index], favorite: !clusterArray[index].favorite})});
-        break;
-      }
+    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(favoriteClusterID, {...clusterDisplayMap.get(favoriteClusterID), favorite: !clusterDisplayMap.get(favoriteClusterID).favorite}))});
+    clustersStore.setState({clusterMap: new Map(clusterMap.set(favoriteClusterID, {...clusterMap.get(favoriteClusterID), favorite: !clusterMap.get(favoriteClusterID).favorite}))});
+    if (clusterFavoriteMap.has(favoriteClusterID)) {
+      const changedClusterObj = clusterFavoriteMap.get(favoriteClusterID);
+      clusterFavoriteMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
+      clusterFavoriteDisplayMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+    } else {
+      const changedClusterObj = clusterNotFavoriteMap.get(favoriteClusterID);
+      clusterNotFavoriteMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
+      clusterNotFavoriteDisplayMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
     }
     try {
-      const response = await axios.patch(`/clusters/favorites/${favoriteClusterID}`, {});
+      const response = await axios.patch(`http://localhost:3001/clusters/favorites/${favoriteClusterID}`, {});
       console.log("Set Favorite Cluster Response:", response.data);
     } catch (err) {console.log(err)}
   }
@@ -145,21 +175,24 @@ export default function Home() {
   const handleDeleteCluster = async (deleteClusterID) => {
 
     // update states about user clusters
-    for (const [index, clusterObj] of clusterDisplayArray.entries()) {
-      if (clusterObj._id === deleteClusterID) {
-        clustersStore.setState({clusterDisplayArray: clusterDisplayArray.toSpliced(index, 1)});
-        break;
-      }
-    }
-    for (const [index, clusterObj] of clusterArray.entries()) {
-      if (clusterObj._id === deleteClusterID) {
-        clustersStore.setState({clusterArray: clusterArray.toSpliced(index, 1)});
-        break;
-      }
+    clusterDisplayMap.delete(deleteClusterID);
+    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap)});
+    clusterMap.delete(deleteClusterID);
+    clustersStore.setState({clusterMap: new Map(clusterMap)});
+    if (clusterFavoriteMap.has(deleteClusterID)) {
+      clusterFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
+      clusterFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+    } else {
+      clusterNotFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
+      clusterNotFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
     }
     clustersStore.setState({isDeleteClusterOpen: false});
     try {
-      const response = await axios.delete(`/clusters/${deleteClusterID}`);
+      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`);
       console.log("Delete Cluster Response:", response.data);
     } catch (err) {console.log(err)}
   }
@@ -178,17 +211,37 @@ export default function Home() {
   
   // actios when search input changes
   const handleClusterSearchValueChange = (curClusterSearchValue) => {
-    const newClusterDisplayArray = [];
+    clustersStore.setState({clusterSearchValue: curClusterSearchValue});
 
     // update states about user search value and display cluster
-    clustersStore.setState({clusterSearchValue: curClusterSearchValue});
-    clusterArray.map((clusterObj) => {
+    const newClusterDisplayMap = new Map();
+    for (const [key, clusterObj] of clusterMap) {
       if (clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
       || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1) {
-        newClusterDisplayArray.push(clusterObj);
+        newClusterDisplayMap.set(clusterObj._id, clusterObj);
       }
-    });
-    clustersStore.setState({clusterDisplayArray: newClusterDisplayArray});
+    };
+    clustersStore.setState({clusterDisplayMap: newClusterDisplayMap});
+
+    // update states about user search value and favorite display cluster
+    const newClusterFavoriteDisplayMap = new Map();
+    for (const [key, clusterObj] of clusterFavoriteMap) {
+      if (clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1) {
+        newClusterFavoriteDisplayMap.set(clusterObj._id, clusterObj);
+      }
+    };
+    clustersStore.setState({clusterFavoriteDisplayMap: newClusterFavoriteDisplayMap});
+
+    // update states about user search value and not favorite display cluster
+    const newClusterNotFavoriteDisplayMap = new Map();
+    for (const [key, clusterObj] of clusterNotFavoriteMap) {
+      if (clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1) {
+        newClusterNotFavoriteDisplayMap.set(clusterObj._id, clusterObj);
+      }
+    };
+    clustersStore.setState({clusterNotFavoriteDisplayMap: newClusterNotFavoriteDisplayMap});
   }
   // const drawerBtnRef = React.useRef();
 
@@ -243,37 +296,70 @@ export default function Home() {
       </Flex>
 
       {/* Cluster Display */}
-      <Box width="full" justifyContent="center" p={8} style={{height: 'calc(100% - 90px)'}} overflowY="scroll">
-        <Tabs variant='line'>
-          <TabList>
-            <Tab>One</Tab>
-            <Tab>Two</Tab>
+      <Box width="full" justifyContent="center" p={8} style={{height: 'calc(100% - 90px)'}}>
+        <Tabs variant='line' onChange={(index) => {}} style={{height: 'calc(100% - 32px)'}}>
+          <TabList w='100%'>
+            <Tab>All</Tab>
+            <Tab>Favorite</Tab>
+            <Tab>Not Favorite</Tab>
           </TabList>
-          <TabPanels>
+          <TabPanels overflowY="auto" h='100%'>
             <TabPanel>
-              <p>one!</p>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(350px, 1fr))'>
+                {[...clusterDisplayMap].map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+
+                {/* Edit Cluster Modal */}
+                <EditClusterModal
+                  handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+                  handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+                />
+
+                {/* Delete Cluster Modal */}
+                <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
+              </SimpleGrid>
             </TabPanel>
             <TabPanel>
-              <p>two!</p>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(350px, 1fr))'>
+                {[...clusterFavoriteDisplayMap].map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+
+                {/* Edit Cluster Modal */}
+                <EditClusterModal
+                  handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+                  handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+                />
+
+                {/* Delete Cluster Modal */}
+                <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
+              </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(350px, 1fr))'>
+                {[...clusterNotFavoriteDisplayMap].map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+
+                {/* Edit Cluster Modal */}
+                <EditClusterModal
+                  handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+                  handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+                />
+
+                {/* Delete Cluster Modal */}
+                <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
+              </SimpleGrid>
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
-          {clusterDisplayArray.map((clusterObj, index) => (
-
-            /* Cluster Card */
-            <ClusterCard key={'clusterCard'+index} index={index} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
-          ))}
-
-          {/* Edit Cluster Modal */}
-          <EditClusterModal
-            handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
-            handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
-          />
-
-          {/* Delete Cluster Modal */}
-          <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
-        </SimpleGrid>
       </Box>
     </Box>
   );

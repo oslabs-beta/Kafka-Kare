@@ -3,10 +3,22 @@ import { create } from 'zustand';
 export const clustersStore = create((set) => ({
 
   // User's Clusters
-  clusterArray: [],
+  clusterMap: new Map(),
 
   // Clusters for Dispay
-  clusterDisplayArray: [],
+  clusterDisplayMap: new Map(),
+
+  // User's Favorite Clusters
+  clusterFavoriteMap: new Map(),
+
+  // User's Favorite Clusters
+  clusterFavoriteDisplayMap: new Map(),
+
+  // User's Not Favorite Clusters
+  clusterNotFavoriteMap: new Map(),
+  
+  // User's Favorite Clusters
+  clusterNotFavoriteDisplayMap: new Map(),
   
   // Name Input Value
   clusterName: '',

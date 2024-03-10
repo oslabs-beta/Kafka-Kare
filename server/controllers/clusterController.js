@@ -192,5 +192,37 @@ clusterController.getFavorites = async (req, res, next) => {
   }
 };
 
+
+/* ------------------------ GET NON-FAVORITE CLUSTERS ----------------------- */
+
+clusterController.getNotFavorites = async (req, res, next) => {
+  console.log("In clusterController.getNotFavorites"); // testing
+  
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Get favorite clusters from database
+  try {
+    const notFavoriteClusters = await Cluster.find({
+      favorite: false,
+      ownerId: userId
+    });
+    if (!notFavoriteClusters) {
+      return res.status(404).send('Not-favorite clusters unable to be found');
+    }
+    console.log('Not-favorite clusters found successfully');
+    res.locals.notFavoriteClusters = notFavoriteClusters;
+
+    return next();
+    
+  } catch (err) {
+    return next({
+      log: `clusterController.getNotFavorites: ERROR ${err}`,
+      status: 400,
+      message: { err: "Error occurred in clusterController.getNotFavorites." },
+    });
+  }
+};
+
+
 // Export
 module.exports = clusterController;

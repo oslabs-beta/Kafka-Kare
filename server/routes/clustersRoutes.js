@@ -64,4 +64,13 @@ router.get(
   }
 )
 
+// Route for getting not-favorite clusters
+router.get(
+  '/notFavorites',
+  tokenController.verifyToken,
+  clusterController.getNotFavorites,
+  (req, res) => {
+    return res.status(200).json(res.locals.notFavoriteClusters);
+  }
+)
 module.exports = router;
