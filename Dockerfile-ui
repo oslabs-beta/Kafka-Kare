@@ -1,23 +1,16 @@
 # Front UI dockerfile
 FROM node:21-alpine
 
-# Set the working directory
 WORKDIR /app/ui
 
-# Copy package.json, package-lock.json (if available), and the Next.js configuration files
+# Copy package.json, package-lock.json, Next.js, Tailwind CSS configuration files
+# Necessary and differs from the backend for several reasons related to how Next.js and Tailwind CSS applications are built and run
 COPY package*.json next.config.js postcss.config.js tailwind.config.js ./
 
-# Copy the local code to the container
 COPY . .
-
-# Install dependencies
 RUN npm install
-
-# Build the Next.js project
 RUN npm run build
 
-# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application
 CMD ["npm", "start"]
