@@ -51,7 +51,7 @@ export default function Home() {
       setIsClusterNameEmpty(false);
       setIsClusterPortEmpty(false);
       setIsNewClusterOpen(false);
-      const response = await axios.post('http://localhost:3001//clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
+      const response = await axios.post('http:/localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
       console.log(response.data);
       setClusterArray(clusterArray.concat(response.data));
       setClusterDisplayArray(clusterArray.concat(response.data));
