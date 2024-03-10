@@ -39,7 +39,9 @@ app.prepare().then(() => {
 
   // Connect to mongoDB
   // Use either environmental variables (production) or literal string (development/testing)
-  // const mongoURI = process.env.MONGODB_URI;
+  // Use either Docker containerized MongoDB or MongoDB Atlas
+  // const mongoURI = process.env.MONGODB_URI; //environmental
+  // const mongoURI = 'mongodb://KafkaKare:sHRtyVkFa7aOykcX@mongo:27017/kafka-kare?authSource=admin';
   const mongoURI = 'mongodb+srv://KafkaKare:sHRtyVkFa7aOykcX@kafka-kare.e2s35ya.mongodb.net/?retryWrites=true&w=majority&appName=Kafka-Kare';
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
