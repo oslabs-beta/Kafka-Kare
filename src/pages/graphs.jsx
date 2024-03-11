@@ -1,3 +1,3 @@
 export default function Home() {
-    return <div>Testing graphs!</div>;
-  }
+  return <div>Testing graphs!</div>;
+}
