@@ -54,7 +54,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
     )},
     { title: 'Fourth', description: () => (
       <>
-        Pick a <b>channel</b> that the app will post to, then select <b>Authorize</b>. If you need to add the incoming webhook to a private channel, you must first be in that channel. You'll be sent back to
+        Pick a <b>channel</b> that the app will post to, then select <b>Authorize</b>. If you need to add the incoming webhook to a private channel, you must first be in that channel. You'll be sent back to&nbsp;
         <b><Link href='https://api.slack.com/apps' color='teal.500' isExternal>
           App Management Dashboard
         </Link></b>, where you should see your webhook URL, which will look something like this:

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Box, Flex, SimpleGrid, Button, Spacer, Image,
+  Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
   Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
   Tabs, TabList, TabPanels, Tab, TabPanel,
   Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar,
@@ -99,6 +99,8 @@ export default function Home() {
         const response = await axios.post('http://localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
         console.log('New Cluster Response:', response.data);
 
+        successToast('Cluster Created', 'We\'ve created your cluster for you.', 'success');
+
         // update states about user clusters
         clustersStore.setState({clusterMap: new Map(clusterMap.set(response.data._id, response.data))});
         clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(response.data._id, response.data))});
@@ -129,6 +131,8 @@ export default function Home() {
 
       // actions when editClusterModal close
       handleEditClusterClose();
+
+      successToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success');
 
       // update states about user clusters
       clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
@@ -200,6 +204,8 @@ export default function Home() {
     try {
       const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
       console.log("Delete Cluster Response:", response.data);
+
+      successToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success');
     } catch (err) {console.log(err)}
   }
 
@@ -246,10 +252,18 @@ export default function Home() {
    */
   const handleSlackWebhookURLSubmit = async () => {
     try {
-      const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
-      console.log("Change Slack Webhook URL Response:", response.data);
+      // const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
+      // console.log("Change Slack Webhook URL Response:", response.data);
+      clustersStore.setState({isDrawerOpen: false});
+
+      successToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success');
       
     } catch (err) {console.log(err)}
+  }
+
+  const toast = useToast();
+  const successToast = (title, description, status) => {
+    toast({position: 'top', title, description, status, duration: 3000, isClosable: true});
   }
   // const drawerBtnRef = React.useRef();
 
