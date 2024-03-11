@@ -1,7 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/clusters": "pages/clusters.js",
-  "/home": "pages/home.js"
-}
+{"/_app":"pages/_app.js","/_error":"pages/_error.js","/404":"pages/404.html","/about":"pages/about.html","/clusters":"pages/clusters.html","/graphs":"pages/graphs.html","/home":"pages/home.html","/login":"pages/login.html","/signup":"pages/signup.html","/":"pages/index.html","/_document":"pages/_document.js"}
