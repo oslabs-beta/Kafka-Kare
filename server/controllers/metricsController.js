@@ -5,7 +5,7 @@ const getPrometheusURI = async (userId) => {
   // Retrieve user's promURI from database
 };
 
-/* ------------------------------- GET METRICS ------------------------------ */
+/* ------------------------------- Get metrics ------------------------------ */
 metricsController.getMetrics = async (req, res, next) => {
   console.log("In metricsController.getMetrics"); // testing
   const { clusterId } = req.params; // Destructure from prior request params

@@ -193,7 +193,7 @@ clusterController.getFavorites = async (req, res, next) => {
 };
 
 
-/* ------------------------ GET NOT-FAVORITE CLUSTERS ----------------------- */
+/* ------------------------ GET NON-FAVORITE CLUSTERS ----------------------- */
 
 clusterController.getNotFavorites = async (req, res, next) => {
   console.log("In clusterController.getNotFavorites"); // testing
