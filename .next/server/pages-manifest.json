@@ -2,6 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/clusters": "pages/clusters.js",
-  "/home": "pages/home.js"
+  "/home": "pages/home.js",
+  "/login": "pages/login.js",
+  "/graphs": "pages/graphs.js",
+  "/404": "pages/404.js"
 }
