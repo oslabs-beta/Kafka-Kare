@@ -9,6 +9,9 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { RxStar, RxStarFilled } from "react-icons/rx";
+import { MdOutlineLockReset } from "react-icons/md";
+import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from "react-icons/ri";
+import { FaSignOutAlt } from "react-icons/fa";
 import path from 'path';
 import { clustersStore } from '../store/clusters';
 import MenuDrawer from '../components/clusters/menuDrawer';
@@ -297,11 +300,11 @@ export default function Home() {
         <Menu>
           <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
           <MenuList>
-            <MenuItem>Change Password</MenuItem>
-            <MenuItem>Download Information</MenuItem>
-            <MenuItem>Upload Image</MenuItem>
-            <MenuItem>Delete Account</MenuItem>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />}><b>Change Password</b></MenuItem>
+            <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
+            <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
+            <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
+            <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />}><b>Logout</b></MenuItem>
           </MenuList>
         </Menu>
 
