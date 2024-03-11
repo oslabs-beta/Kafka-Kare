@@ -54,6 +54,7 @@ app.prepare().then(() => {
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
   });
+  
   server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
   server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
