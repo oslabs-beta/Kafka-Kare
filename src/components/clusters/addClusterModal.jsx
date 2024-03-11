@@ -26,7 +26,7 @@ const AddClusterModal = ({
     /* Add Cluster Modal */
     <Modal isOpen={isNewClusterOpen} onClose={handleNewClusterClose} initialFocusRef={initialRef}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent top='4rem'>
 
         {/* Title */}
         <ModalHeader>New Cluster</ModalHeader>

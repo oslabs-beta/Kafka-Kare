@@ -8,7 +8,7 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import { clustersStore } from '../../store/clusters';
 
 const EditClusterModal = ({
-  handleEditClusterClose, handleEditCluster, handleClusterNameChange, handleClusterPortChange
+  handleEditClusterClose, handleClusterNameChange, handleClusterPortChange, handleEditCluster
 }) => {
 
   // declare state variables
@@ -28,7 +28,7 @@ const EditClusterModal = ({
     /* Edit Cluster Modal */
     <Modal isOpen={isEditClusterOpen} onClose={handleEditClusterClose} initialFocusRef={initialRef}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent top='4rem'>
 
         {/* Title */}
         <ModalHeader>Edit Cluster: {oldClusterName}</ModalHeader>

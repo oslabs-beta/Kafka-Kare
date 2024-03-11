@@ -29,6 +29,9 @@ export const clustersStore = create((set) => ({
   // Search Input Value
   clusterSearchValue: '',
 
+  // Slack Webhook URL Input Value
+  slackWebhookURL: '',
+
   // is Name Input Empty
   isClusterNameEmpty: false,
 

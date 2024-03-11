@@ -7,13 +7,28 @@ import {
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { clustersStore } from '../../store/clusters';
 
-const MenuDrawer = () => {
+const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
 
   // declare state variables
   const isDrawerOpen = clustersStore(state => state.isDrawerOpen);
+  const slackWebhookURL = clustersStore(state => state.slackWebhookURL);
 
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
+
+  // check slack url format before submit
+  const submitSlackWebhookUrl = () => {
+    if (slackWebhookURL.slice(0, 34) === 'https://hooks.slack.com/services/T'
+      && slackWebhookURL.indexOf('/B') - slackWebhookURL.indexOf('/T') >= 10
+      && slackWebhookURL.lastIndexOf('/') - slackWebhookURL.indexOf('/B') >= 9
+      && slackWebhookURL.length >= 77
+    ) {
+      alert('Right Format');
+      // handleSlackWebhookURLSubmit();
+    } else {
+      alert('Wrong Format');
+    }
+  }
 
   // declare slack webhook step array
   // { title: (String), description: (Function that returns JSX)}
@@ -68,12 +83,15 @@ const MenuDrawer = () => {
           <Flex width="full">
 
             {/* URL Input */}
-            <Textarea placeholder='https://hooks.slack.com/services/T... /B... /...' resize='none' ref={initialRef}/>
+            <Textarea
+              placeholder='https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX' resize='none' ref={initialRef}
+              onChange={(e) => {clustersStore.setState({slackWebhookURL: e.target.value})}} value={slackWebhookURL}
+            />
 
             {/* Submit URL Input */}
             <IconButton
               aria-label='submit slack url' h={20} colorScheme='twitter' ml={2}
-              icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {alert('Slack URL Sent')}}
+              icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {submitSlackWebhookUrl()}}
             />
           </Flex>
 
@@ -88,8 +106,8 @@ const MenuDrawer = () => {
                   <StepStatus complete={<StepIcon />} incomplete={<StepNumber />} active={<StepNumber />} />
                 </StepIndicator>
                 <Box flexShrink=''>
-                  <StepTitle>{step.title}</StepTitle>
-                  <StepDescription>
+                  <StepTitle mb={1}>{step.title}</StepTitle>
+                  <StepDescription mb={2}>
                     {step.description()}
                   </StepDescription>
                 </Box>
