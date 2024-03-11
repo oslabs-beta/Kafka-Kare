@@ -64,17 +64,12 @@ const AddClusterModal = ({
           </FormControl>
         </ModalBody>
         <ModalFooter>
-<<<<<<< HEAD
-          <Button mr={3} onClick={ handleNewClusterClose }>Cancel</Button>
-          <Button colorScheme='blue' onClick={ handleNewCluster }>Submit</Button>
-=======
 
           {/* Cancel Button */}
           <Button mr={3} onClick={handleNewClusterClose}>Cancel</Button>
 
           {/* Submit Button */}
           <Button colorScheme='blue' onClick={handleNewCluster}>Submit</Button>
->>>>>>> dev
         </ModalFooter>
       </ModalContent>
     </Modal>
