@@ -1,0 +1,45 @@
+version: '3'
+services: 
+  kafka-kare-server: 
+    image: kafka-kare-test
+    ports: 
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+     - MONGO_DB_USERNAME=admin
+     - MONGO_DB_PWD=supersecret
+    networks:
+     - kafka-kare
+  #does not work if you change name from mongo 
+  mongo:
+    image: mongo
+    ports:
+     - 27017:27017
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=supersecret
+    networks:
+      - kafka-kare
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+     - 8081:8081
+    environment:
+     - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+     - ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+     - ME_CONFIG_MONGODB_URL=mongodb://admin:supersecret@mongo
+     #new way is to use mongo URL
+    #  - ME_CONFIG_MONGODB_SERVER=mongo
+    networks:
+     - kafka-kare
+    depends_on:
+     - "mongo"
+networks: 
+  kafka-kare:
+    driver: bridge
+volumes:
+  mongo-data: 

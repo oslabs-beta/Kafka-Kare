@@ -4,7 +4,6 @@ import { BackgroundGradientAnimation } from '../ui/home-background-animation.jsx
 
 
 const Home = () => {
-
     return(
         <BackgroundGradientAnimation style={{ position: 'relative', zIndex: 1 }}>
         <div className="absolute z-50 inset-0 flex items-center justify-center text-white 

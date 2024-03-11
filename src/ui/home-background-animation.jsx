@@ -18,6 +18,7 @@ export const BackgroundGradientAnimation = ({
   interactive = true,
   containerClassName,
 }) => {
+  console.log('background is rendered')
   const interactiveRef = useRef(null);
 
   const [curX, setCurX] = useState(0);

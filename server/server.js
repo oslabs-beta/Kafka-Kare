@@ -1,6 +1,6 @@
 // Access to environmental variables
 require("dotenv").config();
-
+const User = require('./models/userModel');//delete later, this is for testing
 // Import dependencies
 const express = require("express");
 const next = require("next");
@@ -25,26 +25,60 @@ const handle = app.getRequestHandler(); // handles page routing
 app.prepare().then(() => {
   const server = express();
 
+  // CORS middleware
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+  }
+  server.use(cors(corsOptions));
+
   // Middleware
   server.use(cors());
   server.use(cookieParser());
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
+  const DB_USER = process.env.MONGO_DB_USERNAME
+  const DB_PASS = process.env.MONGO_DB_PWD
   // Connect to mongoDB
-  const mongoURI = process.env.MONGODB_URI;
+  // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
+   const mongoURI = `mongodb://admin:supersecret@mongo`
+
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
-    console.log("Connected to Database");
-  });
+      console.log("Connected to Database");
+    });
+
+//options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
+
+//================== TEST
+
+// Test MongoDB connection route
+server.get('/test-db', async (req, res) => {
+  try {
+    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const connectionState = mongoose.connection.readyState;
+    if (connectionState === 1) {
+      res.status(200).json({ message: 'Successfully connected to MongoDB' });
+    } else {
+      res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
+  }
+});
 
   // Custom routes
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
   });
-  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-  server.use("/clusters", clustersRoutes); // endpoints at /clusters
+  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
   server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
+  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404
