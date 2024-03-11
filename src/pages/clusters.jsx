@@ -249,7 +249,7 @@ export default function Home() {
     <Box width="full" height="100vh">
 
       {/* Navbar */}
-      <Flex p={6} px={100} width="full" borderWidth={1} boxShadow="lg">
+      <Flex p={10} px={100} width="full" borderWidth={1} boxShadow="lg">
 
         {/* Logo */}
         <Image src='/kafka-kare-logo.png' h={10} borderRadius={8} />

@@ -60,7 +60,7 @@ const MenuDrawer = () => {
         <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
 
         {/* Content */}
-        <DrawerBody mb={2}>
+        <DrawerBody mb={2} overflowY='hidden'>
 
           {/* URL Subtitle */}
           <FormLabel >Slack Webhook URL</FormLabel>
@@ -81,7 +81,7 @@ const MenuDrawer = () => {
           <FormLabel mt={4} >Get Slack Webhook URL through steps below:</FormLabel>
 
           {/* Slack Webhook Step */}
-          <Stepper orientation='vertical' height='75%' gap='1'>
+          <Stepper orientation='vertical' height='75%' gap='1' overflowY='auto'>
             {slackWebhookSteps.map((step, index) => (
               <Step key={index}>
                 <StepIndicator>
