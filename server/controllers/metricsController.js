@@ -11,20 +11,20 @@ metricsController.getMetrics = async (req, res, next) => {
   const { clusterId } = req.params; // Destructure from prior request params
   const userId = res.locals.userId; // Destructure from prior middleware
 
-  /* -------------------------------------------------------------------------- */
-  /*                                     WIP                                    */
-  /* -------------------------------------------------------------------------- */
-
   try {
-    // endpoint for executing instant queries in Prometheus
+    // Prometheus query string
+    const query = `rate(process_cpu_seconds_total{instance="kafka-demo:9092"}[5m])`;
+
+    console.log('Querying Prometheus...')
     const response = await axios.get(`http://prometheus:9090/api/v1/query`, { 
-        // simple special query that returns up(1) or down(0) to check health or availability of the services Prometheus is monitoring
-        params: {
-          query: "up", 
+        params: { 
+          query: query 
         }
       });
+    console.log('Response successfully received');
 
-    res.locals.data = response.data;
+    // This is the form the response from Prometheus takes
+    res.locals.data = response.data.data.result;
     return next();
   } catch (err) {
     return next({
