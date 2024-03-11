@@ -2,7 +2,7 @@
 # server dockerfile
 FROM node:21-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app/server
 COPY package*.json ./
 COPY . .
 RUN npm install 
