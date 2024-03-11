@@ -6,10 +6,8 @@ const theme = extendTheme({
   styles: {
     global: {
         '.background-gradient-animation': {
-            backgroundColor: 
+            backgroundColor: 'pink'
         }
-
-      
     },
   },
 });
