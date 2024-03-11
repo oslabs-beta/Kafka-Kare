@@ -72,12 +72,41 @@ server.get('/test-db', async (req, res) => {
   }
 });
 
-  // Custom routes
-  server.get("/hello", (req, res) => {
-    return res.status(200).send("Hello world");
-  });
-  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
-  server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
+
+// TEST POST route to create a new user 
+server.post('/users', async (req, res) => {
+  try {
+    const newUser = new User({
+      username: req.body.username,
+      password: req.body.password
+    });
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// TEST GET route to fetch all users
+server.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'username'); // Exclude passwords from the response
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+//=========================== TEST   
+    // Custom routes
+    server.get("/hello", (req, res) => {
+      return res.status(200).send("Hello world");
+    });
+    server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
+    server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
+    server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
   server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 
   // Fallback route

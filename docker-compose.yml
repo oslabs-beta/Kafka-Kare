@@ -11,6 +11,14 @@ services:
      - MONGO_DB_PWD=supersecret
     networks:
      - kafka-kare
+  kafka-kare-ui:
+    image: kafka-kare-ui1
+    ports:
+     - 3000:3000
+    depends_on:
+     - kafka-kare-server
+    networks:
+     - kafka-kare    
   #does not work if you change name from mongo 
   mongo:
     image: mongo
