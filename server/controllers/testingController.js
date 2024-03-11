@@ -3,6 +3,7 @@ const Cluster = require("../models/clusterModel.js");
 
 const testingController = {};
 
+/* ------------------------ TESTING // GET ALL USERS ------------------------ */
 testingController.getAllUsers = async (req, res, next) => {
   console.log("In testingController.getAllUsers"); // testing
 
@@ -23,6 +24,8 @@ testingController.getAllUsers = async (req, res, next) => {
   }
 };
 
+
+/* ----------------------- TESTING // GET ALL CLUSTERS ---------------------- */
 testingController.getAllClusters = async (req, res, next) => {
   console.log("In testingController.getAllClusters"); // testing
 

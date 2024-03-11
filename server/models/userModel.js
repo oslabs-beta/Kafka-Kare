@@ -17,6 +17,9 @@ const userSchema = new Schema({
   },
   slackUrl: {
     type: String,
+  },
+  promUrl: {
+    type: String,
   }
 });
 

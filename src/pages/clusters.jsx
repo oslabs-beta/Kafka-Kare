@@ -149,7 +149,7 @@ export default function Home() {
   }
 
   /*
-   * Toogle Cluster Favorite
+   * Toggle Cluster Favorite
    */
   const handleFavoriteChange = async (favoriteClusterID) => {
 
