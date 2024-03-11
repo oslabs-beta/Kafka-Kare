@@ -1,6 +1,6 @@
 // Access to environmental variables
 require("dotenv").config();
-
+const User = require('./models/userModel');//delete later, this is for testing
 // Import dependencies
 const express = require("express");
 const next = require("next");
@@ -38,25 +38,75 @@ app.prepare().then(() => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
+  const DB_USER = process.env.MONGO_DB_USERNAME
+  const DB_PASS = process.env.MONGO_DB_PWD
   // Connect to mongoDB
-  // Use either environmental variables (production) or literal string (development/testing)
-  // Use either Docker containerized MongoDB or MongoDB Atlas
-  // const mongoURI = process.env.MONGODB_URI; //environmental
-  // const mongoURI = 'mongodb://KafkaKare:sHRtyVkFa7aOykcX@mongo:27017/kafka-kare?authSource=admin'; // Docker containerized
-  const mongoURI = 'mongodb+srv://KafkaKare:sHRtyVkFa7aOykcX@kafka-kare.e2s35ya.mongodb.net/?retryWrites=true&w=majority&appName=Kafka-Kare'; // MongoDB Atlas
+  // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
+   const mongoURI = `mongodb://admin:supersecret@mongo`
+
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
-    console.log("Connected to Database");
-  });
+      console.log("Connected to Database");
+    });
+
+//options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
+
+//================== TEST
+
+// Test MongoDB connection route
+server.get('/test-db', async (req, res) => {
+  try {
+    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const connectionState = mongoose.connection.readyState;
+    if (connectionState === 1) {
+      res.status(200).json({ message: 'Successfully connected to MongoDB' });
+    } else {
+      res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
+  }
+});
 
 
-  // Custom routes
-  server.get("/hello", (req, res) => {
-    return res.status(200).send("Hello world");
-  });
-  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
-  server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
+// TEST POST route to create a new user 
+server.post('/users', async (req, res) => {
+  try {
+    const newUser = new User({
+      username: req.body.username,
+      password: req.body.password
+    });
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// TEST GET route to fetch all users
+server.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'username'); // Exclude passwords from the response
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+//=========================== TEST   
+    // Custom routes
+    server.get("/hello", (req, res) => {
+      return res.status(200).send("Hello world");
+    });
+    server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
+    server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
+    server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
   server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
 
   // Fallback route
