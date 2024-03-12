@@ -46,9 +46,23 @@ services:
      - kafka-kare
     depends_on:
      - "mongo"
+  grafana: 
+    image: grafana/grafana:latest
+    ports: 
+      - "3002:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "kafkakarepw"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - kafka-kare-server
+    networks:
+      - kafka-kare
 networks: 
   kafka-kare:
     driver: bridge
 
 volumes:
   mongo-data: 
+  grafana-data:

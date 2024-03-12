@@ -14,6 +14,7 @@ services:
       - './prometheus.yml:/etc/prometheus/prometheus.yml'
     networks:
       - localprom
+      - kafka-kare
     ports:
       - 9090:9090
   kafka:
@@ -49,4 +50,6 @@ services:
 networks:
   localprom:
     driver: bridge
+  kafka-kare:
+    external: true
 # run 'docker compose up' to initialize container locally
