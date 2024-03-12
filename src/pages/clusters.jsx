@@ -1,228 +1,393 @@
-'use client'
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Box, Flex, SimpleGrid, Card, CardHeader, CardBody, CardFooter, Text, Button, Spacer, Heading, Stack, StackDivider, Link, Code,
-  Input, InputGroup, InputLeftElement, InputRightElement, IconButton, Image,
-  FormControl, FormLabel, FormErrorMessage,
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
+  Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
+  Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
+  Tabs, TabList, TabPanels, Tab, TabPanel,
+  Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon, EditIcon } from '@chakra-ui/icons';
+import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { RxStar, RxStarFilled } from "react-icons/rx";
+import { MdOutlineLockReset } from "react-icons/md";
+import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from "react-icons/ri";
+import { FaSignOutAlt } from "react-icons/fa";
 import path from 'path';
-import { userStore } from '../store/user';
-import ClustersDrawer from '../components/clusters/clustersDrawer';
+import { clustersStore } from '../store/clusters';
+import MenuDrawer from '../components/clusters/menuDrawer';
 import AddClusterModal from '../components/clusters/addClusterModal';
+import ClusterCard from '../components/clusters/clusterCard';
 import EditClusterModal from '../components/clusters/editClusterModal';
+import DeleteClusterModal from '../components/clusters/deleteClusterModal';
 
 export default function Home() {
   const { push } = useRouter();
-  const [ clusterArray, setClusterArray ] = useState([]);
-  const [ clusterDisplayArray, setClusterDisplayArray ] = useState([]);
+
+  // declare state variables
+  const clusterMap = clustersStore(state => state.clusterMap);
+  const clusterDisplayMap = clustersStore(state => state.clusterDisplayMap);
+  const clusterFavoriteMap = clustersStore(state => state.clusterFavoriteMap);
+  const clusterFavoriteDisplayMap = clustersStore(state => state.clusterFavoriteDisplayMap);
+  const clusterNotFavoriteMap = clustersStore(state => state.clusterNotFavoriteMap);
+  const clusterNotFavoriteDisplayMap = clustersStore(state => state.clusterNotFavoriteDisplayMap);
+  const clusterName = clustersStore(state => state.clusterName);
+  const clusterPort = clustersStore(state => state.clusterPort);
+  const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
+  const slackWebhookURL = clustersStore(state => state.slackWebhookURL);
+
   useEffect(() => {
-     const fetchClusters = async () => {
+
+    // fetch user clusters when page loaded
+    const fetchClusters = async () => {
       try {
-        const response = await axios('/clusters/userClusters', { credentials: 'include' });
-        console.log(response.data);
-        setClusterArray(response.data);
-        setClusterDisplayArray(response.data);
-      }
-      catch (err) {console.log(err)}
+        const response = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
+        console.log('Get User Clusters Response:', response.data);
+
+        // update states about user's clusters
+        clustersStore.setState({clusterMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {console.log(err)}
     };
+    const fetchFavoriteClusters = async () => {
+      try {
+        const response = await axios('http://localhost:3001/clusters/favorites', {withCredentials: true});
+        console.log('Get User\'s Favorite Clusters Response:', response.data);
+
+        // update states about user's clusters
+        clustersStore.setState({clusterFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {console.log(err)}
+    };
+    const fetchNotFavoriteClusters = async () => {
+      try {
+        const response = await axios('http://localhost:3001/clusters/notFavorites', {withCredentials: true});
+        console.log('Get User\'s Not Favorite Clusters Response:', response.data);
+
+        // update states about user's clusters
+        clustersStore.setState({clusterNotFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {console.log(err)}
+    };
+
     fetchClusters();
+    fetchFavoriteClusters();
+    fetchNotFavoriteClusters();
   }, []);
-  // testing
-  const updateUser = userStore((state) => state.updateUsername);
-  const [ isNewClusterOpen, setIsNewClusterOpen ] = useState();
+
+  // actions when addClusterModal close
   const handleNewClusterClose = () => {
-    setClusterName('');
-    setClusterPort('');
-    setIsClusterNameEmpty(false);
-    setIsClusterPortEmpty(false);
-    setIsNewClusterOpen(false);
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isNewClusterOpen: false});
   }
+  
+  /*
+   * Add Cluster Event
+   */
   const handleNewCluster = async () => {
-    if (clusterName === '') setIsClusterNameEmpty(true);
-    if (clusterPort === '') setIsClusterPortEmpty(true);
+
+    // check input format
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
-      setClusterName('');
-      setClusterPort('');
-      setIsClusterNameEmpty(false);
-      setIsClusterPortEmpty(false);
-      setIsNewClusterOpen(false);
-      const response = await axios.post('/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort});
-      console.log(response.data);
-      setClusterArray(clusterArray.concat(response.data));
-      setClusterDisplayArray(clusterArray.concat(response.data));
+
+      // actions when addClusterModal close
+      handleNewClusterClose();
+      try {
+        const response = await axios.post('http://localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
+        console.log('New Cluster Response:', response.data);
+
+        successToast('Cluster Created', 'We\'ve created your cluster for you.', 'success');
+
+        // update states about user clusters
+        clustersStore.setState({clusterMap: new Map(clusterMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(response.data._id, response.data))});
+        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(response.data._id, response.data))});
+      } catch (err) {console.log(err)}
     }
   };
 
-  const [ isEditClusterOpen, setIsEditClusterOpen ] = useState();
+  // actions when editClusterModal close
   const handleEditClusterClose = () => {
-    setClusterName('');
-    setClusterPort('');
-    setIsClusterNameEmpty(false);
-    setIsClusterPortEmpty(false);
-    setIsEditClusterOpen(false);
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isEditClusterOpen: false});
   }
+
+  /*
+   * Edit Cluster Event
+   */
   const handleEditCluster = async (editClusterID) => {
-    if (clusterName === '') setIsClusterNameEmpty(true);
-    if (clusterPort === '') setIsClusterPortEmpty(true);
+
+    // check input format
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
-      setClusterName('');
-      setClusterPort('');
-      setIsClusterNameEmpty(false);
-      setIsClusterPortEmpty(false);
-      setIsEditClusterOpen(false);
-      const response = await axios.patch(`/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort});
-      console.log(response.data);
-      // setClusterArray(clusterArray.concat(response.data));
-      // setClusterDisplayArray(clusterArray.concat(response.data));
+
+      // actions when editClusterModal close
+      handleEditClusterClose();
+
+      successToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success');
+
+      // update states about user clusters
+      clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(editClusterID, {...clusterDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterFavoriteMap.has(editClusterID)) clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(editClusterID, {...clusterFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(editClusterID, {...clusterFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterNotFavoriteMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(editClusterID, {...clusterNotFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      if (clusterNotFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(editClusterID, {...clusterNotFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      try {
+        const response = await axios.patch(`http://localhost:3001/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
+        console.log("Edit Cluster Response:", response.data);
+      } catch (err) {console.log(err)}
     }
   }
 
-  const [ deletedClusterObj, setDeletedClusterObj ] = useState({});
-  const [ isDeleteClusterOpen, setIsDeleteClusterOpen ] = useState(false);
-  const handleDeleteClusterClose = () => {
-    setIsDeleteClusterOpen(false);
-  }
-  const handleDeleteCluster = async (deletedClusterObj) => {
-    for (const [index, clusterObj] of clusterDisplayArray.entries()) {
-      if (clusterObj.name === deletedClusterObj.name && clusterObj.hostnameAndPort === deletedClusterObj.hostnameAndPort) {
-        setClusterDisplayArray(clusterDisplayArray.toSpliced(index, 1));
-        break;
-      }
+  /*
+   * Toggle Cluster Favorite
+   */
+  const handleFavoriteChange = async (favoriteClusterID) => {
+
+    // update states about user clusters
+    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(favoriteClusterID, {...clusterDisplayMap.get(favoriteClusterID), favorite: !clusterDisplayMap.get(favoriteClusterID).favorite}))});
+    clustersStore.setState({clusterMap: new Map(clusterMap.set(favoriteClusterID, {...clusterMap.get(favoriteClusterID), favorite: !clusterMap.get(favoriteClusterID).favorite}))});
+    if (clusterFavoriteMap.has(favoriteClusterID)) {
+      const changedClusterObj = clusterFavoriteMap.get(favoriteClusterID);
+      clusterFavoriteMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
+      clusterFavoriteDisplayMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+    } else {
+      const changedClusterObj = clusterNotFavoriteMap.get(favoriteClusterID);
+      clusterNotFavoriteMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
+      clusterNotFavoriteDisplayMap.delete(favoriteClusterID);
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
     }
-    for (const [index, clusterObj] of clusterArray.entries()) {
-      if (clusterObj.name === deletedClusterObj.name && clusterObj.hostnameAndPort === deletedClusterObj.hostnameAndPort) {
-        setClusterArray(clusterArray.toSpliced(index, 1));
-        break;
-      }
-    }
-    setIsDeleteClusterOpen(false);
-    const response = await axios.delete(`/clusters/${deletedClusterObj._id}`);
-    console.log(response.data);
+    try {
+      const response = await axios.patch(`http://localhost:3001/clusters/favorites/${favoriteClusterID}`, {}, {withCredentials: true});
+      console.log("Set Favorite Cluster Response:", response.data);
+    } catch (err) {console.log(err)}
   }
 
-  const [ clusterName, setClusterName ] = useState('');
-  const [ isClusterNameEmpty, setIsClusterNameEmpty ] = useState(false);
+  /*
+   * Delete Cluster Event
+   */
+  const handleDeleteCluster = async (deleteClusterID) => {
+
+    // update states about user clusters
+    clusterDisplayMap.delete(deleteClusterID);
+    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap)});
+    clusterMap.delete(deleteClusterID);
+    clustersStore.setState({clusterMap: new Map(clusterMap)});
+    if (clusterFavoriteMap.has(deleteClusterID)) {
+      clusterFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
+      clusterFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+    } else {
+      clusterNotFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
+      clusterNotFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
+    }
+    clustersStore.setState({isDeleteClusterOpen: false});
+    try {
+      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
+      console.log("Delete Cluster Response:", response.data);
+
+      successToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success');
+    } catch (err) {console.log(err)}
+  }
+
+  // actios when name input changes
   const handleClusterNameChange = (event) => {
-    setIsClusterNameEmpty(false);
-    setClusterName(event.target.value);
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({clusterName: event.target.value});
   };
-  const [ clusterPort, setClusterPort ] = useState('');
-  const [ isClusterPortEmpty, setIsClusterPortEmpty ] = useState(false);
+  
+  // actios when port input changes
   const handleClusterPortChange = (event) => {
-    setIsClusterPortEmpty(false);
-    setClusterPort(event.target.value);
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({clusterPort: event.target.value});
   };
-  const [ clusterSearchValue, setClusterSearchValue ] = useState('');
+  
+  // actios when search input changes
   const handleClusterSearchValueChange = (curClusterSearchValue) => {
-    const newClusterDisplayArray = [];
-    setClusterSearchValue(curClusterSearchValue);
-    clusterArray.map((clusterObj) => {
-      if (clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1) {
-        newClusterDisplayArray.push(clusterObj);
-      }
-    });
-    setClusterDisplayArray(newClusterDisplayArray);
+    clustersStore.setState({clusterSearchValue: curClusterSearchValue});
+
+    // update states about user search value and display cluster
+    clustersStore.setState({clusterDisplayMap: new Map(
+      [...clusterMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+    ))});
+
+    // update states about user search value and favorite display cluster
+    clustersStore.setState({clusterFavoriteDisplayMap: new Map(
+      [...clusterFavoriteMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+    ))});
+
+    // update states about user search value and not favorite display cluster
+    clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(
+      [...clusterNotFavoriteMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
+    ))});
   }
+<<<<<<< HEAD
   const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
   const drawerBtnRef = React.useRef();
   console.log('Ron was here')
+=======
+
+  /*
+   * Change Slack Webhook URL Event
+   */
+  const handleSlackWebhookURLSubmit = async () => {
+    try {
+      // const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
+      // console.log("Change Slack Webhook URL Response:", response.data);
+      clustersStore.setState({isDrawerOpen: false});
+
+      successToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success');
+      
+    } catch (err) {console.log(err)}
+  }
+
+  const toast = useToast();
+  const successToast = (title, description, status) => {
+    toast({position: 'top', title, description, status, duration: 3000, isClosable: true});
+  }
+  // testing for red
+  // const drawerBtnRef = React.useRef();
+>>>>>>> dev
 
   return (
     <Box width="full" height="100vh">
-      <Flex p={6} px={100} width="full" borderWidth={1} boxShadow="lg">
-        <Image src='/kafka-kare-logo.png' h={10} borderRadius={8}/>
+
+      {/* Navbar */}
+      <Flex p={5} px={20} width="full" borderWidth={1} boxShadow="lg">
+
+        {/* Logo */}
+        <Image src='/kafka-kare-logo.png' h={10} borderRadius={8} />
+
         <Spacer />
-        <InputGroup w={["25%", "25%", "40%", "56%", "66%", "72%"]}>
+
+        {/* Search input */}
+        <InputGroup w={["22%", "22%", "32%", "50%", "62%", "68%"]}>
           <InputLeftElement pointerEvents='none'>
-            <Search2Icon  />
+            <Search2Icon />
           </InputLeftElement>
-          <Input type='tel' placeholder='Name or Port' value={clusterSearchValue} onChange={(event) => handleClusterSearchValueChange(event.target.value)}/>
+          <Input
+            type='tel' placeholder={'Name or Port'} value={clusterSearchValue}
+            onChange={(event) => handleClusterSearchValueChange(event.target.value)}
+          />
           <InputRightElement>
-          <IconButton _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500'/> } variant='ghost'
-          onClick = { () => handleClusterSearchValueChange('') }/>
+          <IconButton
+            _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500' />}
+            variant='ghost' onClick = {() => handleClusterSearchValueChange('')}
+          />
           </InputRightElement>
         </InputGroup>
+
         <Spacer />
-        <Button onClick={ () => setIsNewClusterOpen(true) } leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
+
+        {/* Add Cluster Button */}
+        <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
           New Cluster
         </Button>
+
+        {/* Add Cluster Modal */}
         <AddClusterModal
-          isNewClusterOpen={isNewClusterOpen} handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
-          isClusterNameEmpty={isClusterNameEmpty} clusterName={clusterName} handleClusterNameChange={handleClusterNameChange}
-          isClusterPortEmpty={isClusterPortEmpty} clusterPort={clusterPort} handleClusterPortChange={handleClusterPortChange}
+          handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
+          handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
         />
+
         <Spacer />
-        <IconButton aria-label='open drawer' icon={<HamburgerIcon onClick={() => setIsDrawerOpen(true)}/>} />
-        <ClustersDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+
+        {/* Personal Menu */}
+        <Menu>
+          <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
+          <MenuList>
+            <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />}><b>Change Password</b></MenuItem>
+            <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
+            <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
+            <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
+            <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />}><b>Logout</b></MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+        
+        {/* Open Menu Button */}
+        <IconButton aria-label='open drawer' onClick={() => clustersStore.setState({isDrawerOpen: true})} icon={<HamburgerIcon />} />
+
+        {/* Menu Drawer */}
+        <MenuDrawer handleSlackWebhookURLSubmit={handleSlackWebhookURLSubmit} />
       </Flex>
-      <Box width="full" justifyContent="center" p={8} style={{height: 'calc(100% - 90px)'}} overflowY="scroll">
-        <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
-          {clusterDisplayArray.map((clusterObj, index) => (
-            <Card id={'cluster' + index} key={'clusterCard'+index}>
-              <CardHeader>
-                <Flex>
-                  <Heading size='md'>{clusterObj.name}</Heading>
-                  <Spacer />
-                  <IconButton _hover={''} isRound={true} aria-label='delete cluster' size='xs' icon={<CloseIcon color='gray.500'/> } variant='ghost'
-                  onClick = { () => { setIsDeleteClusterOpen(true); setDeletedClusterObj(clusterObj); } }/>
-                </Flex>
-              </CardHeader>
-              <CardBody>
-                <Stack divider={<StackDivider />} spacing='4'>
-                  <Box>
-                    <Heading size='xs' textTransform='uppercase'>
-                      Hostname & Port
-                    </Heading>
-                    <Text pt='2' fontSize='sm'>
-                      {clusterObj.hostnameAndPort}
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Heading size='xs' textTransform='uppercase'>
-                      Hostname & Port
-                    </Heading>
-                    <Text pt='2' fontSize='sm'>
-                      {clusterObj.hostnameAndPort}
-                    </Text>
-                  </Box>
-                </Stack>
-              </CardBody>
-              <CardFooter>
-                <Flex width="full">
-                  <Button w='80%' onClick={ () => push(path.join(__dirname, './graphs')) }>Dashboard</Button>
-                  <Spacer />
-                  <IconButton aria-label='edit cluster' variant='ghost' icon={<EditIcon boxSize={5} onClick={() => setIsEditClusterOpen(true)}/>} />
-                  <EditClusterModal
-                    isEditClusterOpen={isEditClusterOpen} handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
-                    isClusterNameEmpty={isClusterNameEmpty} clusterName={clusterName} handleClusterNameChange={handleClusterNameChange}
-                    isClusterPortEmpty={isClusterPortEmpty} clusterPort={clusterPort} handleClusterPortChange={handleClusterPortChange}
-                    editClusterID={clusterObj._id}
-                  />
-                </Flex>
-              </CardFooter>
-            </Card>
-          ))}
-          <Modal isOpen={isDeleteClusterOpen} onClose={ () => setIsDeleteClusterOpen(false) } motionPreset='slideInBottom'>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Delete Cluster: {deletedClusterObj.name}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                Are you sure? You can't undo this action afterwards.
-              </ModalBody>
-              <ModalFooter>
-                <Button mr={3} onClick={ () => setIsDeleteClusterOpen(false) }>Cancel</Button>
-                <Button colorScheme='red' onClick={ () => handleDeleteCluster(deletedClusterObj) }>Delete</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </SimpleGrid>
+
+      {/* Cluster Display */}
+      <Box width="full" justifyContent="center" p={2} px={8} style={{height: 'calc(100% - 90px)'}}>
+        <Tabs variant='line' onChange={(index) => {}} style={{height: 'calc(100% - 32px)'}}>
+          <TabList w='100%'>
+            <Tab><b>All</b></Tab>
+            <Tab><b>Favorite</b><Icon as={RxStarFilled} color='yellow.300' boxSize={6} /></Tab>
+            <Tab><b>Not Favorite</b><Icon as={RxStar} color='black' boxSize={5} /></Tab>
+          </TabList>
+          <TabPanels overflowY="auto" h='100%'>
+            <TabPanel>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                {[...clusterDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                  .map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+              </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                {[...clusterFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                  .map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+              </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                {[...clusterNotFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                  .map(([id, clusterObj]) => (
+
+                  /* Cluster Card */
+                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                ))}
+              </SimpleGrid>
+            </TabPanel>
+            
+            {/* Edit Cluster Modal */}
+            <EditClusterModal
+              handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+              handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+            />
+
+            {/* Delete Cluster Modal */}
+            <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
+          </TabPanels>
+        </Tabs>
       </Box>
     </Box>
   );
