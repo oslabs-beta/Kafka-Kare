@@ -246,6 +246,11 @@ export default function Home() {
         || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
     ))});
   }
+<<<<<<< HEAD
+  const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
+  const drawerBtnRef = React.useRef();
+  console.log('Ron was here')
+=======
 
   /*
    * Change Slack Webhook URL Event
@@ -267,6 +272,7 @@ export default function Home() {
   }
   // testing for red
   // const drawerBtnRef = React.useRef();
+>>>>>>> dev
 
   return (
     <Box width="full" height="100vh">
