@@ -47,7 +47,7 @@ services:
     depends_on:
      - "mongo"
 networks: 
-  kafka-kare-network:
+  kafka-kare:
     driver: bridge
 
 volumes:
