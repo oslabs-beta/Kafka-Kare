@@ -131,6 +131,7 @@ export default function Home() {
   }
   const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
   const drawerBtnRef = React.useRef();
+  console.log('Ron was here')
 
   return (
     <Box width="full" height="100vh">
