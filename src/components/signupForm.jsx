@@ -58,7 +58,7 @@ const SignupForm = ({ onSubmit }) => {
   return (
     // Form component to handle form submission
     <form onSubmit={handleSignUp}>
-      <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" borderRadius="10px">
+      <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" minH="200px" borderRadius="10px">
         {/* Username input field */}
         <FormControl>
           <InputGroup>
@@ -78,15 +78,15 @@ const SignupForm = ({ onSubmit }) => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-            {/* Display error message if any */}
-            {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
-            {/* Submit button */}
-            <FormControl>
-              <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
-            </FormControl>
-          </Stack>
-        </form>
-      );
-    };
+        {/* Display error message if any */}
+        {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
+        {/* Submit button */}
+        <FormControl>
+          <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
+        </FormControl>
+      </Stack>
+    </form>
+  );
+};
 
 export default SignupForm;

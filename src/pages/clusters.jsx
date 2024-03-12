@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
   Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
@@ -35,43 +35,43 @@ export default function Home() {
   const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
   const slackWebhookURL = clustersStore(state => state.slackWebhookURL);
 
+  const [renderClustersPage, setRenderClustersPage] = useState(false);
+
   useEffect(() => {
 
     // fetch user clusters when page loaded
     const fetchClusters = async () => {
       try {
-        const response = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
-        console.log('Get User Clusters Response:', response.data);
+        // update states about user's all clusters
+        const responseAll = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
+        setRenderClustersPage(true);
+        console.log('Get User Clusters Response:', responseAll.data);
+        clustersStore.setState({clusterMap: new Map(responseAll.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterDisplayMap: new Map(responseAll.data.map((obj) => [obj._id, obj]))});
 
-        // update states about user's clusters
-        clustersStore.setState({clusterMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-        clustersStore.setState({clusterDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-      } catch (err) {console.log(err)}
+        // update states about user's favorite clusters
+        const responseFavorite = await axios('http://localhost:3001/clusters/favorites', {withCredentials: true});
+        setRenderClustersPage(true);
+        console.log('Get User\'s Favorite Clusters Response:', responseFavorite.data);
+        clustersStore.setState({clusterFavoriteMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterFavoriteDisplayMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj]))});
+
+        // update states about user's not favorite clusters
+        const responseNotFavorite = await axios('http://localhost:3001/clusters/notFavorites', {withCredentials: true});
+        setRenderClustersPage(true);
+        console.log('Get User\'s Not Favorite Clusters Response:', responseNotFavorite.data);
+        clustersStore.setState({clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
+        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
+      } catch (err) {
+        console.log(err);
+        if (err.response.data === 'A token is required for authentication') {
+          setRenderClustersPage(false);
+          push('/home');
+          addToast('Authentication Required', 'A token is required for authentication', 'error', 2000);
+        }
+      }
     };
-    const fetchFavoriteClusters = async () => {
-      try {
-        const response = await axios('http://localhost:3001/clusters/favorites', {withCredentials: true});
-        console.log('Get User\'s Favorite Clusters Response:', response.data);
-
-        // update states about user's clusters
-        clustersStore.setState({clusterFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-        clustersStore.setState({clusterFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-      } catch (err) {console.log(err)}
-    };
-    const fetchNotFavoriteClusters = async () => {
-      try {
-        const response = await axios('http://localhost:3001/clusters/notFavorites', {withCredentials: true});
-        console.log('Get User\'s Not Favorite Clusters Response:', response.data);
-
-        // update states about user's clusters
-        clustersStore.setState({clusterNotFavoriteMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-        clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(response.data.map((obj) => [obj._id, obj]))});
-      } catch (err) {console.log(err)}
-    };
-
     fetchClusters();
-    fetchFavoriteClusters();
-    fetchNotFavoriteClusters();
   }, []);
 
   // actions when addClusterModal close
@@ -99,7 +99,7 @@ export default function Home() {
         const response = await axios.post('http://localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
         console.log('New Cluster Response:', response.data);
 
-        successToast('Cluster Created', 'We\'ve created your cluster for you.', 'success');
+        addToast('Cluster Created', 'We\'ve created your cluster for you.', 'success', 3000);
 
         // update states about user clusters
         clustersStore.setState({clusterMap: new Map(clusterMap.set(response.data._id, response.data))});
@@ -132,7 +132,7 @@ export default function Home() {
       // actions when editClusterModal close
       handleEditClusterClose();
 
-      successToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success');
+      addToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success', 3000);
 
       // update states about user clusters
       clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
@@ -146,6 +146,36 @@ export default function Home() {
         console.log("Edit Cluster Response:", response.data);
       } catch (err) {console.log(err)}
     }
+  }
+
+  /*
+   * Delete Cluster Event
+   */
+  const handleDeleteCluster = async (deleteClusterID) => {
+
+    // update states about user clusters
+    clusterDisplayMap.delete(deleteClusterID);
+    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap)});
+    clusterMap.delete(deleteClusterID);
+    clustersStore.setState({clusterMap: new Map(clusterMap)});
+    if (clusterFavoriteMap.has(deleteClusterID)) {
+      clusterFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
+      clusterFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+    } else {
+      clusterNotFavoriteMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
+      clusterNotFavoriteDisplayMap.delete(deleteClusterID);
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
+    }
+    clustersStore.setState({isDeleteClusterOpen: false});
+    try {
+      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
+      console.log("Delete Cluster Response:", response.data);
+
+      addToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success', 3000);
+    } catch (err) {console.log(err)}
   }
 
   /*
@@ -176,36 +206,6 @@ export default function Home() {
     try {
       const response = await axios.patch(`http://localhost:3001/clusters/favorites/${favoriteClusterID}`, {}, {withCredentials: true});
       console.log("Set Favorite Cluster Response:", response.data);
-    } catch (err) {console.log(err)}
-  }
-
-  /*
-   * Delete Cluster Event
-   */
-  const handleDeleteCluster = async (deleteClusterID) => {
-
-    // update states about user clusters
-    clusterDisplayMap.delete(deleteClusterID);
-    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap)});
-    clusterMap.delete(deleteClusterID);
-    clustersStore.setState({clusterMap: new Map(clusterMap)});
-    if (clusterFavoriteMap.has(deleteClusterID)) {
-      clusterFavoriteMap.delete(deleteClusterID);
-      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
-      clusterFavoriteDisplayMap.delete(deleteClusterID);
-      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
-    } else {
-      clusterNotFavoriteMap.delete(deleteClusterID);
-      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
-      clusterNotFavoriteDisplayMap.delete(deleteClusterID);
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
-    }
-    clustersStore.setState({isDeleteClusterOpen: false});
-    try {
-      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
-      console.log("Delete Cluster Response:", response.data);
-
-      successToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success');
     } catch (err) {console.log(err)}
   }
 
@@ -248,7 +248,7 @@ export default function Home() {
   }
 
   /*
-   * Change Slack Webhook URL Event
+   * Update Slack Webhook URL Event
    */
   const handleSlackWebhookURLSubmit = async () => {
     try {
@@ -256,26 +256,25 @@ export default function Home() {
       // console.log("Change Slack Webhook URL Response:", response.data);
       clustersStore.setState({isDrawerOpen: false});
 
-      successToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success');
+      addToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success', 3000);
       
     } catch (err) {console.log(err)}
   }
 
   const toast = useToast();
-  const successToast = (title, description, status) => {
-    toast({position: 'top', title, description, status, duration: 3000, isClosable: true});
+  const addToast = (title, description, status, duration) => {
+    toast({position: 'bottom', title, description, status, duration, isClosable: true});
   }
-  // testing for red
   // const drawerBtnRef = React.useRef();
 
-  return (
+  if (renderClustersPage) return (
     <Box width="full" height="100vh">
 
       {/* Navbar */}
       <Flex p={5} px={20} width="full" borderWidth={1} boxShadow="lg">
 
         {/* Logo */}
-        <Image src='/kafka-kare-logo.png' h={10} borderRadius={8} />
+        <Image src='/kafka-kare-logo-v2.png' h={10} borderRadius={8} />
 
         <Spacer />
 
