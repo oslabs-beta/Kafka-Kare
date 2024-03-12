@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
   Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
@@ -246,11 +246,9 @@ export default function Home() {
         || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
     ))});
   }
-<<<<<<< HEAD
-  const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
-  const drawerBtnRef = React.useRef();
-  console.log('Ron was here')
-=======
+  // const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
+  // const drawerBtnRef = React.useRef();
+  // console.log('Ron was here')
 
   /*
    * Change Slack Webhook URL Event
@@ -272,7 +270,6 @@ export default function Home() {
   }
   // testing for red
   // const drawerBtnRef = React.useRef();
->>>>>>> dev
 
   return (
     <Box width="full" height="100vh">
