@@ -34,7 +34,6 @@ app.prepare().then(() => {
   server.use(cors(corsOptions));
 
   // Middleware
-  server.use(cors());
   server.use(cookieParser());
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
