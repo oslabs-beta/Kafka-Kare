@@ -1,0 +1,5 @@
+1. from your terminal navigate to kafka-cluster folder
+2. build kafka cluster image with 
+    - docker build -t dockerpromkafka:latest .
+3. run docker-compose file with 
+    - docker-compose -f docker-compose.yml up -d
