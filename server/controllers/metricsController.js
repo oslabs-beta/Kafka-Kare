@@ -1,10 +1,6 @@
 const axios = require("axios");
 const metricsController = {};
-console.log('in the metricsController')
 
-const getPrometheusURI = async (userId) => {
-  // Retrieve user's promURI from database
-};
 
 /* ------------------------------- Get metrics ------------------------------ */
 metricsController.getMetrics = async (req, res, next) => {

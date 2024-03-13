@@ -246,9 +246,9 @@ export default function Home() {
         || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
     ))});
   }
-  // const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
-  // const drawerBtnRef = React.useRef();
-  // console.log('Ron was here')
+  const [ isDrawerOpen, setIsDrawerOpen ] = useState('');
+  const drawerBtnRef = React.useRef();
+  console.log('Ron was here')
 
   /*
    * Change Slack Webhook URL Event
