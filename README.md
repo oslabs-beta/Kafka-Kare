@@ -1,7 +1,8 @@
 # Kafka-Kare
 A Kafka error handling visualizer 
 
-Instructions
+
+# Instructions
 1. Build frontend image
 - docker build -f Dockerfile-ui -t kafka-kare-ui .
 
@@ -22,3 +23,11 @@ Instructions
 
 7. Visit frontend at localhost:3000
 - Enjoy
+
+
+# Authors
+- Matt Konop <mattsterprogrammer@gmail.com>
+- Allison Scott <allisonbscott97@gmail.com>
+- Justin Lin <hozion612356@gmail.com>
+- Ronal Garcia <josue_role@yahoo.com>
+- Jules Mai <julesdmai@gmail.com>"
