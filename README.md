@@ -15,7 +15,7 @@ docker compose up -d
 4. Change directory to /kafka-cluster
 cd kafka-cluster
 
-5. Spin up demo kafka-cluster container
+5. Spin up demo kafka-cluster container (demo Kafka-cluster container must be spun up after application container)
 docker compose up -d
 
 6. Log into Grafana account at locahost:3002

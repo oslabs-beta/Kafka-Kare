@@ -6,6 +6,7 @@ services:
       - "3001:3001"
     depends_on:
       - mongo
+    # Provides the application container with the same username and password. MUST MATCH. 
     environment:
      - MONGO_DB_USERNAME=admin
      - MONGO_DB_PWD=supersecret
@@ -24,6 +25,7 @@ services:
     image: mongo
     ports:
      - 27017:27017
+    # Configures the MongoDB container with the same username and password. MUST MATCH. 
     environment:
      - MONGO_INITDB_ROOT_USERNAME=admin
      - MONGO_INITDB_ROOT_PASSWORD=supersecret
