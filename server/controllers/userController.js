@@ -18,6 +18,7 @@ userController.createUser = async (req, res, next) => {
     console.log('New user stored in database: ', user.username);
     
     res.locals.username = user.username;
+    res.locals.userId = user.id;
     return next();
   } catch (err) {
     return next({
