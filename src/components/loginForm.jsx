@@ -33,7 +33,7 @@ const LoginForm = () => {
   // Function to toggle password visibility
   const handleShowClick = () => setShowPassword(!showPassword);
   
-//handles click of submit and calls handleLogin
+  //handles click of submit and calls handleLogin
   const handleSubmit = async (e) => {
     e.preventDefault();
     // await signIn();
@@ -47,9 +47,11 @@ const LoginForm = () => {
     console.log('password: ', password);
     try {
       // Send a POST request to the backend endpoint '/login' (assuming it's login)
-      const response = await axios.post('http://localhost:3001/auth/login', 
-                       { username, password },
-                       {withCredentials: true}); // Convert data to JSON format and send it in the request body
+      const response = await axios.post(
+        'http://localhost:3001/auth/login', 
+        { username, password },
+        {withCredentials: true}
+      ); // Convert data to JSON format and send it in the request body
       console.log('response: ', response.data);
 
       // Parse the response data as JSON
@@ -72,29 +74,33 @@ const LoginForm = () => {
   };
 
   return (
-    <FormControl> {/* Wrap the entire form in FormControl */}
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" minH="200px" borderRadius="10px">
+    // Form component to handle form submission
+    <form onSubmit={handleSubmit}>
+      <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" minH="200px" borderRadius="10px">
+        {/* Username input field */}
+        <FormControl>
           <InputGroup>
             <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />}/>
             <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
           </InputGroup>
+        </FormControl>
+        {/* Password input field */}
+        <FormControl>
           <InputGroup>
-            <InputLeftElement pointerEvents="none" color="gray.300" children={<FaLock color="gray.300" />}/>
+            <InputLeftElement pointerEvents="none" children={<FaLock color="gray.300" />}/>
             <Input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={handleShowClick}>{showPassword ? "Hide" : "Show"}</Button>
             </InputRightElement>
           </InputGroup>
-          {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
-          <FormControl>
-            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Login</Button>
-          </FormControl>
-        </Stack>
-      </form>
-    </FormControl>
+        </FormControl>
+        {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
+        <FormControl>
+          <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Login</Button>
+        </FormControl>
+      </Stack>
+    </form>
   );
-
 };
 
 export default LoginForm;

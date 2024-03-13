@@ -16,7 +16,7 @@ const DeleteClusterModal = ({ handleDeleteCluster }) => {
     /* Delete Cluster Modal */
     <Modal isOpen={isDeleteClusterOpen} onClose={() => clustersStore.setState({isDeleteClusterOpen: false})} motionPreset='slideInBottom'>
       <ModalOverlay />
-      <ModalContent top='4rem'>
+      <ModalContent top='3.5rem'>
         <ModalHeader>Delete Cluster: {oldClusterName}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
