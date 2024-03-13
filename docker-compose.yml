@@ -1,4 +1,6 @@
 version: '3'
+
+# This container includes 5 services - application-server, application-ui, mongo, mongo-express. and grafana
 services: 
   kafka-kare-server: 
     image: kafka-kare-server
@@ -64,6 +66,7 @@ services:
       - kafka-kare-server
     networks:
       - kafka-kare-network
+
 networks: 
   kafka-kare-network:
     driver: bridge

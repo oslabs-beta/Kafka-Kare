@@ -1,6 +1,7 @@
 version: '3'
 
-services:
+# This container includes 3 services - zookeeper, prometheus, and kafka
+services: 
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper
@@ -8,6 +9,7 @@ services:
       - '2181:2181'
     networks:
       - localprom
+
   prometheus: 
     image: prom/prometheus
     volumes:
@@ -17,6 +19,7 @@ services:
       - kafka-kare_kafka-kare-network
     ports:
       - 9090:9090
+
   kafka:
     image: dockerpromkafka:latest
     container_name: kafka
@@ -29,6 +32,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # EXTRA_ARGS: adds the JMX Exporter Java agent to Kafka, specifying the port (7070) and the configuration file (kafka.yml) that determines which metrics to expose.
       EXTRA_ARGS: -javaagent:/opt/kafka_2.13-2.8.1/libs/jmx_prometheus_javaagent.jar=7070:/opt/kafka_2.13-2.8.1/libs/kafka.yml
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
@@ -52,4 +56,3 @@ networks:
     driver: bridge
   kafka-kare_kafka-kare-network:
     external: true
-# run 'docker compose up' to initialize container locally

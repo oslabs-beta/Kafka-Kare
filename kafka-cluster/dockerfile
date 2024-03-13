@@ -1,3 +1,4 @@
+# Builds a custom Kafka Docker image that includes the JMX Prometheus Java agent (jmx_prometheus_javaagent-0.19.0.jar) and a Kafka configuration file (kafka.yml for the JMX Exporter).
 FROM wurstmeister/kafka:latest
 ADD kafka.yml /opt/kafka/libs/kafka.yml
 
