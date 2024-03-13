@@ -75,8 +75,6 @@ export default function Home() {
   }, []);
 
   // actions when addClusterModal close
-
-  // actions when addClusterModal close
   const handleNewClusterClose = () => {
     clustersStore.setState({clusterName: ''});
     clustersStore.setState({clusterPort: ''});
@@ -89,10 +87,6 @@ export default function Home() {
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isNewClusterOpen: false});
   }
-  
-  /*
-   * Add Cluster Event
-   */
   
   /*
    * Add Cluster Event
@@ -138,10 +132,6 @@ export default function Home() {
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isEditClusterOpen: false});
   }
-
-  /*
-   * Edit Cluster Event
-   */
 
   /*
    * Edit Cluster Event
@@ -241,14 +231,10 @@ export default function Home() {
   const handleClusterNameChange = (event) => {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({clusterName: event.target.value});
-    clustersStore.setState({isClusterNameEmpty: false});
-    clustersStore.setState({clusterName: event.target.value});
   };
   
   // actios when port input changes
   const handleClusterPortChange = (event) => {
-    clustersStore.setState({isClusterPortEmpty: false});
-    clustersStore.setState({clusterPort: event.target.value});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({clusterPort: event.target.value});
   };
@@ -304,7 +290,6 @@ export default function Home() {
       addToast('Logout', 'User logged out successfully.', 'success', 3000);
     } catch (err) {console.log(err)}
   }
-
 
   // definition of using toast
   const toast = useToast();
