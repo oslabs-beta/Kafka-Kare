@@ -33,7 +33,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.0",
-    "next": "^14.1.2",
     "next-auth": "^5.0.0-beta.15",
     "nodemon": "^3.1.0",
     "prom-client": "^15.1.0",

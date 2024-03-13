@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
-  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react';
 import { SiApachekafka } from 'react-icons/si';
@@ -9,7 +8,6 @@ import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { clustersStore } from '../../store/clusters';
 
 const EditClusterModal = ({
-  handleEditClusterClose, handleClusterNameChange, handleClusterPortChange, handleEditCluster
   handleEditClusterClose, handleClusterNameChange, handleClusterPortChange, handleEditCluster
 }) => {
 
@@ -25,22 +23,7 @@ const EditClusterModal = ({
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
 
-  // declare state variables
-  const clusterName = clustersStore(state => state.clusterName);
-  const isClusterNameEmpty = clustersStore(state => state.isClusterNameEmpty);
-  const clusterPort = clustersStore((state) => state.clusterPort);
-  const isClusterPortEmpty = clustersStore((state) => state.isClusterPortEmpty);
-  const isEditClusterOpen = clustersStore((state) => state.isEditClusterOpen);
-  const oldClusterName = clustersStore((state) => state.oldClusterName);
-  const editClusterID = clustersStore(state => state.editClusterID);
-
-  // declare reference modal initial focus
-  const initialRef = React.useRef(null);
-
   return (
-
-    /* Edit Cluster Modal */
-    <Modal isOpen={isEditClusterOpen} onClose={handleEditClusterClose} initialFocusRef={initialRef}>
 
     /* Edit Cluster Modal */
     <Modal isOpen={isEditClusterOpen} onClose={handleEditClusterClose} initialFocusRef={initialRef}>
@@ -83,12 +66,6 @@ const EditClusterModal = ({
           </FormControl>
         </ModalBody>
         <ModalFooter>
-
-          {/* Cancel Button */}
-          <Button mr={3} onClick={handleEditClusterClose}>Cancel</Button>
-
-          {/* Submit Button */}
-          <Button colorScheme='blue' onClick={() => handleEditCluster(editClusterID)}>Submit</Button>
 
           {/* Cancel Button */}
           <Button mr={3} onClick={handleEditClusterClose}>Cancel</Button>

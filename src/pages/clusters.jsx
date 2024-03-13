@@ -15,14 +15,11 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import path from 'path';
 import { clustersStore } from '../store/clusters';
 import MenuDrawer from '../components/clusters/menuDrawer';
-import { clustersStore } from '../store/clusters';
-import MenuDrawer from '../components/clusters/menuDrawer';
 import AddClusterModal from '../components/clusters/addClusterModal';
-import ClusterCard from '../components/clusters/clusterCard';
 import ClusterCard from '../components/clusters/clusterCard';
 import EditClusterModal from '../components/clusters/editClusterModal';
 import DeleteClusterModal from '../components/clusters/deleteClusterModal';
-import DeleteClusterModal from '../components/clusters/deleteClusterModal';
+import LogoutModal from '../components/clusters/logoutModal';
 
 export default function Home() {
   const { push } = useRouter();
@@ -42,9 +39,6 @@ export default function Home() {
   const [renderClustersPage, setRenderClustersPage] = useState(false);
 
   useEffect(() => {
-
-    // fetch user clusters when page loaded
-    const fetchClusters = async () => {
 
     // fetch user clusters when page loaded
     const fetchClusters = async () => {
@@ -73,13 +67,11 @@ export default function Home() {
         console.log(err);
         setRenderClustersPage(false);
         push('/home');
-        addToast('Authentication Required', 'A token is required for authentication', 'error', 2000);
+        addToast('Authentication Required', 'A token is required for authentication', 'error', 3000);
       }
     };
 
     fetchClusters();
-    fetchFavoriteClusters();
-    fetchNotFavoriteClusters();
   }, []);
 
   // actions when addClusterModal close
@@ -254,16 +246,12 @@ export default function Home() {
   };
   
   // actios when port input changes
-  
-  // actios when port input changes
   const handleClusterPortChange = (event) => {
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({clusterPort: event.target.value});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({clusterPort: event.target.value});
   };
-  
-  // actios when search input changes
   
   // actios when search input changes
   const handleClusterSearchValueChange = (curClusterSearchValue) => {
@@ -296,15 +284,29 @@ export default function Home() {
    */
   const handleSlackWebhookURLSubmit = async () => {
     try {
+      alert('Slack Webhook URL:', slackWebhookURL);
       // const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
       // console.log('Change Slack Webhook URL Response:', response.data);
       clustersStore.setState({isDrawerOpen: false});
-
       addToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success', 3000);
-      
     } catch (err) {console.log(err)}
   }
 
+  /*
+   * User Logout
+   */
+  const handleLogout = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
+      console.log('Logout Response:', response.data);
+      clustersStore.setState({isLogoutModalOpen: false});
+      push('/home');
+      addToast('Logout', 'User logged out successfully.', 'success', 3000);
+    } catch (err) {console.log(err)}
+  }
+
+
+  // definition of using toast
   const toast = useToast();
   const addToast = (title, description, status, duration) => {
     toast({position: 'top', title, description, status, duration, isClosable: true, containerStyle: {marginTop: '70px'}});
@@ -363,7 +365,8 @@ export default function Home() {
               <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
               <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
               <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
-              <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />}><b>Logout</b></MenuItem>
+              <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />} onClick={() => clustersStore.setState({isLogoutModalOpen: true})}><b>Logout</b></MenuItem>
+              <LogoutModal handleLogout={handleLogout} />
             </MenuList>
           </Menu>
 

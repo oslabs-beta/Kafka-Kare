@@ -71,10 +71,10 @@ const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
           {/* Any Information */}
           <Box>
             <Heading size='xs' textTransform='uppercase'>
-              Hostname & Port
+              Something Else
             </Heading>
             <Text pt='2' fontSize='sm'>
-              {clusterObj.hostnameAndPort}
+              {'Something Else'}
             </Text>
           </Box>
         </Stack>

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
-  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react';
 import { SiApachekafka } from 'react-icons/si';
@@ -9,7 +8,6 @@ import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { clustersStore } from '../../store/clusters';
 
 const AddClusterModal = ({
-  handleNewClusterClose, handleClusterNameChange, handleClusterPortChange, handleNewCluster
   handleNewClusterClose, handleClusterNameChange, handleClusterPortChange, handleNewCluster
 }) => {
 
@@ -23,20 +21,7 @@ const AddClusterModal = ({
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
 
-  // declare state variables
-  const isNewClusterOpen = clustersStore(state => state.isNewClusterOpen);
-  const clusterName = clustersStore(state => state.clusterName);
-  const isClusterNameEmpty = clustersStore(state => state.isClusterNameEmpty);
-  const clusterPort = clustersStore(state => state.clusterPort);
-  const isClusterPortEmpty = clustersStore(state => state.isClusterPortEmpty);
-
-  // declare reference modal initial focus
-  const initialRef = React.useRef(null);
-
   return (
-
-    /* Add Cluster Modal */
-    <Modal isOpen={isNewClusterOpen} onClose={handleNewClusterClose} initialFocusRef={initialRef}>
 
     /* Add Cluster Modal */
     <Modal isOpen={isNewClusterOpen} onClose={handleNewClusterClose} initialFocusRef={initialRef}>
@@ -79,12 +64,6 @@ const AddClusterModal = ({
           </FormControl>
         </ModalBody>
         <ModalFooter>
-
-          {/* Cancel Button */}
-          <Button mr={3} onClick={handleNewClusterClose}>Cancel</Button>
-
-          {/* Submit Button */}
-          <Button colorScheme='blue' onClick={handleNewCluster}>Submit</Button>
 
           {/* Cancel Button */}
           <Button mr={3} onClick={handleNewClusterClose}>Cancel</Button>

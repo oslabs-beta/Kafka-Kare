@@ -24,7 +24,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
       && slackWebhookURL.length >= 77
     ) {
       alert('Right Format');
-      // handleSlackWebhookURLSubmit();
+      handleSlackWebhookURLSubmit();
     } else {
       alert('Wrong Format');
     }
