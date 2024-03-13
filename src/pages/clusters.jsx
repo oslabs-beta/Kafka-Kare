@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
   Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
-  Tabs, TabList, TabPanels, Tab, TabPanel,
+  Tabs, TabList, TabIndicator, TabPanels, Tab, TabPanel,
   Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { RxStar, RxStarFilled } from "react-icons/rx";
-import { MdOutlineLockReset } from "react-icons/md";
-import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from "react-icons/ri";
-import { FaSignOutAlt } from "react-icons/fa";
+import { RxStar, RxStarFilled } from 'react-icons/rx';
+import { MdOutlineLockReset } from 'react-icons/md';
+import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from 'react-icons/ri';
+import { FaSignOutAlt } from 'react-icons/fa';
 import path from 'path';
 import { clustersStore } from '../store/clusters';
 import MenuDrawer from '../components/clusters/menuDrawer';
@@ -64,11 +64,9 @@ export default function Home() {
         clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
       } catch (err) {
         console.log(err);
-        if (err.response.data === 'A token is required for authentication') {
-          setRenderClustersPage(false);
-          push('/home');
-          addToast('Authentication Required', 'A token is required for authentication', 'error', 2000);
-        }
+        setRenderClustersPage(false);
+        push('/home');
+        addToast('Authentication Required', 'A token is required for authentication', 'error', 2000);
       }
     };
     fetchClusters();
@@ -143,7 +141,7 @@ export default function Home() {
       if (clusterNotFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(editClusterID, {...clusterNotFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       try {
         const response = await axios.patch(`http://localhost:3001/clusters/${editClusterID}`, {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
-        console.log("Edit Cluster Response:", response.data);
+        console.log('Edit Cluster Response:', response.data);
       } catch (err) {console.log(err)}
     }
   }
@@ -172,7 +170,7 @@ export default function Home() {
     clustersStore.setState({isDeleteClusterOpen: false});
     try {
       const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
-      console.log("Delete Cluster Response:", response.data);
+      console.log('Delete Cluster Response:', response.data);
 
       addToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success', 3000);
     } catch (err) {console.log(err)}
@@ -205,7 +203,7 @@ export default function Home() {
     }
     try {
       const response = await axios.patch(`http://localhost:3001/clusters/favorites/${favoriteClusterID}`, {}, {withCredentials: true});
-      console.log("Set Favorite Cluster Response:", response.data);
+      console.log('Set Favorite Cluster Response:', response.data);
     } catch (err) {console.log(err)}
   }
 
@@ -253,7 +251,7 @@ export default function Home() {
   const handleSlackWebhookURLSubmit = async () => {
     try {
       // const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
-      // console.log("Change Slack Webhook URL Response:", response.data);
+      // console.log('Change Slack Webhook URL Response:', response.data);
       clustersStore.setState({isDrawerOpen: false});
 
       addToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success', 3000);
@@ -263,125 +261,128 @@ export default function Home() {
 
   const toast = useToast();
   const addToast = (title, description, status, duration) => {
-    toast({position: 'bottom', title, description, status, duration, isClosable: true});
+    toast({position: 'top', title, description, status, duration, isClosable: true, containerStyle: {marginTop: '70px'}});
   }
   // const drawerBtnRef = React.useRef();
 
-  if (renderClustersPage) return (
-    <Box width="full" height="100vh">
+  if (renderClustersPage) {
+    return (
+      <Box width='full' height='100vh'>
 
-      {/* Navbar */}
-      <Flex p={5} px={20} width="full" borderWidth={1} boxShadow="lg">
+        {/* Navbar */}
+        <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
 
-        {/* Logo */}
-        <Image src='/kafka-kare-logo-v2.png' h={10} borderRadius={8} />
+          {/* Logo */}
+          <Image src='/kafka-kare-logo-v2.png' h={10} borderRadius={8} />
 
-        <Spacer />
+          <Spacer />
 
-        {/* Search input */}
-        <InputGroup w={["22%", "22%", "32%", "50%", "62%", "68%"]}>
-          <InputLeftElement pointerEvents='none'>
-            <Search2Icon />
-          </InputLeftElement>
-          <Input
-            type='tel' placeholder={'Name or Port'} value={clusterSearchValue}
-            onChange={(event) => handleClusterSearchValueChange(event.target.value)}
-          />
-          <InputRightElement>
-          <IconButton
-            _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500' />}
-            variant='ghost' onClick = {() => handleClusterSearchValueChange('')}
-          />
-          </InputRightElement>
-        </InputGroup>
-
-        <Spacer />
-
-        {/* Add Cluster Button */}
-        <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
-          New Cluster
-        </Button>
-
-        {/* Add Cluster Modal */}
-        <AddClusterModal
-          handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
-          handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
-        />
-
-        <Spacer />
-
-        {/* Personal Menu */}
-        <Menu>
-          <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
-          <MenuList>
-            <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />}><b>Change Password</b></MenuItem>
-            <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
-            <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
-            <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
-            <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />}><b>Logout</b></MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-        
-        {/* Open Menu Button */}
-        <IconButton aria-label='open drawer' onClick={() => clustersStore.setState({isDrawerOpen: true})} icon={<HamburgerIcon />} />
-
-        {/* Menu Drawer */}
-        <MenuDrawer handleSlackWebhookURLSubmit={handleSlackWebhookURLSubmit} />
-      </Flex>
-
-      {/* Cluster Display */}
-      <Box width="full" justifyContent="center" p={2} px={8} style={{height: 'calc(100% - 90px)'}}>
-        <Tabs variant='line' onChange={(index) => {}} style={{height: 'calc(100% - 32px)'}}>
-          <TabList w='100%'>
-            <Tab><b>All</b></Tab>
-            <Tab><b>Favorite</b><Icon as={RxStarFilled} color='yellow.300' boxSize={6} /></Tab>
-            <Tab><b>Not Favorite</b><Icon as={RxStar} color='black' boxSize={5} /></Tab>
-          </TabList>
-          <TabPanels overflowY="auto" h='100%'>
-            <TabPanel>
-              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
-                {[...clusterDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
-                  .map(([id, clusterObj]) => (
-
-                  /* Cluster Card */
-                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
-                ))}
-              </SimpleGrid>
-            </TabPanel>
-            <TabPanel>
-              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
-                {[...clusterFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
-                  .map(([id, clusterObj]) => (
-
-                  /* Cluster Card */
-                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
-                ))}
-              </SimpleGrid>
-            </TabPanel>
-            <TabPanel>
-              <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
-                {[...clusterNotFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
-                  .map(([id, clusterObj]) => (
-
-                  /* Cluster Card */
-                  <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
-                ))}
-              </SimpleGrid>
-            </TabPanel>
-            
-            {/* Edit Cluster Modal */}
-            <EditClusterModal
-              handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
-              handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+          {/* Search input */}
+          <InputGroup w={['22%', '22%', '32%', '50%', '62%', '68%']}>
+            <InputLeftElement pointerEvents='none'>
+              <Search2Icon />
+            </InputLeftElement>
+            <Input
+              type='tel' placeholder={'Name or Port'} value={clusterSearchValue}
+              onChange={(event) => handleClusterSearchValueChange(event.target.value)}
             />
+            <InputRightElement>
+            <IconButton
+              _hover={''} isRound={true} aria-label='clean cluster search' size='xs' icon={<CloseIcon color='gray.500' />}
+              variant='ghost' onClick = {() => handleClusterSearchValueChange('')}
+            />
+            </InputRightElement>
+          </InputGroup>
 
-            {/* Delete Cluster Modal */}
-            <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
-          </TabPanels>
-        </Tabs>
+          <Spacer />
+
+          {/* Add Cluster Button */}
+          <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
+            New Cluster
+          </Button>
+
+          {/* Add Cluster Modal */}
+          <AddClusterModal
+            handleNewClusterClose={handleNewClusterClose} handleNewCluster={handleNewCluster}
+            handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+          />
+
+          <Spacer />
+
+          {/* Personal Menu */}
+          <Menu>
+            <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
+            <MenuList>
+              <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />}><b>Change Password</b></MenuItem>
+              <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
+              <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
+              <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
+              <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />}><b>Logout</b></MenuItem>
+            </MenuList>
+          </Menu>
+
+          <Spacer />
+          
+          {/* Open Menu Button */}
+          <IconButton aria-label='open drawer' onClick={() => clustersStore.setState({isDrawerOpen: true})} icon={<HamburgerIcon />} />
+
+          {/* Menu Drawer */}
+          <MenuDrawer handleSlackWebhookURLSubmit={handleSlackWebhookURLSubmit} />
+        </Flex>
+
+        {/* Cluster Display */}
+        <Box width='full' justifyContent='center' p={2} px={8} style={{height: 'calc(100% - 90px)'}}>
+          <Tabs variant='unstyled' onChange={(index) => {}} style={{height: 'calc(100% - 32px)'}}>
+            <TabList w='100%'>
+              <Tab><b>All</b></Tab>
+              <Tab><b>Favorite</b><Icon as={RxStarFilled} color='yellow.300' boxSize={6} /></Tab>
+              <Tab><b>Not Favorite</b><Icon as={RxStar} color='black' boxSize={5} /></Tab>
+            </TabList>
+            <TabIndicator  mt='-2px' height='2px' bg='blue.500' />
+            <TabPanels overflowY='auto' h='100%'>
+              <TabPanel>
+                <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                  {[...clusterDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                    .map(([id, clusterObj]) => (
+
+                    /* Cluster Card */
+                    <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+              <TabPanel>
+                <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                  {[...clusterFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                    .map(([id, clusterObj]) => (
+
+                    /* Cluster Card */
+                    <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+              <TabPanel>
+                <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(300px, 1fr))'>
+                  {[...clusterNotFavoriteDisplayMap].toSorted((a, b) => Date.parse(a[1].dateAdded) - Date.parse(b[1].dateAdded))
+                    .map(([id, clusterObj]) => (
+
+                    /* Cluster Card */
+                    <ClusterCard key={'clusterCard'+id} clusterObj={clusterObj} handleFavoriteChange={handleFavoriteChange}/>
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+              
+              {/* Edit Cluster Modal */}
+              <EditClusterModal
+                handleEditClusterClose={handleEditClusterClose} handleEditCluster={handleEditCluster}
+                handleClusterNameChange={handleClusterNameChange} handleClusterPortChange={handleClusterPortChange}
+              />
+
+              {/* Delete Cluster Modal */}
+              <DeleteClusterModal handleDeleteCluster={handleDeleteCluster} />
+            </TabPanels>
+          </Tabs>
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 }

@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { RxStar, RxStarFilled } from "react-icons/rx";
+import { RxStar, RxStarFilled } from 'react-icons/rx';
 import path from 'path';
 import { clustersStore } from '../../store/clusters';
 
@@ -80,10 +80,10 @@ const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
         </Stack>
       </CardBody>
       <CardFooter>
-        <Flex width="full">
+        <Flex width='full'>
 
           {/* Graphs Button */}
-          <Button w='80%' onClick={() => push(path.join(__dirname, './graphs'))}>Dashboard</Button>
+          <Button w='80%' _active={{transform: 'scale(0.85)'}} onClick={() => setTimeout(() => {push(path.join(__dirname, './graphs'))}, 100)}>Dashboard</Button>
 
           <Spacer />
 
