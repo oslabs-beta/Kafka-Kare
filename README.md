@@ -30,4 +30,4 @@ A Kafka error handling visualizer
 - Allison Scott <allisonbscott97@gmail.com>
 - Justin Lin <hozion612356@gmail.com>
 - Ronal Garcia <josue_role@yahoo.com>
-- Jules Mai <julesdmai@gmail.com>"
+- Jules Mai <julesdmai@gmail.com>
