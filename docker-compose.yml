@@ -1,7 +1,7 @@
 version: '3'
 services: 
   kafka-kare-server: 
-    image: kafka-kare-test
+    image: kafka-kare-server
     ports: 
       - "3001:3001"
     depends_on:
@@ -10,15 +10,15 @@ services:
      - MONGO_DB_USERNAME=admin
      - MONGO_DB_PWD=supersecret
     networks:
-     - kafka-kare
+     - kafka-kare-network
   kafka-kare-ui:
-    image: kafka-kare-ui1
+    image: kafka-kare-ui
     ports:
      - 3000:3000
     depends_on:
      - kafka-kare-server
     networks:
-     - kafka-kare    
+     - kafka-kare-network
   #does not work if you change name from mongo 
   mongo:
     image: mongo
@@ -28,7 +28,7 @@ services:
      - MONGO_INITDB_ROOT_USERNAME=admin
      - MONGO_INITDB_ROOT_PASSWORD=supersecret
     networks:
-      - kafka-kare
+      - kafka-kare-network
     volumes:
       - mongo-data:/data/db
   mongo-express:
@@ -43,7 +43,7 @@ services:
      #new way is to use mongo URL
     #  - ME_CONFIG_MONGODB_SERVER=mongo
     networks:
-     - kafka-kare
+     - kafka-kare-network
     depends_on:
      - "mongo"
   grafana: 
@@ -54,13 +54,14 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: "kafkakarepw"
       GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
-      - grafana-data:/var/lib/grafana
+      - ./grafana-data:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
     depends_on:
       - kafka-kare-server
     networks:
-      - kafka-kare
+      - kafka-kare-network
 networks: 
-  kafka-kare:
+  kafka-kare-network:
     driver: bridge
 
 volumes:
