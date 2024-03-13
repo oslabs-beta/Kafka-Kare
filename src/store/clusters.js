@@ -11,13 +11,13 @@ export const clustersStore = create((set) => ({
   // User's Favorite Clusters
   clusterFavoriteMap: new Map(),
 
-  // User's Favorite Clusters
+  // Favorite Clusters for Display
   clusterFavoriteDisplayMap: new Map(),
 
   // User's Not Favorite Clusters
   clusterNotFavoriteMap: new Map(),
   
-  // User's Favorite Clusters
+  // Not Favorite Clusters for Display
   clusterNotFavoriteDisplayMap: new Map(),
   
   // Name Input Value
@@ -49,6 +49,9 @@ export const clustersStore = create((set) => ({
 
   // is Menu Drawer Open
   isDrawerOpen: false,
+
+  // is Logout Modal Open
+  isLogoutModalOpen: false,
 
   // ID of Edited Cluster
   editClusterID: '',

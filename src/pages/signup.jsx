@@ -49,23 +49,22 @@ const Signup = () => {
   };
 
   return (
-    <FormControl>
+    // Flex container to center the content vertically and horizontally
     <Flex flexDirection="column" width="100wh" height="100vh" backgroundColor="gray.200" justifyContent="center" alignItems="center">
       {/* Logo and heading */}
       <Box>
-        <Heading color="brand.text">Kafka Kare</Heading>
+        <Heading color="brand.text" mb={6}>Kafka Kare</Heading>
       </Box>
       {/* Render the SignupForm component */}
       <Box minW={{ base: "90%", md: "468px" }} >
         <SignupForm onSubmit={handleSignup} errorMessage={errorMessage} /> {/* Pass the handleSignup function and errorMessage as props */}
       </Box>
       {/* Link to navigate to the login page */}
-      <Box>
+      <Box mt={6}>
         Welcome!{' '}
         <Link color="brand.bg" onClick={handleLogin}>Login</Link>
       </Box>
     </Flex>
-    </FormControl>
   );
 };
 
