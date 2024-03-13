@@ -65,6 +65,34 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
+userController.logout = async (req, res, next) => {
+  console.log('In userController.logout'); // testing
+  const userId = res.locals.userId;
+
+  // Find user in database
+  try {
+    const user = await User.findById(userId);
+    // No user found
+    if (!user) {
+      return res.status(401).json({ err: 'Id not found' });
+    }
+    else {
+      console.log('User logged out successfully');
+      res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 5 * 1000),
+        httpOnly: true,
+      })
+      return next();
+    }
+  } catch (err) {
+    return next({
+      log: `userController.logout: ERROR ${err}`,
+      status: 400,
+      message: { err: "Error occurred in userController.logout." },
+    });
+  }
+};
+
 
 // Export
 module.exports = userController;

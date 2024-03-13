@@ -4,7 +4,7 @@ import {
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
-import { RiSendPlane2Fill } from "react-icons/ri";
+import { RiSendPlane2Fill } from 'react-icons/ri';
 import { clustersStore } from '../../store/clusters';
 
 const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
@@ -24,7 +24,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
       && slackWebhookURL.length >= 77
     ) {
       alert('Right Format');
-      // handleSlackWebhookURLSubmit();
+      handleSlackWebhookURLSubmit();
     } else {
       alert('Wrong Format');
     }
@@ -80,7 +80,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
           {/* URL Subtitle */}
           <FormLabel >Slack Webhook URL</FormLabel>
 
-          <Flex width="full">
+          <Flex width='full'>
 
             {/* URL Input */}
             <Textarea
@@ -122,7 +122,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
               },
-              body: JSON.stringify({"text":"Testing sending message to channel"})
+              body: JSON.stringify({'text':'Testing sending message to channel'})
             });
             const content = await rawResponse.text();
             console.log(content);

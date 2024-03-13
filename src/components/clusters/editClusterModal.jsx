@@ -3,8 +3,8 @@ import {
   FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react';
-import { SiApachekafka } from "react-icons/si";
-import { MdDriveFileRenameOutline } from "react-icons/md";
+import { SiApachekafka } from 'react-icons/si';
+import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { clustersStore } from '../../store/clusters';
 
 const EditClusterModal = ({
@@ -28,7 +28,7 @@ const EditClusterModal = ({
     /* Edit Cluster Modal */
     <Modal isOpen={isEditClusterOpen} onClose={handleEditClusterClose} initialFocusRef={initialRef}>
       <ModalOverlay />
-      <ModalContent top='4rem'>
+      <ModalContent top='3.5rem'>
 
         {/* Title */}
         <ModalHeader>Edit Cluster: {oldClusterName}</ModalHeader>
@@ -37,7 +37,7 @@ const EditClusterModal = ({
 
           {/* Name Input */}
           <FormControl isRequired isInvalid={isClusterNameEmpty} mb={8}>
-            <FormLabel fontWeight = "bold">New Name: {clusterName}</FormLabel>
+            <FormLabel fontWeight = 'bold'>New Name: {clusterName}</FormLabel>
             <InputGroup>
               <InputLeftElement pointerEvents='none'>
                 <Icon as={MdDriveFileRenameOutline} boxSize={5} />
@@ -52,7 +52,7 @@ const EditClusterModal = ({
 
           {/* Port Input */}
           <FormControl isRequired isInvalid={isClusterPortEmpty} mb={8}>
-            <FormLabel fontWeight = "bold" mb='0.5rem'>New Hostname & Port: {clusterPort}</FormLabel>
+            <FormLabel fontWeight = 'bold' mb='0.5rem'>New Hostname & Port: {clusterPort}</FormLabel>
             <InputGroup>
               <InputLeftElement pointerEvents='none'>
                 <Icon as={SiApachekafka} boxSize={5} />
