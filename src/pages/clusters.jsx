@@ -306,7 +306,7 @@ export default function Home() {
         <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
 
           {/* Logo */}
-          <Image src='/kafka-kare-logo-v2.png' h={10} borderRadius={8} />
+          <Image src='/kafka-kare-logo-v3.png' h={10} borderRadius={8} />
 
           <Spacer />
 
