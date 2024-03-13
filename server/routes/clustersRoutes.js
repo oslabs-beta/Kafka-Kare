@@ -3,7 +3,7 @@ const router = express.Router();
 const clusterController = require("../controllers/clusterController");
 const tokenController = require("../controllers/tokenController");
 
-// Route for getting all clusters
+// Route for getting all of a user's clusters
 router.get(
   '/userClusters',
   tokenController.verifyToken,
@@ -34,7 +34,7 @@ router.delete(
   }
 );
 
-// Route for updating a cluster
+// Route for editing a cluster
 router.patch(
   '/:clusterId',
   tokenController.verifyToken,

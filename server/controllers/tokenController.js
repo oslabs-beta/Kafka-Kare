@@ -9,6 +9,9 @@ tokenController.issueToken = (req, res, next) => {
 
   const { userId, username } = res.locals; // Destructure from prior middleware
 
+  // testing
+  console.log('SECRET KEY: ', SECRET_KEY);
+
   // Issue token
   const token = jwt.sign(
     { userId: userId, username: username},
@@ -24,7 +27,7 @@ tokenController.issueToken = (req, res, next) => {
     httpOnly: true, 
     secure: isProduction // use 'secure' flag only in production
   });
-  console.log('Token issued');
+  console.log('Token issued: ', token);
 
   return next();
 };
