@@ -8,15 +8,15 @@ services:
     ports:
       - '2181:2181'
     networks:
-      - localprom
+      - local-cluster-prom-network
 
   prometheus: 
     image: prom/prometheus
     volumes:
       - './prometheus.yml:/etc/prometheus/prometheus.yml'
     networks:
-      - localprom
-      - kafka-kare_kafka-kare-network
+      - local-cluster-prom-network
+      - kafka-kare_kafka-kare-network # Need to connect to external network to allow Grafana access to Prometheus
     ports:
       - 9090:9090
 
@@ -49,10 +49,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - localprom
+      - local-cluster-prom-network
 
 networks:
-  localprom:
+  local-cluster-prom-network:
     driver: bridge
-  kafka-kare_kafka-kare-network:
+  kafka-kare_kafka-kare-network: # Need to connect to external network to allow Grafana access to Prometheus
     external: true
