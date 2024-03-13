@@ -21,6 +21,9 @@ const Graphs = () => {
 
     <iframe  width="1000px" height="800px" src="http://localhost:3002/public-dashboards/c5c3b159fc804e52b99d97c7d13bf9b5" title='actually-throughput'></iframe>
 
+    <iframe  width="1000px" height="800px" src="http://localhost:3002/public-dashboards/a6a3d9c6dcf34c06a8f4eb4a4025769b" title='elasticity'></iframe>
+
+
   </Fragment>
 )};
 
