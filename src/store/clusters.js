@@ -5,7 +5,11 @@ export const clustersStore = create((set) => ({
   // User's Clusters
   clusterMap: new Map(),
 
+<<<<<<< HEAD
   // Clusters for Dispay
+=======
+  // Clusters for Display
+>>>>>>> 8e61a633bf0a6374b075f72dad5532fc4df804bc
   clusterDisplayMap: new Map(),
 
   // User's Favorite Clusters

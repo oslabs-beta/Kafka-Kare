@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
@@ -6,3 +7,6 @@
   "/login": "pages/login.js",
   "/graphs": "pages/graphs.js"
 }
+=======
+{"/_app":"pages/_app.js","/404":"pages/404.html","/about":"pages/about.html","/clusters":"pages/clusters.html","/graphs":"pages/graphs.html","/home":"pages/home.html","/":"pages/index.html","/login":"pages/login.html","/signup":"pages/signup.html","/_error":"pages/_error.js","/_document":"pages/_document.js"}
+>>>>>>> 8e61a633bf0a6374b075f72dad5532fc4df804bc

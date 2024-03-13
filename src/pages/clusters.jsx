@@ -15,9 +15,13 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import path from 'path';
 import { clustersStore } from '../store/clusters';
 import MenuDrawer from '../components/clusters/menuDrawer';
+import { clustersStore } from '../store/clusters';
+import MenuDrawer from '../components/clusters/menuDrawer';
 import AddClusterModal from '../components/clusters/addClusterModal';
 import ClusterCard from '../components/clusters/clusterCard';
+import ClusterCard from '../components/clusters/clusterCard';
 import EditClusterModal from '../components/clusters/editClusterModal';
+import DeleteClusterModal from '../components/clusters/deleteClusterModal';
 import DeleteClusterModal from '../components/clusters/deleteClusterModal';
 
 export default function Home() {
@@ -38,6 +42,9 @@ export default function Home() {
   const [renderClustersPage, setRenderClustersPage] = useState(false);
 
   useEffect(() => {
+
+    // fetch user clusters when page loaded
+    const fetchClusters = async () => {
 
     // fetch user clusters when page loaded
     const fetchClusters = async () => {
@@ -69,11 +76,21 @@ export default function Home() {
         addToast('Authentication Required', 'A token is required for authentication', 'error', 2000);
       }
     };
+
     fetchClusters();
+    fetchFavoriteClusters();
+    fetchNotFavoriteClusters();
   }, []);
 
   // actions when addClusterModal close
+
+  // actions when addClusterModal close
   const handleNewClusterClose = () => {
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isNewClusterOpen: false});
     clustersStore.setState({clusterName: ''});
     clustersStore.setState({clusterPort: ''});
     clustersStore.setState({isClusterNameEmpty: false});
@@ -84,7 +101,15 @@ export default function Home() {
   /*
    * Add Cluster Event
    */
+  
+  /*
+   * Add Cluster Event
+   */
   const handleNewCluster = async () => {
+
+    // check input format
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
@@ -115,12 +140,25 @@ export default function Home() {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isEditClusterOpen: false});
+    clustersStore.setState({clusterName: ''});
+    clustersStore.setState({clusterPort: ''});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({isEditClusterOpen: false});
   }
 
   /*
    * Edit Cluster Event
    */
+
+  /*
+   * Edit Cluster Event
+   */
   const handleEditCluster = async (editClusterID) => {
+
+    // check input format
+    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
+    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
@@ -211,13 +249,21 @@ export default function Home() {
   const handleClusterNameChange = (event) => {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({clusterName: event.target.value});
+    clustersStore.setState({isClusterNameEmpty: false});
+    clustersStore.setState({clusterName: event.target.value});
   };
+  
+  // actios when port input changes
   
   // actios when port input changes
   const handleClusterPortChange = (event) => {
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({clusterPort: event.target.value});
+    clustersStore.setState({isClusterPortEmpty: false});
+    clustersStore.setState({clusterPort: event.target.value});
   };
+  
+  // actios when search input changes
   
   // actios when search input changes
   const handleClusterSearchValueChange = (curClusterSearchValue) => {

@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
-const testingRoutes = require("./routes/testingRoutes");
+const testingRoutes = require('./routes/testingRoutes');
 
 // Setup Next app
 const PORT = 3001;

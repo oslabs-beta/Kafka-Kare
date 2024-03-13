@@ -1,5 +1,6 @@
 global:
   scrape_interval: 15s
+  evaluation_interva: 15s
 
 scrape_configs: 
   - job_name: 'kafka-kare'
@@ -9,3 +10,10 @@ scrape_configs:
   - job_name: 'kafka-demo'
   static_configs: 
     - targets: ['kafka-demo:9092']
+
+# below is what is required with Grafana to write data to it
+remote_write:
+- url: <https://your-remote-write-endpoint>
+  basic_auth:
+    username: <your user name>
+    password: <Your Grafana.com API Key>
