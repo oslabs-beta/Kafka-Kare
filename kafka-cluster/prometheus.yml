@@ -5,4 +5,4 @@ scrape_configs:
   - job_name: 'kafka'
     scheme: http
     static_configs:
-      - targets: ['kafka:7070']
+      - targets: ['kafka:7070'] # Prometheus listens to port 7070 where JMX Exporter exposes the metrics

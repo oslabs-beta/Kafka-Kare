@@ -21,8 +21,8 @@ services:
     image: dockerpromkafka:latest
     container_name: kafka
     ports:
-      - '9092:9092'
-      - '7070:7070'
+      - '9092:9092' # Accessible to client on Port 9092
+      - '7070:7070' # Exposes Port 7070 for JMX Exporter, which Prometheus scrapes
     depends_on:
       - zookeeper
       - prometheus
@@ -33,7 +33,7 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       KAFKA_ADVERTISED_PORT: 9092
-      JMX_PORT: 1099
+      JMX_PORT: 1099 # This is separate from JMX Exporter
       KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote=true
         -Dcom.sun.management.jmxremote.authenticate=false
         -Dcom.sun.management.jmxremote.ssl=false
