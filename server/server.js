@@ -38,12 +38,15 @@ app.prepare().then(() => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
-  // Defined in docker-compose.yml
-  const DB_USER = process.env.MONGO_DB_USERNAME
-  const DB_PASS = process.env.MONGO_DB_PWD
+  // Retrieve environmental variables for MongoDB auth // Defined in docker-compose.yml
+  // const DB_USER = process.env.MONGO_DB_USERNAME
+  // const DB_PASS = process.env.MONGO_DB_PWD
+
   // Connect to mongoDB
-  const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
-  // const mongoURI = `mongodb://admin:supersecret@mongo`
+  const mongoURI = `mongodb://admin:supersecret@mongo`
+  // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
+
+  console.log(mongoURI);
 
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {

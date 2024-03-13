@@ -4,11 +4,11 @@ const Graphs = () => {
 
   const [iframeReload, setIframeReload] = useState(1);
   
-  useEffect(() => {
-    const fetchGrafanaDashboard = setInterval(() => {
-      setIframeReload(iframeReload+1);
-    }, 5000);
-  }, [])
+  // useEffect(() => {
+  //   const fetchGrafanaDashboard = setInterval(() => {
+  //     setIframeReload(iframeReload+1);
+  //   }, 5000);
+  // }, [])
 
   return(
   <Fragment>

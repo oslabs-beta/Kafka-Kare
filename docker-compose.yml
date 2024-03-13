@@ -47,7 +47,7 @@ services:
     networks:
      - kafka-kare-network
     depends_on:
-     - "mongo"
+      - mongo
   grafana: 
     image: grafana/grafana:latest
     ports: 
