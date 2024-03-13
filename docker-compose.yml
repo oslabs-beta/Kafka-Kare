@@ -64,24 +64,11 @@ services:
       - ./grafana.ini:/etc/grafana/grafana.ini
     depends_on:
      - "mongo"
-  grafana:
-    image: grafana/grafana-oss
-    container_name: grafana
-    restart: unless-stopped
-    environment:
-     - GF_SERVER_ROOT_URL=http://localhost:3002
-    #  - GF_INSTALL_PLUGINS=grafana-clock-panel
-    ports:
-     - '3002:3002'
-    volumes:
-     - 'grafana_storage:/var/lib/grafana'
-    depends_on:
-     - kafka-kare-ui
     networks:
-     - kafka-kare  
+     - kafka-kare-network
 networks: 
   kafka-kare-network:
     driver: bridge
-
 volumes:
   mongo-data: 
+  grafana-data:
