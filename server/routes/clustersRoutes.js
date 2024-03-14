@@ -9,7 +9,7 @@ router.get(
   tokenController.verifyToken,
   clusterController.getClusters,
   (req, res) => {
-    console.log("Sending clusters to client");
+    console.log("Sending clusters to client...");
     return res.status(200).json(res.locals.clusters);
   }
 );
