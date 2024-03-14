@@ -63,7 +63,7 @@ services:
       - ./grafana-data:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
     depends_on:
-     - "mongo"
+     - kafka-kare-server
     networks:
      - kafka-kare-network
 networks: 

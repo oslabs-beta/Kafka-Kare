@@ -9,8 +9,25 @@ userController.createUser = async (req, res, next) => {
   console.log('req.body contains: ', req.body);
   const { username, password } = req.body; // Destructure from req.body
 
+
   // Create user in database
   try {
+    // Query database for existing user with input username
+    const uniqueUser = await User.findOne({username}); // Returns an array of documents that match the username
+    console.log('uniqueUser: ', uniqueUser);
+
+    if (uniqueUser) {
+      console.log('user existed');
+      return next({
+        log: 'username was not unique',
+        status: 400,
+        message: { err: 'username already exists in database'}
+      })
+    } else {
+      console.log('username input is unique');
+    }
+
+    // Below means username is unique
     const user = await User.create({
       username: username,
       password: password
