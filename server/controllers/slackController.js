@@ -3,8 +3,8 @@ const User = require("../models/userModel.js");
 const slackController = {};
 
 /* ---------------------------- ADD/UPDATE SLACK ---------------------------- */
-slackControllerer.updateSlack = async (req, res, next) => {
-    console.log("In slackControllerer.updateSlack"); // testing
+slackController.updateSlack = async (req, res, next) => {
+    console.log("In slackController.updateSlack"); // testing
     console.log('req.body contains: ', req.body);
     const { slackUrl } = req.body; // Destructure from req.body
     const { userId } = res.locals; // Destructure from prior middleware
@@ -20,16 +20,16 @@ slackControllerer.updateSlack = async (req, res, next) => {
       return next();
     } catch (err) {
       return next({
-          log: `slackControllerer.updateSlack: ERROR ${err}`,
+          log: `slackController.updateSlack: ERROR ${err}`,
           status: 500,
-          message: { err: "Error occurred in slackControllerer.updateSlack." },
+          message: { err: "Error occurred in slackController.updateSlack." },
         });
     }
   };
 
 /* ------------------------------ DELETE SLACK ------------------------------ */
-slackControllerer.deleteSlack = async (req, res, next) => {
-    console.log("In slackControllerer.deleteSlack"); // testing
+slackController.deleteSlack = async (req, res, next) => {
+    console.log("In slackController.deleteSlack"); // testing
     const { userId } = res.locals; // Destructure from prior middleware
   
     // Delete slack link from database
@@ -44,9 +44,9 @@ slackControllerer.deleteSlack = async (req, res, next) => {
       return next();
     } catch (err) {
       return next({
-          log: `slackControllerer.deleteSlack: ERROR ${err}`,
+          log: `slackController.deleteSlack: ERROR ${err}`,
           status: 500,
-          message: { err: "Error occurred in slackControllerer.deleteSlack." },
+          message: { err: "Error occurred in slackController.deleteSlack." },
         });
     }
   };
