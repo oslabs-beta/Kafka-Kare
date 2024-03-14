@@ -13,10 +13,10 @@ slackController.updateSlack = async (req, res, next) => {
     try {
       const updatedSlackUrl = await User.findByIdAndUpdate(userId, {
         slackUrl: slackUrl
-      }, { new: true }); // not necessary here, but better aligns with understanding
+      }, { new: true }); 
 
       if (!updatedSlackUrl) return res.status(404).send('User\'s slack url not found');
-
+      console.log('Slack URL updated successfully: ', updatedSlackUrl);
       return next();
     } catch (err) {
       return next({
@@ -40,7 +40,7 @@ slackController.deleteSlack = async (req, res, next) => {
       }, { new: true }); // not necessary here, but better aligns with understanding
 
       if (!updatedSlackUrl) return res.status(404).send('User\'s slack url not found');
-
+      console.log('Slack URL deleted successfully');
       return next();
     } catch (err) {
       return next({
@@ -52,4 +52,4 @@ slackController.deleteSlack = async (req, res, next) => {
   };
 
 // Export
-module.exports = clusterController;
+module.exports = slackController;
