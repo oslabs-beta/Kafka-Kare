@@ -106,9 +106,6 @@ app.prepare().then(() => {
 
   
   // Custom routes
-  server.get("/hello", (req, res) => {
-    return res.status(200).send("Hello world");
-  });
   server.use("/auth", authRoutes); 
   server.use("/clusters", clustersRoutes); 
   server.use("/metrics", metricsRoutes);
@@ -116,7 +113,6 @@ app.prepare().then(() => {
   server.use("/slack", slackRoutes);
 
   // Fallback route
-  // This line is crucial when integrating Next.js with a custom server like Express, handles 404
   server.get("*", (req, res) => {
     return handle(req, res);
   });
