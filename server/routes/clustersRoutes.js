@@ -73,4 +73,5 @@ router.get(
     return res.status(200).json(res.locals.notFavoriteClusters);
   }
 )
+
 module.exports = router;
