@@ -14,6 +14,7 @@ const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 const testingRoutes = require('./routes/testingRoutes');
+const slackRoutes = require('./routes/slackRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -46,7 +47,7 @@ app.prepare().then(() => {
   // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
   const mongoURI = `mongodb://admin:supersecret@mongo`
   // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
-  // const mongoURIAtlas = process.env.MONGODB_URI;
+  const mongoURIAtlas = process.env.MONGODB_URI;
 
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
@@ -105,16 +106,13 @@ app.prepare().then(() => {
 
   
   // Custom routes
-  server.get("/hello", (req, res) => {
-    return res.status(200).send("Hello world");
-  });
-  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
-  server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
-  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
+  server.use("/auth", authRoutes); 
+  server.use("/clusters", clustersRoutes); 
+  server.use("/metrics", metricsRoutes);
+  server.use("/testing", testingRoutes); 
+  server.use("/slack", slackRoutes);
 
   // Fallback route
-  // This line is crucial when integrating Next.js with a custom server like Express, handles 404
   server.get("*", (req, res) => {
     return handle(req, res);
   });

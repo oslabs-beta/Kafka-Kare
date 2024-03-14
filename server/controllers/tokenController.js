@@ -9,9 +9,6 @@ tokenController.issueToken = (req, res, next) => {
 
   const { userId, username } = res.locals; // Destructure from prior middleware
 
-  // testing
-  console.log('SECRET KEY: ', SECRET_KEY);
-
   // Issue token
   const token = jwt.sign(
     { userId: userId, username: username},
