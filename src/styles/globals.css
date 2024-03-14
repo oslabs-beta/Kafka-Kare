@@ -64,5 +64,10 @@
     padding: 1rem;
   }
 
-  /* STYLING FOR LOGIN PAGE */
+  /* STYLING FOR LOGIN PAGE AND SIGNUP PAGE */
+  .login-content, .signup-content{
+    background-image: url('../../public/kafka-kare-background-v2.jpg');
+  }
+  
+
   

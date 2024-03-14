@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const tokenController = require("../controllers/tokenController");
 
 // Route for user signup
+// Route for user signup
 router.post(
   '/signup', 
   userController.createUser, 
@@ -13,6 +14,7 @@ router.post(
 });
 
 
+// Route for user login
 // Route for user login
 router.post(
   '/login', 
