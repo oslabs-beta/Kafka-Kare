@@ -20,9 +20,21 @@ const clusterSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  dateLastVisited: {
+    type: Date,
+    default: Date.now
+  },
   favorite: {
     type: Boolean,
     default: false
+  },
+  status: {
+    type: String,
+    default: 'online'
+  },
+  numberOfBrokers: {
+    type: Number,
+    default: 1
   }
 });
 
