@@ -18,7 +18,7 @@ testingController.getAllUsers = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `testingController.getAllUsers: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in testingController.getAllUsers." },
     });
   }
@@ -40,7 +40,7 @@ testingController.getAllClusters = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `testingController.getAllClusters: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in testingController.getAllClusters." },
     });
   }

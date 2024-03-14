@@ -9,10 +9,12 @@ import {
   InputLeftElement,
   InputRightElement,
   Input,
+  Image,
   Button,
   FormHelperText,
   chakra,
   Box,
+  Link,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 
@@ -56,12 +58,23 @@ const SignupForm = ({ onSubmit }) => {
       } else setErrorMessage('An error occurred during signup.')
     }
   };
+  
+  // Function to handle navigation to the login page
+  const handleLogin = () => {
+    router.push('/login'); // Navigate to the login page when clicked
+  };
 
   return (
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={handleSignUp}>
-        <Stack spacing={4} p="1rem" backgroundColor="blue.400" boxShadow="md" minH="200px" borderRadius="10px">
+        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
+          {/* Logo and heading */}
+          <Box mb={6} display='flex' justifyContent='center'>
+            <Image w={260} src='kafka-kare-logo-v3.png' />
+            {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
+            <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
+          </Box>
           {/* Username input field */}
           <FormControl>
             <InputGroup>
@@ -85,8 +98,18 @@ const SignupForm = ({ onSubmit }) => {
           {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
           {/* Submit button */}
           <FormControl>
+<<<<<<< HEAD
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
           </FormControl>
+=======
+            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Sign Up</Button>
+          </FormControl>
+          {/* Link to navigate to the login page */}
+          <Box mt={4} textAlign='center'>
+            Welcome!{' '}
+            <Link color="brand.bg" onClick={handleLogin}>Login</Link>
+          </Box>
+>>>>>>> dev
         </Stack>
       </form>
     </FormControl>
