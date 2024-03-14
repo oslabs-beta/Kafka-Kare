@@ -155,6 +155,7 @@ userController.deleteAccount = async (req, res, next) => {
   try {
     // Delete all clusters associated with the user
     await Cluster.deleteMany({ ownerId: userId });
+    console.log('All clusters belonging to the user deleted successfully')
 
     // Delete the user account
     await User.findByIdAndDelete(userId);
