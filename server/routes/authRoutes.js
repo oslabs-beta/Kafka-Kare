@@ -42,5 +42,15 @@ router.patch(
   }
 )
 
+// Route for deleting a user account // untested
+router.delete(
+  '/account/delete',
+  tokenController.verifyToken,
+  userController.deleteAccount,
+  (req, res) => {
+    return res.status(200).json({ message: 'User account deleted successfully '});
+  }
+)
+
 
 module.exports = router;

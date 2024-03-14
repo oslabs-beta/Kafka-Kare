@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel.js");
+const Cluster = require("../models/clusterModel.js");
 
 const userController = {};
 
@@ -135,6 +136,30 @@ userController.updatePassword = async (req, res, next) => {
       log: `userController.updatePassword: ERROR ${err}`,
       status: 500,
       message: { err: "Error occurred in userController.updatePassword." },
+    });
+  }
+};
+
+/* ----------------------------- DELETE ACCOUNT ----------------------------- */
+userController.deleteAccount = async (req, res, next) => {
+  console.log('In userController.deleteAccount'); // testing
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Delete from database
+  try {
+    // Delete all clusters associated with the user
+    await Cluster.deleteMany({ ownerId: userId });
+
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+    
+    console.log('Account deleted successfully');
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.deleteAccount: ERROR ${err}`,
+      status: 500,
+      message: { err: "Error occurred in userController.deleteAccount." },
     });
   }
 };
