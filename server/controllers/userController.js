@@ -46,7 +46,6 @@ userController.createUser = async (req, res, next) => {
   }
 };
 
-
 // ---------------------------- VERIFY USER ---------------------------- //
 userController.verifyUser = async (req, res, next) => {
   console.log('In userController.verifyUser'); // testing
@@ -83,6 +82,7 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
+/* ------------------------------- LOGOUT USER ------------------------------ */
 userController.logout = async (req, res, next) => {
   console.log('In userController.logout'); // testing
   const userId = res.locals.userId;
@@ -110,6 +110,35 @@ userController.logout = async (req, res, next) => {
     });
   }
 };
+
+/* ----------------------------- UPDATE PASSWORD ---------------------------- */
+userController.updatePassword = async (req, res, next) => {
+  console.log('In userController.updatePassword'); // testing
+  console.log('req.body contains: ', req.body);
+  const { newPassword } = req.body; // Destructure from req.body
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Update password in database
+  try {
+    const user = await User.findByIdAndUpdate(userId, {
+      password: newPassword
+    }, { new: true }); 
+
+    if (!user) {
+      return res.status(404).send('User was not found');
+    }
+    
+    console.log('Password updated successfully: ', user.password);
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.updatePassword: ERROR ${err}`,
+      status: 500,
+      message: { err: "Error occurred in userController.updatePassword." },
+    });
+  }
+};
+
 
 
 // Export

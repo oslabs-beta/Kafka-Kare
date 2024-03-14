@@ -15,7 +15,10 @@ slackController.updateSlack = async (req, res, next) => {
         slackUrl: slackUrl
       }, { new: true }); 
 
-      if (!user) return res.status(404).send('User\'s slack url not found');
+      if (!user) {
+        return res.status(404).send('User\'s slack url not found');
+      }
+      
       console.log('Slack URL updated successfully: ', user.slackUrl);
       return next();
     } catch (err) {
@@ -37,7 +40,10 @@ slackController.getSlack = async (req, res, next) => {
     try {
       const user = await User.findById(userId, { new: true }); 
 
-      if (!user) return res.status(404).send('User\'s slack url not found');
+      if (!user) {
+        return res.status(404).send('User\'s slack url not found');
+      }
+      
       res.locals.slackUrl = user.slackUrl;
       console.log('Slack URL retrieved successfully: ', user.slackUrl);
       return next();
@@ -63,7 +69,10 @@ slackController.deleteSlack = async (req, res, next) => {
         slackUrl: '' 
       }, { new: true }); // not necessary here, but better aligns with understanding
 
-      if (!user) return res.status(404).send('User\'s slack url not found');
+      if (!user) {
+        return res.status(404).send('User\'s slack url not found');
+      }
+      
       console.log('Slack URL deleted successfully');
       return next();
     } catch (err) {
