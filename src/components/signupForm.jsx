@@ -51,41 +51,45 @@ const SignupForm = ({ onSubmit }) => {
       }
     } catch (error) {
       console.error('error: ', error);
-      setErrorMessage('An error occurred during signup.')
+      if (error.response.data.err === 'username already exists in database') {
+        setErrorMessage('Please choose a different username')
+      } else setErrorMessage('An error occurred during signup.')
     }
   };
 
   return (
     // Form component to handle form submission
-    <form onSubmit={handleSignUp}>
-      <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" minH="200px" borderRadius="10px">
-        {/* Username input field */}
-        <FormControl>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />} />
-            <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          </InputGroup>
-        </FormControl>
-        {/* Password input field */}
-        <FormControl>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<FaLock color="gray.300" />} />
-            <Input type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                {showPassword ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        {/* Display error message if any */}
-        {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
-        {/* Submit button */}
-        <FormControl>
-          <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
-        </FormControl>
-      </Stack>
-    </form>
+    <FormControl>
+      <form onSubmit={handleSignUp}>
+        <Stack spacing={4} p="1rem" backgroundColor="blue.400" boxShadow="md" minH="200px" borderRadius="10px">
+          {/* Username input field */}
+          <FormControl>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />} />
+              <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </InputGroup>
+          </FormControl>
+          {/* Password input field */}
+          <FormControl>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<FaLock color="gray.300" />} />
+              <Input type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                  {showPassword ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          {/* Display error message if any */}
+          {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
+          {/* Submit button */}
+          <FormControl>
+            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
+          </FormControl>
+        </Stack>
+      </form>
+    </FormControl>
   );
 };
 
