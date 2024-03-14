@@ -17,7 +17,7 @@ clusterController.getClusters = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.getClusters: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.getClusters." },
     });
   }
@@ -41,7 +41,7 @@ clusterController.addCluster = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.addCluster: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.addCluster." },
     });
   }
@@ -76,7 +76,7 @@ clusterController.deleteCluster = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.deleteCluster: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.deleteCluster." },
     });
   }
@@ -114,7 +114,7 @@ clusterController.updateCluster = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.updateCluster: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.updateCluster." },
     });
   }
@@ -155,7 +155,7 @@ clusterController.toggleFavorite = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.toggleFavorite: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.toggleFavorite." },
     });
   }
@@ -186,7 +186,7 @@ clusterController.getFavorites = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.getFavorites: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.getFavorites." },
     });
   }
@@ -217,7 +217,7 @@ clusterController.getNotFavorites = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `clusterController.getNotFavorites: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in clusterController.getNotFavorites." },
     });
   }

@@ -20,7 +20,7 @@ userController.createUser = async (req, res, next) => {
       console.log('user existed');
       return next({
         log: 'username was not unique',
-        status: 400,
+        status: 500,
         message: { err: 'username already exists in database'}
       })
     } else {
@@ -40,7 +40,7 @@ userController.createUser = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.createUser: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.createUser." },
     });
   }
@@ -77,7 +77,7 @@ userController.verifyUser = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.verifyUser: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.verifyUser." },
     });
   }
@@ -105,7 +105,7 @@ userController.logout = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.logout: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.logout." },
     });
   }
