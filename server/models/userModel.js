@@ -19,6 +19,10 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  lastVisited: {
+    type: Date,
+    default: Date.now
+  },
   firstName: {
     type: String
   },

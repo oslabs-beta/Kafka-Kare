@@ -17,6 +17,7 @@
 - **POST /auth/signup**: Route for user signup
 - **POST /auth/login**: Route for user login
 - **GET /auth/logout**: Route for user logout
+- **UPDATE /auth/password/update**: Route for updating user password
 
 /clusters
 - **GET /clusters/userClusters**: Route for getting all clusters from a user
