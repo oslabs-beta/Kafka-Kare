@@ -7,7 +7,7 @@ const tokenController = require("../controllers/tokenController");
 router.post(
   "/add",
   tokenController.verifyToken,
-  slackController.addSlack,
+  slackController.updateSlack,
   (req, res) => {
     return res.status(200).json({ message: 'Slack link added successfully' });
   }
@@ -24,7 +24,7 @@ router.patch(
 )
 
 // Route for deleting Slack link
-router.patch(
+router.get(
     '/delete',
     tokenController.verifyToken,
     slackController.deleteSlack,
