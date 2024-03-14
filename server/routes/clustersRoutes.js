@@ -3,13 +3,13 @@ const router = express.Router();
 const clusterController = require("../controllers/clusterController");
 const tokenController = require("../controllers/tokenController");
 
-// Route for getting all clusters
+// Route for getting all clusters from a user
 router.get(
   '/userClusters',
   tokenController.verifyToken,
   clusterController.getClusters,
   (req, res) => {
-    console.log("Sending clusters to client");
+    console.log("Sending clusters to client...");
     return res.status(200).json(res.locals.clusters);
   }
 );
@@ -20,7 +20,7 @@ router.post(
   tokenController.verifyToken,
   clusterController.addCluster,
   (req, res) => {
-    return res.status(201).json(res.locals.newCluster);
+    return res.status(201).json({ message: 'Cluster added successfully' });
   }
 );
 
@@ -34,7 +34,7 @@ router.delete(
   }
 );
 
-// Route for updating a cluster
+// Route for editing a cluster
 router.patch(
   '/:clusterId',
   tokenController.verifyToken,
@@ -44,11 +44,11 @@ router.patch(
   }
 )
 
-// Route for changing favorite status of a cluster
+// Route for toggling favorite status of a cluster
 router.patch(
   '/favorites/:clusterId',
   tokenController.verifyToken,
-  clusterController.changeFavorite,
+  clusterController.toggleFavorite,
   (req, res) => {
     return res.status(200).json({ message: 'Cluster favorites updated successfully' });
   }
@@ -73,4 +73,5 @@ router.get(
     return res.status(200).json(res.locals.notFavoriteClusters);
   }
 )
+
 module.exports = router;

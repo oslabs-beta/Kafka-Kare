@@ -4,10 +4,15 @@ import axios from 'axios';
 // import { auth, signIn } from '../../NextAuth/auth.js';
 import { 
     Input,
+    Box,
+    Heading,
     Flex,
+    Image,
     Button,
     InputGroup,
     Stack,
+    Link,
+    Text,
     InputLeftElement,
     chakra,
     FormControl,
@@ -33,7 +38,7 @@ const LoginForm = () => {
   // Function to toggle password visibility
   const handleShowClick = () => setShowPassword(!showPassword);
   
-//handles click of submit and calls handleLogin
+  //handles click of submit and calls handleLogin
   const handleSubmit = async (e) => {
     e.preventDefault();
     // await signIn();
@@ -46,10 +51,12 @@ const LoginForm = () => {
     console.log('username: ', username);
     console.log('password: ', password);
     try {
-      // Send a POST request to the backend endpoint '/login' (assuming it's login)
-      const response = await axios.post('http://localhost:3001/auth/login', 
-                       { username, password },
-                       {withCredentials: true}); // Convert data to JSON format and send it in the request body
+      // Send a POST request to the backend endpoint '/auth/login' 
+      const response = await axios.post(
+        'http://localhost:3001/auth/login', 
+        { username, password },
+        {withCredentials: true}
+      ); // Convert data to JSON format and send it in the request body
       console.log('response: ', response.data);
 
       // Parse the response data as JSON
@@ -71,30 +78,53 @@ const LoginForm = () => {
     }
   };
 
+  const handleSignup = () => {
+    router.push('/signup');
+  }
+
   return (
-    <FormControl> {/* Wrap the entire form in FormControl */}
+    // Form component to handle form submission
+    <FormControl>
       <form onSubmit={handleSubmit}>
-        <Stack spacing={4} p="1rem" backgroundColor="whiteAlpha.900" boxShadow="md" minH="200px" borderRadius="10px">
-          <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />}/>
-            <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none" color="gray.300" children={<FaLock color="gray.300" />}/>
-            <Input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleShowClick}>{showPassword ? "Hide" : "Show"}</Button>
-            </InputRightElement>
-          </InputGroup>
+        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
+          {/* Logo and heading */}
+          <Box mb={6} display='flex' justifyContent='center'>
+            <Image w={260} src='kafka-kare-logo-v3.png' />
+            {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
+            <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
+          </Box>
+          {/* Username input field */}
+          <FormControl>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />}/>
+              <Input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
+            </InputGroup>
+          </FormControl>
+          {/* Password input field */}
+          <FormControl>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<FaLock color="gray.300" />}/>
+              <Input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleShowClick}>{showPassword ? "Hide" : "Show"}</Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
           {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
           <FormControl>
-            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Login</Button>
+            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Login</Button>
           </FormControl>
+          {/* Link to navigate to the signup page */}
+          <Box mt={4} textAlign='center'>
+            New to us?{' '}
+            <Link color="brand.bg" onClick={handleSignup}>
+              Sign Up
+            </Link>
+          </Box>
         </Stack>
       </form>
     </FormControl>
   );
-
 };
 
 export default LoginForm;

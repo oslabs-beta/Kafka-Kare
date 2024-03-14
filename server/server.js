@@ -13,7 +13,8 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
-const testingRoutes = require("./routes/testingRoutes");
+const testingRoutes = require('./routes/testingRoutes');
+const slackRoutes = require('./routes/slackRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -38,11 +39,15 @@ app.prepare().then(() => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
-  const DB_USER = process.env.MONGO_DB_USERNAME
-  const DB_PASS = process.env.MONGO_DB_PWD
+  // Retrieve environmental variables for MongoDB auth // Defined in docker-compose.yml
+  // const DB_USER = process.env.MONGO_DB_USERNAME
+  // const DB_PASS = process.env.MONGO_DB_PWD
+
   // Connect to mongoDB
   // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
-   const mongoURI = `mongodb://admin:supersecret@mongo`
+  const mongoURI = `mongodb://admin:supersecret@mongo`
+  // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
+  const mongoURIAtlas = process.env.MONGODB_URI;
 
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
@@ -56,60 +61,57 @@ app.prepare().then(() => {
 
 //================== TEST
 
-// Test MongoDB connection route
-server.get('/test-db', async (req, res) => {
-  try {
-    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
-    const connectionState = mongoose.connection.readyState;
-    if (connectionState === 1) {
-      res.status(200).json({ message: 'Successfully connected to MongoDB' });
-    } else {
-      res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+  // Test MongoDB connection route
+  server.get('/test-db', async (req, res) => {
+    try {
+      await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+      const connectionState = mongoose.connection.readyState;
+      if (connectionState === 1) {
+        res.status(200).json({ message: 'Successfully connected to MongoDB' });
+      } else {
+        res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
-  }
-});
+  });
 
 
-// TEST POST route to create a new user 
-server.post('/users', async (req, res) => {
-  try {
-    const newUser = new User({
-      username: req.body.username,
-      password: req.body.password
-    });
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+  // TEST POST route to create a new user 
+  server.post('/users', async (req, res) => {
+    try {
+      const newUser = new User({
+        username: req.body.username,
+        password: req.body.password
+      });
+      await newUser.save();
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
 
-// TEST GET route to fetch all users
-server.get('/users', async (req, res) => {
-  try {
-    const users = await User.find({}, 'username'); // Exclude passwords from the response
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+  // TEST GET route to fetch all users
+  server.get('/users', async (req, res) => {
+    try {
+      const users = await User.find({}, 'username'); // Exclude passwords from the response
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
+//=========================== TEST 
 
-
-//=========================== TEST   
-    // Custom routes
-    server.get("/hello", (req, res) => {
-      return res.status(200).send("Hello world");
-    });
-    server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-    server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
-    server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
-  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
+  
+  // Custom routes
+  server.use("/auth", authRoutes); 
+  server.use("/clusters", clustersRoutes); 
+  server.use("/metrics", metricsRoutes);
+  server.use("/testing", testingRoutes); 
+  server.use("/slack", slackRoutes);
 
   // Fallback route
-  // This line is crucial when integrating Next.js with a custom server like Express, handles 404
   server.get("*", (req, res) => {
     return handle(req, res);
   });

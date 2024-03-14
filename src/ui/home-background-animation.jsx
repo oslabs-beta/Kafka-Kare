@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "../../styles/cn";
+import { cn } from "../styles/cn";
 import { useEffect, useRef, useState } from "react";
 
 export const BackgroundGradientAnimation = ({
@@ -18,6 +18,7 @@ export const BackgroundGradientAnimation = ({
   interactive = true,
   containerClassName,
 }) => {
+  console.log('background is rendered')
   const interactiveRef = useRef(null);
 
   const [curX, setCurX] = useState(0);

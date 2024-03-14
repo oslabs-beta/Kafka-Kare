@@ -24,7 +24,7 @@ tokenController.issueToken = (req, res, next) => {
     httpOnly: true, 
     secure: isProduction // use 'secure' flag only in production
   });
-  console.log('Token issued');
+  console.log('Token issued: ', token);
 
   return next();
 };

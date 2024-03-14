@@ -1,9 +1,6 @@
 const axios = require("axios");
 const metricsController = {};
 
-const getPrometheusURI = async (userId) => {
-  // Retrieve user's promURI from database
-};
 
 /* ------------------------------- Get metrics ------------------------------ */
 metricsController.getMetrics = async (req, res, next) => {
@@ -29,7 +26,7 @@ metricsController.getMetrics = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `metricsController.getMetrics: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in metricsController.getMetrics." },
     });
   }

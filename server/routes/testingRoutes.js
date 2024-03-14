@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const testingController = require("../controllers/testingController");
 
-// Route for getting all users
+// TESTING // Route for getting ALL users
 router.get(
     '/users', 
     testingController.getAllUsers, 
@@ -12,7 +12,7 @@ router.get(
 });
 
 
-// Route for getting all clusters
+// TESTING // Route for getting ALL clusters
 router.get(
     '/clusters',
     testingController.getAllClusters,

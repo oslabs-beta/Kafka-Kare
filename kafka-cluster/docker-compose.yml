@@ -1,0 +1,58 @@
+version: '3'
+
+# This container includes 3 services - zookeeper, prometheus, and kafka
+services: 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+    networks:
+      - local-cluster-prom-network
+
+  prometheus: 
+    image: prom/prometheus
+    volumes:
+      - './prometheus.yml:/etc/prometheus/prometheus.yml'
+    networks:
+      - local-cluster-prom-network
+      - kafka-kare_kafka-kare-network # Need to connect to external network to allow Grafana access to Prometheus
+    ports:
+      - 9090:9090
+
+  kafka:
+    image: dockerpromkafka:latest
+    container_name: kafka
+    ports:
+      - '9092:9092' # Accessible to client on Port 9092
+      - '7070:7070' # Exposes Port 7070 for JMX Exporter, which Prometheus scrapes
+    depends_on:
+      - zookeeper
+      - prometheus
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # EXTRA_ARGS: adds the JMX Exporter Java agent to Kafka, specifying the port (7070) and the configuration file (kafka.yml) that determines which metrics to expose.
+      EXTRA_ARGS: -javaagent:/opt/kafka_2.13-2.8.1/libs/jmx_prometheus_javaagent.jar=7070:/opt/kafka_2.13-2.8.1/libs/kafka.yml
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_ADVERTISED_PORT: 9092
+      JMX_PORT: 1099 # This is separate from JMX Exporter
+      KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=localhost
+        -Dcom.sun.management.jmxremote.host=localhost
+        -Dcom.sun.management.jmxremote.port=9999
+        -Dcom.sun.management.jmxremote.rmi.port=9999
+        -Djava.net.preferIPv4Stack=true'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - local-cluster-prom-network
+
+networks:
+  local-cluster-prom-network:
+    driver: bridge
+  kafka-kare_kafka-kare-network: # Need to connect to external network to allow Grafana access to Prometheus
+    external: true
