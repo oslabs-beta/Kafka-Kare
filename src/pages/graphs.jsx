@@ -17,6 +17,8 @@ const Graphs = () => {
     </Grid> */}
     <iframe src='http://localhost:3000/home' title='home page'></iframe>
 
+    <iframe width="1000px" height="800px" src="http://localhost:3002/public-dashboards/f34615ea1c0a4d5f86f7b90e9dbba246"></iframe>
+
     <iframe key={iframeReload} width="1000px" height="800px" src ='http://localhost:3002/public-dashboards/fc1bde4e782f41c0a17a58ebf7820a14' title='throughput'></iframe>
 
     <iframe  width="1000px" height="800px" src="http://localhost:3002/public-dashboards/c5c3b159fc804e52b99d97c7d13bf9b5" title='actually-throughput'></iframe>
