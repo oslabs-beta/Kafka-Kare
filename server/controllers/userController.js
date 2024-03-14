@@ -88,7 +88,6 @@ userController.verifyUser = async (req, res, next) => {
 };
 
 /* ------------------------------- LOGOUT USER ------------------------------ */
-/* ------------------------------- LOGOUT USER ------------------------------ */
 userController.logout = async (req, res, next) => {
   console.log('In userController.logout'); // testing
   const userId = res.locals.userId;
