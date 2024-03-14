@@ -9,11 +9,24 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
+  birthday: {
+    type: Date
   },
   email: {
     type: String

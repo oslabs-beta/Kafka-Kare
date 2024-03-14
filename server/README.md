@@ -27,6 +27,13 @@
 - **GET /clusters/favorites**: Route for getting favorite clusters
 - **GET /clusters/notFavorites**: Route for getting not-favorite clusters
 
+/slack
+- **POST /slack/add**: Route for adding Slack link
+- **PATCH /slack/update**: Route for editing Slack link
+- **GET /slack**: Route for retrieving a Slack link
+
+
+
 ## Configuration
 
 Environment vairables: 
