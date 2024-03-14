@@ -7,6 +7,7 @@ import {
     Box,
     Heading,
     Flex,
+    Image,
     Button,
     InputGroup,
     Stack,
@@ -85,11 +86,12 @@ const LoginForm = () => {
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={handleSubmit}>
-        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' h="65vh" borderRadius="10px" justifyContent='center'>
+        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
-          <Box>
-            <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
-            <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text>
+          <Box mb={6} display='flex' justifyContent='center'>
+            <Image w={260} src='kafka-kare-logo-v3.png' />
+            {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
+            <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
           </Box>
           {/* Username input field */}
           <FormControl>
@@ -110,10 +112,10 @@ const LoginForm = () => {
           </FormControl>
           {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
           <FormControl>
-            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Login</Button>
+            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Login</Button>
           </FormControl>
           {/* Link to navigate to the signup page */}
-          <Box mt={6} textAlign='center'>
+          <Box mt={4} textAlign='center'>
             New to us?{' '}
             <Link color="brand.bg" onClick={handleSignup}>
               Sign Up
