@@ -32,4 +32,15 @@ router.get(
     return res.status(201).json({ message: `User logged out successfully: ${res.locals.username}` });
 });
 
+// Route for changing user password
+router.patch(
+  '/password/update',
+  tokenController.verifyToken,
+  userController.updatePassword,
+  (req, res) => {
+    return res.status(200).json({ message: 'User updated password successfully' });
+  }
+)
+
+
 module.exports = router;
