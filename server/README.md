@@ -3,13 +3,13 @@
 ## Setup Instructions
 
 1. You will need a .env file. Look at the .env.example file for inspiration. 
-2. Install depenendencies: 'npm install'
+2. Install depenendencies: `npm install`
 3. Start the server: `npm run server`
 
 ## Docker Setup
 
 - Note: This server application was designed to run in Docker
-- Please visit the README.md file in the project root directory for setup instructions
+- Please visit the README.md file in the project root directory for Docker setup instructions
 
 ## Endpoints
 
@@ -18,6 +18,7 @@
 - **POST /auth/login**: Route for user login
 - **GET /auth/logout**: Route for user logout
 - **UPDATE /auth/password/update**: Route for updating user password
+- **DELETE /account/delete**: Route for deleting a user account
 
 /clusters
 - **GET /clusters/userClusters**: Route for getting all clusters from a user

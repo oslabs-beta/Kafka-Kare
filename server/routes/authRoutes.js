@@ -44,7 +44,7 @@ router.patch(
   }
 )
 
-// Route for deleting a user account // untested
+// Route for deleting a user account
 router.delete(
   '/account/delete',
   tokenController.verifyToken,
