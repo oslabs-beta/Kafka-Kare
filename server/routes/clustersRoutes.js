@@ -3,7 +3,7 @@ const router = express.Router();
 const clusterController = require("../controllers/clusterController");
 const tokenController = require("../controllers/tokenController");
 
-// Route for getting all of a user's clusters
+// Route for getting all clusters from a user
 router.get(
   '/userClusters',
   tokenController.verifyToken,
@@ -44,11 +44,11 @@ router.patch(
   }
 )
 
-// Route for changing favorite status of a cluster
+// Route for toggling favorite status of a cluster
 router.patch(
   '/favorites/:clusterId',
   tokenController.verifyToken,
-  clusterController.changeFavorite,
+  clusterController.toggleFavorite,
   (req, res) => {
     return res.status(200).json({ message: 'Cluster favorites updated successfully' });
   }

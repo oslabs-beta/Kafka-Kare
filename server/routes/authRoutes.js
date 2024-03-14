@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const tokenController = require("../controllers/tokenController");
 
-// Route for registering a user
+// Route for user signup
 router.post(
   '/signup', 
   userController.createUser, 
@@ -13,7 +13,7 @@ router.post(
 });
 
 
-// Route for logging in
+// Route for user login
 router.post(
   '/login', 
   userController.verifyUser, 

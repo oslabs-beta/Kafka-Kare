@@ -122,8 +122,8 @@ clusterController.updateCluster = async (req, res, next) => {
 
 
 /* ------------------------- CHANGE FAVORITE STATUS ------------------------- */
-clusterController.changeFavorite = async (req, res, next) => {
-  console.log("In clusterController.changeFavorite"); // testing
+clusterController.toggleFavorite = async (req, res, next) => {
+  console.log("In clusterController.toggleFavorite"); // testing
   
   const clusterId = req.params.clusterId; // // Destructure from req.params
   const { userId } = res.locals; // Destructure from prior middleware
@@ -154,9 +154,9 @@ clusterController.changeFavorite = async (req, res, next) => {
 
   } catch (err) {
     return next({
-      log: `clusterController.changeFavorite: ERROR ${err}`,
+      log: `clusterController.toggleFavorite: ERROR ${err}`,
       status: 400,
-      message: { err: "Error occurred in clusterController.changeFavorite." },
+      message: { err: "Error occurred in clusterController.toggleFavorite." },
     });
   }
 };
