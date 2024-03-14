@@ -14,6 +14,7 @@ const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 const testingRoutes = require('./routes/testingRoutes');
+const slackRoutes = require('./routes/slackRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -108,10 +109,11 @@ app.prepare().then(() => {
   server.get("/hello", (req, res) => {
     return res.status(200).send("Hello world");
   });
-  server.use("/auth", authRoutes); // endpoints at /auth/signup and /auth/login
-  server.use("/clusters", clustersRoutes); // endpoints at /clusters and /clusters/favorites and /clusters/notFavorites
-  server.use("/metrics", metricsRoutes); // endpoints at /metrics/:clusterId
-  server.use("/testing", testingRoutes); //endpoints at /testing/users and /testing/clusters
+  server.use("/auth", authRoutes); 
+  server.use("/clusters", clustersRoutes); 
+  server.use("/metrics", metricsRoutes);
+  server.use("/testing", testingRoutes); 
+  server.use("/slack", slackRoutes);
 
   // Fallback route
   // This line is crucial when integrating Next.js with a custom server like Express, handles 404
