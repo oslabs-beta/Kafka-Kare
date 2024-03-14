@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "../../styles/cn";
+import { cn } from "../styles/cn";
 import { useEffect, useRef, useState } from "react";
 
 export const BackgroundGradientAnimation = ({

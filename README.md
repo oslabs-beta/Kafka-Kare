@@ -22,6 +22,12 @@ docker compose up -d
 ```
 cd kafka-cluster
 ```
+<<<<<<< HEAD
+=======
+
+4.5. build kafka cluster image with 
+    - docker build -t dockerpromkafka:latest .
+>>>>>>> fb68b6b2c8361c782a65796a42cf15c17af040cf
 
 5. Spin up demo kafka-cluster container (demo Kafka-cluster container must be spun up after application container)
 ```

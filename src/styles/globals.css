@@ -66,8 +66,9 @@
 
   /* STYLING FOR LOGIN PAGE */
   
-  
-  
+  .login-content {
+    background-image: url('../../public/kafka-kare-background-v2.jpg');
+  }
   
 
   
