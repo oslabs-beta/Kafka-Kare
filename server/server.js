@@ -48,7 +48,6 @@ app.prepare().then(() => {
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
-
 //options for mongoose.connect
   //   {useNewUrlParser: true,
   //   useUnifiedTopology: true,

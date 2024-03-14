@@ -1,7 +1,7 @@
 version: '3'
 services: 
   kafka-kare-server: 
-    image: kafka-kare-test
+    image: kafka-kare-server 
     ports: 
       - "3001:3001"
     depends_on:
@@ -18,7 +18,16 @@ services:
     depends_on:
      - kafka-kare-server
     networks:
-     - kafka-kare    
+     - kafka-kare
+    develop:
+     watch:
+        - action: sync
+          path: ./
+          target: /
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json   
   #does not work if you change name from mongo 
   mongo:
     image: mongo
