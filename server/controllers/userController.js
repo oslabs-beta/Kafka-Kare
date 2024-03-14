@@ -20,7 +20,7 @@ userController.createUser = async (req, res, next) => {
       console.log('user existed');
       return next({
         log: 'username was not unique',
-        status: 400,
+        status: 500,
         message: { err: 'username already exists in database'}
       })
     } else {
@@ -33,19 +33,18 @@ userController.createUser = async (req, res, next) => {
       password: password
     });
     console.log('New user stored in database: ', user.username);
-    
+    res.locals.userId = user.id;
     res.locals.username = user.username;
     res.locals.userId = user.id;
     return next();
   } catch (err) {
     return next({
       log: `userController.createUser: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.createUser." },
     });
   }
 };
-
 
 // ---------------------------- VERIFY USER ---------------------------- //
 userController.verifyUser = async (req, res, next) => {
@@ -77,12 +76,13 @@ userController.verifyUser = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.verifyUser: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.verifyUser." },
     });
   }
 };
 
+/* ------------------------------- LOGOUT USER ------------------------------ */
 userController.logout = async (req, res, next) => {
   console.log('In userController.logout'); // testing
   const userId = res.locals.userId;
@@ -105,11 +105,40 @@ userController.logout = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.logout: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in userController.logout." },
     });
   }
 };
+
+/* ----------------------------- UPDATE PASSWORD ---------------------------- */
+userController.updatePassword = async (req, res, next) => {
+  console.log('In userController.updatePassword'); // testing
+  console.log('req.body contains: ', req.body);
+  const { newPassword } = req.body; // Destructure from req.body
+  const { userId } = res.locals; // Destructure from prior middleware
+
+  // Update password in database
+  try {
+    const user = await User.findByIdAndUpdate(userId, {
+      password: newPassword
+    }, { new: true }); 
+
+    if (!user) {
+      return res.status(404).send('User was not found');
+    }
+    
+    console.log('Password updated successfully: ', user.password);
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.updatePassword: ERROR ${err}`,
+      status: 500,
+      message: { err: "Error occurred in userController.updatePassword." },
+    });
+  }
+};
+
 
 
 // Export

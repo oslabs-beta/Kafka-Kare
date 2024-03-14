@@ -26,7 +26,7 @@ metricsController.getMetrics = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `metricsController.getMetrics: ERROR ${err}`,
-      status: 400,
+      status: 500,
       message: { err: "Error occurred in metricsController.getMetrics." },
     });
   }

@@ -22,22 +22,27 @@ docker compose up -d
 ```
 cd kafka-cluster
 ```
-<<<<<<< HEAD
-=======
 
-4.5. build kafka cluster image with 
-    - docker build -t dockerpromkafka:latest .
->>>>>>> fb68b6b2c8361c782a65796a42cf15c17af040cf
+5. (First time running the application) Build kafka cluster image 
+```
+docker build -t dockerpromkafka:latest .
+```
 
-5. Spin up demo kafka-cluster container (demo Kafka-cluster container must be spun up after application container)
+6. Spin up demo kafka-cluster container (demo Kafka-cluster container must be spun up after application container)
 ```
 docker compose up -d
 ```
 
-6. Log into Grafana account at locahost:3002
+7. Run the consumer followed by producer script
+```
+node consumer.js
+node producer.js
+```
+
+8. Log into Grafana account at locahost:3002
 - Sign in with credentials admin/kafkakarepw
 
-7. Visit application frontend at localhost:3000
+9. Visit application frontend at localhost:3000
 - Enjoy
 
 
