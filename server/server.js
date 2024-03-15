@@ -49,16 +49,15 @@ app.prepare().then(() => {
   // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
   const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURI);
+  mongoose.connect(mongoURIAtlas);
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
-
-  //options for mongoose.connect
-    //   {useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
-    // }
+//options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
 
 //================== TEST
 

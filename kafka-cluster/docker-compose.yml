@@ -2,14 +2,26 @@ version: '3'
 
 # This container includes 3 services - zookeeper, prometheus, and kafka
 services: 
+  # zookeeper:
+  #   image: wurstmeister/zookeeper
+  #   container_name: zookeeper
+  #   ports:
+  #     - '2181:2181'
+  #   networks:
+  #     - local-cluster-prom-network
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: docker.io/bitnami/zookeeper:3.8
+    restart: always
+    hostname: zookeeper
     container_name: zookeeper
     ports:
-      - '2181:2181'
+      - "2181:2181" 
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ALLOW_ANONYMOUS_LOGIN: yes
     networks:
       - local-cluster-prom-network
-
   prometheus: 
     image: prom/prometheus
     volumes:

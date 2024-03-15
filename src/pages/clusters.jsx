@@ -63,6 +63,12 @@ export default function Home() {
         console.log('Get User\'s Not Favorite Clusters Response:', responseNotFavorite.data);
         clustersStore.setState({clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
         clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
+        
+        // update states about user's slack webhook url
+        const responseSlackWebhookURL = await axios('http://localhost:3001/slack', {withCredentials: true});
+        setRenderClustersPage(true);
+        console.log('Get User\'s Slack Webhook URL Response:', responseSlackWebhookURL.data);
+        clustersStore.setState({slackWebhookURL: responseSlackWebhookURL.data});
       } catch (err) {
         console.log(err);
         setRenderClustersPage(false);
@@ -81,11 +87,6 @@ export default function Home() {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isNewClusterOpen: false});
-    clustersStore.setState({clusterName: ''});
-    clustersStore.setState({clusterPort: ''});
-    clustersStore.setState({isClusterNameEmpty: false});
-    clustersStore.setState({isClusterPortEmpty: false});
-    clustersStore.setState({isNewClusterOpen: false});
   }
   
   /*
@@ -95,11 +96,9 @@ export default function Home() {
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
-    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
-    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
 
       // actions when addClusterModal close
@@ -126,11 +125,6 @@ export default function Home() {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isEditClusterOpen: false});
-    clustersStore.setState({clusterName: ''});
-    clustersStore.setState({clusterPort: ''});
-    clustersStore.setState({isClusterNameEmpty: false});
-    clustersStore.setState({isClusterPortEmpty: false});
-    clustersStore.setState({isEditClusterOpen: false});
   }
 
   /*
@@ -140,11 +134,9 @@ export default function Home() {
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
-    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
-    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
     if (clusterName !== '' && clusterPort !== '') {
 
       // actions when editClusterModal close
@@ -189,7 +181,7 @@ export default function Home() {
     }
     clustersStore.setState({isDeleteClusterOpen: false});
     try {
-      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
+      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {withCredentials: true});
       console.log('Delete Cluster Response:', response.data);
 
       addToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success', 3000);
@@ -270,9 +262,8 @@ export default function Home() {
    */
   const handleSlackWebhookURLSubmit = async () => {
     try {
-      alert('Slack Webhook URL:', slackWebhookURL);
-      // const response = await axios.patch(`http://localhost:3001/...`, {slackWebhookURL: slackWebhookURL}, {withCredentials: true});
-      // console.log('Change Slack Webhook URL Response:', response.data);
+      const response = await axios.patch(`http://localhost:3001/slack/update`, {slackUrl: slackWebhookURL}, {withCredentials: true});
+      console.log('Change Slack Webhook URL Response:', response.data);
       clustersStore.setState({isDrawerOpen: false});
       addToast('Slack Webhook URL Updated', 'We\'ve updated your Slack Webhook URL for you.', 'success', 3000);
     } catch (err) {console.log(err)}

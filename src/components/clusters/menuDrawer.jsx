@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FormLabel, Box, Link, Code, Textarea, Flex, Icon, IconButton,
+  FormLabel, Box, Link, Code, Textarea, Flex, Icon, IconButton, useToast,
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
@@ -23,12 +23,12 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
       && slackWebhookURL.lastIndexOf('/') - slackWebhookURL.indexOf('/B') >= 9
       && slackWebhookURL.length >= 77
     ) {
-      alert('Right Format');
+      clustersStore.setState({slackWebhookURL: slackWebhookURL});
       handleSlackWebhookURLSubmit();
-    } else {
-      alert('Wrong Format');
     }
+    else toast({position: 'top', title: 'URL Format Incorrect', description: 'Format of Slack Webhook URL is Incorrect.', status: 'error', duration: 3000, isClosable: true, containerStyle: {marginTop: '70px'}});
   }
+  const toast = useToast();
 
   // declare slack webhook step array
   // { title: (String), description: (Function that returns JSX)}
