@@ -27,7 +27,6 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-  // const session = await auth();
 
   // Function to handle form input changes
   const handleChange = (e) => {

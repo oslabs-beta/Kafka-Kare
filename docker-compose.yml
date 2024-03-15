@@ -21,7 +21,7 @@ services:
     depends_on:
      - kafka-kare-server
     networks:
-     - kafka-kare
+     - kafka-kare-network
     develop:
      watch:
         - action: sync
