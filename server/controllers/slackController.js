@@ -38,7 +38,7 @@ slackController.getSlack = async (req, res, next) => {
   
     // Get slack link from database
     try {
-      const user = await User.findById(userId, { new: true }); 
+      const user = await User.findById(userId); 
 
       if (!user) {
         return res.status(404).send('User\'s slack url not found');
