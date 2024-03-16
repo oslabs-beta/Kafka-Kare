@@ -28,7 +28,7 @@ metricsController.getMetrics = async (req, res, next) => {
         params: { query }
       });
 
-    console.log('Metrics data retrieved successfully');
+    console.log('Retrieved data successfully');
     const queryData = queryResponse.data.data.result // This is the form of the response from Prometheus
 
     res.locals.queryData = queryData;
