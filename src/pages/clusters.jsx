@@ -126,21 +126,12 @@ export default function Home() {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isEditClusterOpen: false});
-    clustersStore.setState({clusterName: ''});
-    clustersStore.setState({clusterPort: ''});
-    clustersStore.setState({isClusterNameEmpty: false});
-    clustersStore.setState({isClusterPortEmpty: false});
-    clustersStore.setState({isEditClusterOpen: false});
   }
 
   /*
    * Edit Cluster Event
    */
   const handleEditCluster = async (editClusterID) => {
-
-    // check input format
-    if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
-    if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
 
     // check input format
     if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
@@ -152,7 +143,7 @@ export default function Home() {
 
       addToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success', 3000);
 
-      // update states about user clusters
+      // update states about user clusters      {123: {name: 'cluster2', porty: 'localhost:9091', favorite}}
       clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(editClusterID, {...clusterDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       if (clusterFavoriteMap.has(editClusterID)) clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(editClusterID, {...clusterFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});

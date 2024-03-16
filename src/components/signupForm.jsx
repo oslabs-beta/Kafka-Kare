@@ -98,10 +98,6 @@ const SignupForm = ({ onSubmit }) => {
           {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
           {/* Submit button */}
           <FormControl>
-<<<<<<< HEAD
-            <Button borderRadius="9px" type="submit" variant="solid" colorScheme="teal" width="full">Sign Up</Button>
-          </FormControl>
-=======
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Sign Up</Button>
           </FormControl>
           {/* Link to navigate to the login page */}
@@ -109,7 +105,6 @@ const SignupForm = ({ onSubmit }) => {
             Welcome!{' '}
             <Link color="brand.bg" onClick={handleLogin}>Login</Link>
           </Box>
->>>>>>> dev
         </Stack>
       </form>
     </FormControl>

@@ -10,7 +10,6 @@ import {
   } from "@chakra-ui/react";
 
 const Login = () => {
-  const router = useRouter();
 
   return (
     // Flex container to center the content vertically and horizontally
