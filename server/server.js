@@ -53,12 +53,11 @@ app.prepare().then(() => {
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
-
-  //options for mongoose.connect
-    //   {useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
-    // }
+//options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
 
 //================== TEST
 
