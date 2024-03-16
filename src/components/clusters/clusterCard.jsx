@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-  Flex, Heading, Spacer, IconButton, Stack, StackDivider, Box, Text, Button, Icon,
+  Flex, Heading, Spacer, IconButton, Stack, StackDivider, Box, Text, Button, Icon, useToast,
   Card, CardHeader, CardBody, CardFooter,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { RxStar, RxStarFilled } from 'react-icons/rx';
 import path from 'path';
-import { clustersStore } from '../../store/clusters';
+import { handleEditClusterOpen, handleDeleteClusterOpen, handleFavoriteChange } from '../../utils/clustersHandler';
 
-const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
+const ClusterCard = ({ clusterObj }) => {
+  
+  // declare variable to use toast and push
   const { push } = useRouter();
-
-  // actions when editClusterModal open
-  const handleEditClusterOpen = () => {
-    clustersStore.setState({isEditClusterOpen: true});
-    clustersStore.setState({clusterName: clusterObj.name});
-    clustersStore.setState({oldClusterName: clusterObj.name});
-    clustersStore.setState({clusterPort: clusterObj.hostnameAndPort});
-    clustersStore.setState({editClusterID: clusterObj._id});
-  }
-
-  // actions when deleteClusterModal open
-  const handleDeleteClusterOpen = () => {
-    clustersStore.setState({isDeleteClusterOpen: true});
-    clustersStore.setState({oldClusterName: clusterObj.name});
-    clustersStore.setState({deleteClusterID: clusterObj._id});
-  }
+  const toast = useToast();
   
   return (
 
@@ -43,7 +30,7 @@ const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
           <IconButton
             _hover={''} isRound={true} aria-label='add favorite cluster' variant='ghost'
             icon={clusterObj.favorite ? <Icon as={RxStarFilled} color='yellow.300' boxSize={6} /> : <Icon as={RxStar} boxSize={5} />}
-            onClick = {() => {handleFavoriteChange(clusterObj._id);}}
+            onClick = {() => {handleFavoriteChange(toast, clusterObj._id);}}
           />
 
           <Spacer />
@@ -51,7 +38,7 @@ const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
           {/* Delete Cluster Button */}
           <IconButton
             _hover={''} isRound={true} aria-label='delete cluster' mr={1} icon={<CloseIcon color='gray.500' boxSize={3} />} variant='ghost'
-            onClick = {() => handleDeleteClusterOpen()}
+            onClick = {() => handleDeleteClusterOpen(clusterObj)}
           />
         </Flex>
       </CardHeader>
@@ -88,7 +75,7 @@ const ClusterCard = ({ clusterObj, handleFavoriteChange }) => {
           <Spacer />
 
           {/* Edit Cluster Button */}
-          <IconButton aria-label='edit cluster' variant='ghost' onClick={() => handleEditClusterOpen()} icon={<EditIcon boxSize={5} />} />
+          <IconButton aria-label='edit cluster' variant='ghost' onClick={() => handleEditClusterOpen(clusterObj)} icon={<EditIcon boxSize={5} />} />
         </Flex>
       </CardFooter>
     </Card>

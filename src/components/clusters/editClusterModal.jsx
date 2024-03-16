@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon,
+  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon, useToast,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react';
 import { SiApachekafka } from 'react-icons/si';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { clustersStore } from '../../store/clusters';
+import { handleEditClusterClose, handleEditCluster, handleClusterNameChange, handleClusterPortChange } from '../../utils/clustersHandler';
 
-const EditClusterModal = ({
-  handleEditClusterClose, handleClusterNameChange, handleClusterPortChange, handleEditCluster
-}) => {
+const EditClusterModal = () => {
 
   // declare state variables
   const clusterName = clustersStore(state => state.clusterName);
@@ -22,6 +21,9 @@ const EditClusterModal = ({
 
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
+
+  // declare variable to use toast
+  const toast = useToast();
 
   return (
 
@@ -71,7 +73,7 @@ const EditClusterModal = ({
           <Button mr={3} onClick={handleEditClusterClose}>Cancel</Button>
 
           {/* Submit Button */}
-          <Button colorScheme='blue' onClick={() => handleEditCluster(editClusterID)}>Submit</Button>
+          <Button colorScheme='blue' onClick={() => handleEditCluster(toast, editClusterID)}>Submit</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
