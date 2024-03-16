@@ -18,7 +18,7 @@ metricsController.getMetrics = async (req, res, next) => {
 
     // More visually interesting, useless metric
     const query = `scrape_duration_seconds`
-    
+
     console.log('query: ', query);
 
     console.log('Querying Prometheus...')
@@ -27,9 +27,9 @@ metricsController.getMetrics = async (req, res, next) => {
       });
 
     console.log('Query response data successfully received');
-    const data = response.data.data.result // This is the form of the response from Prometheus
+    const queryData = queryResponse.data.data.result // This is the form of the response from Prometheus
 
-    res.locals.queryData = data;
+    res.locals.queryData = queryData;
     return next();
   } catch (err) {
     return next({
