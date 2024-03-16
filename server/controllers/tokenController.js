@@ -39,7 +39,6 @@ tokenController.verifyToken = (req, res, next) => {
     // Shorten the console log
     const shortenedToken = token.slice(-10)
 
-    console.log('here');
     console.log(`Token from cookie: ...${shortenedToken}`)
 
     // Check token
@@ -50,7 +49,7 @@ tokenController.verifyToken = (req, res, next) => {
     // Verify token, extract userId and username
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
-      console.log('Token verified.');
+      console.log('JWT Token verified.');
       res.locals.userId = decoded.userId;
       res.locals.username = decoded.username;
       return next();
