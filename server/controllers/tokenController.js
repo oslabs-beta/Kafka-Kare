@@ -23,7 +23,9 @@ tokenController.issueToken = (req, res, next) => {
     httpOnly: true, 
     // secure: isProduction // use 'secure' flag only in production
   });
-  console.log('Token issued: ', token);
+  
+  const shortenedToken = token.slice(-10)
+  console.log('Token from cookie: ...', shortenedToken)
 
   return next();
 };
