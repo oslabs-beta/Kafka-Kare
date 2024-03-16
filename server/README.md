@@ -34,6 +34,9 @@
 - **PATCH /slack/update**: Route for editing Slack link
 - **GET /slack**: Route for retrieving a Slack link
 
+/metrics
+- **GET /metrics/:clusterId**: Route for obtaining metrics from a cluster
+
 ## Configuration
 
 Environment vairables: 
