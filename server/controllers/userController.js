@@ -139,7 +139,9 @@ userController.updatePassword = async (req, res, next) => {
     // Password matches
     console.log(`Password verified. Updating password for <${user.username}>.`);
     user.password = newPassword;
-    await user.save();
+    
+    // This triggers the pre-save hook to hash the password
+    await user.save(); 
 
     console.log(`Password updated successfully for <${user.username}>.`);
     return next();
