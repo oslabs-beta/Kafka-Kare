@@ -293,12 +293,40 @@ export const handleChangePassword = async (toast) => {
   if (oldPassword !== '' && newPassword !== '') {
     handleChangePasswordClose();
     try {
-      const response = await axios.post(`http://localhost:3001/auth/changePassword`, {oldPassword, newPassword}, {withCredentials: true});
-      console.log('Logout Response:', response.data);
+      const response = await axios.post(`http://localhost:3001/auth/password/update`, {oldPassword, newPassword}, {withCredentials: true});
+      console.log('Change Password Response:', response.data);
       addToast('Change Password', 'We\'ve updated your Password for you.', 'success', 3000, toast);
     } catch (err) {
       console.log(err);
       addToast('Error Occurred', 'Something went wrong when changing password.', 'error', 3000, toast);
+    }
+  }
+}
+
+// actions when deleteAccountModal closes
+export const handleDeleteAccountClose = () => {
+  clustersStore.setState({isDeleteAccountModalOpen: false});
+  clustersStore.setState({isOldPasswordEmpty: false});
+  clustersStore.setState({oldPassword: ''});
+}
+
+/*
+ * Delete Account Event
+ */
+export const handleDeleteAccount = async (toast, push) => {
+  const password = clustersStore.getState().oldPassword;
+
+  if (password === '') clustersStore.setState({isOldPasswordEmpty: true});
+  if (password !== '') {
+    handleDeleteAccountClose();
+    try {
+      const response = await axios.post(`http://localhost:3001/auth/account/delete`, {password}, {withCredentials: true});
+      console.log('Delete Account Response:', response.data);
+      push('/');
+      addToast('Delete Account', 'We\'ve deleted your account for you.', 'success', 3000, toast);
+    } catch (err) {
+      console.log(err);
+      addToast('Error Occurred', 'Something went wrong when deleting account.', 'error', 3000, toast);
     }
   }
 }

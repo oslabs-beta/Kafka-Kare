@@ -22,7 +22,7 @@ const ChangePasswordModal = () => {
 
   return (
 
-    /* Edit Cluster Modal */
+    /* Change Password Modal */
     <Modal isOpen={isChangePasswordModalOpen} onClose={handleChangePasswordClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent top='3.5rem'>
@@ -32,7 +32,7 @@ const ChangePasswordModal = () => {
         <ModalCloseButton />
         <ModalBody>
 
-          {/* Name Input */}
+          {/* Old Password Input */}
           <FormControl isRequired isInvalid={isOldPasswordEmpty} mb={8}>
             <FormLabel fontWeight = 'bold'>Old password</FormLabel>
             <InputGroup>
@@ -47,7 +47,7 @@ const ChangePasswordModal = () => {
             <FormErrorMessage><b>Old password</b>&nbsp;shouldn't be Empty</FormErrorMessage>
           </FormControl>
 
-          {/* Port Input */}
+          {/* New Password Input */}
           <FormControl isRequired isInvalid={isNewPasswordEmpty} mb={8}>
             <FormLabel fontWeight = 'bold' mb='0.5rem'>New Password</FormLabel>
             <InputGroup>

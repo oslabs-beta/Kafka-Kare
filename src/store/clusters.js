@@ -68,6 +68,9 @@ export const clustersStore = create((set) => ({
   // is Change Password Modal Open
   isChangePasswordModalOpen: false,
 
+  // is Change Password Modal Open
+  isDeleteAccountModalOpen: false,
+
   // ID of Edited Cluster
   editClusterID: '',
   
