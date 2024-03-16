@@ -7,7 +7,7 @@ const addToast = (title, description, status, duration, toast) => {
 }
 
 // fetch user clusters when page loaded
-export const handleFetchClusters = async (toast, push) => {
+export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
   try {
     // update states about user's all clusters
     const responseAll = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
@@ -38,12 +38,12 @@ export const handleFetchClusters = async (toast, push) => {
   } catch (err) {
     console.log(err);
     clustersStore.setState({renderClustersPage: false});
-    push('/home');
+    push('/');
     addToast('Authentication Required', 'Please login or sign-up first.', 'error', 3000, toast);
   }
 };
 
-// actions when addClusterModal close
+// actions when addClusterModal closes
 export const handleNewClusterClose = () => {
   clustersStore.setState({clusterName: ''});
   clustersStore.setState({clusterPort: ''});
@@ -68,7 +68,7 @@ export const handleNewCluster = async (toast) => {
   if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
   if (clusterName !== '' && clusterPort !== '') {
 
-    // actions when addClusterModal close
+    // actions when addClusterModal closes
     handleNewClusterClose();
     try {
       const response = await axios.post('http://localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
@@ -96,7 +96,7 @@ export const handleEditClusterOpen = (clusterObj) => {
   clustersStore.setState({editClusterID: clusterObj._id});
 }
 
-// actions when editClusterModal close
+// actions when editClusterModal closes
 export const handleEditClusterClose = () => {
   clustersStore.setState({clusterName: ''});
   clustersStore.setState({clusterPort: ''});
@@ -123,7 +123,7 @@ export const handleEditCluster = async (toast, editClusterID) => {
   if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
   if (clusterName !== '' && clusterPort !== '') {
 
-    // actions when editClusterModal close
+    // actions when editClusterModal closes
     handleEditClusterClose();
 
     try {
@@ -191,19 +191,19 @@ export const handleDeleteCluster = async (toast, deleteClusterID) => {
   }
 }
 
-// actios when name input changes
+// actions when name input changes
 export const handleClusterNameChange = (event) => {
   clustersStore.setState({isClusterNameEmpty: false});
   clustersStore.setState({clusterName: event.target.value});
 };
 
-// actios when port input changes
+// actions when port input changes
 export const handleClusterPortChange = (event) => {
   clustersStore.setState({isClusterPortEmpty: false});
   clustersStore.setState({clusterPort: event.target.value});
 };
 
-// actios when search input changes
+// actions when search input changes
 export const handleClusterSearchValueChange = (curClusterSearchValue) => {
   const clusterMap = clustersStore.getState().clusterMap;
   const clusterFavoriteMap = clustersStore.getState().clusterFavoriteMap;
@@ -232,7 +232,7 @@ export const handleClusterSearchValueChange = (curClusterSearchValue) => {
 }
 
 /*
- * Toggle Cluster Favorite
+ * Toggle Cluster Favorite Event
  */
 export const handleFavoriteChange = async (toast, favoriteClusterID) => {
   const clusterMap = clustersStore.getState().clusterMap;
@@ -272,15 +272,74 @@ export const handleFavoriteChange = async (toast, favoriteClusterID) => {
   }
 }
 
+// actions when changePasswordModal closes
+export const handleChangePasswordClose = () => {
+  clustersStore.setState({isChangePasswordModalOpen: false});
+  clustersStore.setState({isOldPasswordEmpty: false});
+  clustersStore.setState({isNewPasswordEmpty: false});
+  clustersStore.setState({oldPassword: ''});
+  clustersStore.setState({newPassword: ''});
+}
+
 /*
- * User Logout
+ * Change Password Event
+ */
+export const handleChangePassword = async (toast) => {
+  const oldPassword = clustersStore.getState().oldPassword;
+  const newPassword = clustersStore.getState().newPassword;
+
+  if (oldPassword === '') clustersStore.setState({isOldPasswordEmpty: true});
+  if (newPassword === '') clustersStore.setState({isNewPasswordEmpty: true});
+  if (oldPassword !== '' && newPassword !== '') {
+    handleChangePasswordClose();
+    try {
+      const response = await axios.patch(`http://localhost:3001/auth/password/update`, {oldPassword, newPassword}, {withCredentials: true});
+      console.log('Change Password Response:', response.data);
+      addToast('Change Password', 'We\'ve updated your Password for you.', 'success', 3000, toast);
+    } catch (err) {
+      console.log(err);
+      addToast('Error Occurred', 'Something went wrong when changing password.', 'error', 3000, toast);
+    }
+  }
+}
+
+// actions when deleteAccountModal closes
+export const handleDeleteAccountClose = () => {
+  clustersStore.setState({isDeleteAccountModalOpen: false});
+  clustersStore.setState({isOldPasswordEmpty: false});
+  clustersStore.setState({oldPassword: ''});
+}
+
+/*
+ * Delete Account Event
+ */
+export const handleDeleteAccount = async (toast, push) => {
+  const password = clustersStore.getState().oldPassword;
+
+  if (password === '') clustersStore.setState({isOldPasswordEmpty: true});
+  if (password !== '') {
+    handleDeleteAccountClose();
+    try {
+      const response = await axios.delete(`http://localhost:3001/auth/account/delete`, {password}, {withCredentials: true});
+      console.log('Delete Account Response:', response.data);
+      push('/');
+      addToast('Delete Account', 'We\'ve deleted your account for you.', 'success', 3000, toast);
+    } catch (err) {
+      console.log(err);
+      addToast('Error Occurred', 'Something went wrong when deleting account.', 'error', 3000, toast);
+    }
+  }
+}
+
+/*
+ * User Logout Event
  */
 export const handleLogout = async (toast, push) => {
   try {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
     clustersStore.setState({isLogoutModalOpen: false});
-    push('/home');
+    push('/');
     addToast('Logout', 'User logged out successfully.', 'success', 3000, toast);
   } catch (err) {
     console.log(err);
