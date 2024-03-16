@@ -13,12 +13,14 @@ metricsController.getMetrics = async (req, res, next) => {
   try {
     // Prometheus query string
 
-    // // The actual query for throughput. Not as interesting because flatlines at 0. 
+    // // PromQL query for throughput
+    // // The actual query for throughput. Not as interesting because flatlines at 0 unless starting producer/consumer.
     // const query = `rate(kafka_server_brokertopicmetrics_messagesin_total[5m])`;
 
-    // More visually interesting, useless metric
+    // // More visually interesting, useless metric // testing
     const query = `scrape_duration_seconds`
 
+    // Explicitly print out our prometheus query // testing
     console.log('query: ', query);
 
     console.log('Sending query to Prometheus...')
