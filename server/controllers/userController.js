@@ -22,7 +22,6 @@ userController.createUser = async (req, res, next) => {
       return next({
         log: 'username was not unique',
         status: 500,
-        status: 500,
         message: { err: 'username already exists in database'}
       })
     } else {
@@ -147,23 +146,30 @@ userController.deleteAccount = async (req, res, next) => {
   const { userId } = res.locals; // Destructure from prior middleware
   const { password } = req.body; // Destructure from req body
 
-
-
   // Delete from database
   try {
     // Check input password compared to user's password stored in database
-    const user = await User.findById(userId);
+    const user = await User.findOne({ id: userId });
+    console.log('User found. Checking password...');
+    const result = await bcrypt.compare(password, user.password);
+    if (!result) {
+      return res.status(401).json({ err: 'Invalid credentials.' });
+    }
 
+    // Proceed with deleting
+    else {
+      console.log(`Password verified. ${user.username} logged in.`);
 
-    // Delete all clusters associated with the user
-    await Cluster.deleteMany({ ownerId: userId });
-    console.log('All clusters belonging to the user deleted successfully')
+      // Delete all clusters associated with the user
+      await Cluster.deleteMany({ ownerId: userId });
+      console.log('All clusters belonging to the user deleted successfully')
 
-    // Delete the user account
-    await User.findByIdAndDelete(userId);
-    
-    console.log('Account deleted successfully');
-    return next();
+      // Delete the user account
+      await User.findByIdAndDelete(userId);
+      
+      console.log('Account deleted successfully');
+      return next();
+    }
   } catch (err) {
     return next({
       log: `userController.deleteAccount: ERROR ${err}`,
