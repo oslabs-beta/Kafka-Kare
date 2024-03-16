@@ -293,7 +293,7 @@ export const handleChangePassword = async (toast) => {
   if (oldPassword !== '' && newPassword !== '') {
     handleChangePasswordClose();
     try {
-      const response = await axios.post(`http://localhost:3001/auth/password/update`, {oldPassword, newPassword}, {withCredentials: true});
+      const response = await axios.patch(`http://localhost:3001/auth/password/update`, {oldPassword, newPassword}, {withCredentials: true});
       console.log('Change Password Response:', response.data);
       addToast('Change Password', 'We\'ve updated your Password for you.', 'success', 3000, toast);
     } catch (err) {
@@ -320,7 +320,7 @@ export const handleDeleteAccount = async (toast, push) => {
   if (password !== '') {
     handleDeleteAccountClose();
     try {
-      const response = await axios.post(`http://localhost:3001/auth/account/delete`, {password}, {withCredentials: true});
+      const response = await axios.delete(`http://localhost:3001/auth/account/delete`, {password}, {withCredentials: true});
       console.log('Delete Account Response:', response.data);
       push('/');
       addToast('Delete Account', 'We\'ve deleted your account for you.', 'success', 3000, toast);
