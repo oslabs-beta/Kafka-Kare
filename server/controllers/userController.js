@@ -33,7 +33,7 @@ userController.createUser = async (req, res, next) => {
       username: username,
       password: password
     });
-    console.log('New user stored in database: ', user.username);
+    console.log(`New user stored in database: <${user.username}>`);
     res.locals.userId = user.id;
     res.locals.username = user.username;
     return next();
