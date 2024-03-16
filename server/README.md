@@ -34,13 +34,15 @@
 - **PATCH /slack/update**: Route for editing Slack link
 - **GET /slack**: Route for retrieving a Slack link
 
-
-
 ## Configuration
 
 Environment vairables: 
-- 'MONGO_DB_USERNAME': Description
-- 'MONGO_DB_PWD': Description
+- 'MONGO_DB_USERNAME': Username for MongoDB. Look in docker-compose.yml file
+- 'MONGO_DB_PWD': Password for MongoDB. Hop over to the docker-compose.yml file
+
+MongoURI Connection String in server.js: 
+- Use `mongoose.connect(mongoURI)` to connect to Docker containerized MongoDB image
+- Use `mongoose.connect(mongoURIAtlas)` to connect to external service MongoDB such as MongoDB Atlas
 
 ## Troubleshooting
 
