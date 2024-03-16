@@ -68,6 +68,10 @@ userController.verifyUser = async (req, res, next) => {
         return res.status(401).json({ err: 'Invalid credentials.' });
       }
 
+      // Password is correct, update lastVisited
+      user.lastVisited = new Date();
+      await user.save();
+
       console.log(`Password verified. <${user.username}> logged in.`);
 
       res.locals.username = user.username;
