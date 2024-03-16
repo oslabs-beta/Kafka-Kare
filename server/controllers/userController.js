@@ -61,9 +61,10 @@ userController.verifyUser = async (req, res, next) => {
     }
     else {
       console.log('User found. Checking password...');
-      const result = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-      if (!result) {
+      if (!isPasswordValid) {
+        console.log('Password is not valid');
         return res.status(401).json({ err: 'Invalid credentials.' });
       }
 
@@ -115,20 +116,32 @@ userController.logout = async (req, res, next) => {
 userController.updatePassword = async (req, res, next) => {
   console.log('In userController.updatePassword'); // testing
   console.log('req.body contains: ', req.body);
-  const { newPassword } = req.body; // Destructure from req.body
+  const { oldPassword, newPassword } = req.body; // Destructure from req.body
   const { userId } = res.locals; // Destructure from prior middleware
 
   // Update password in database
   try {
-    const user = await User.findByIdAndUpdate(userId, {
-      password: newPassword
-    }, { new: true }); 
-
+    // Retrieve the user from the database to compare passwords
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).send('User was not found');
+      return res.status(404).json({ err: 'User not found.' });
     }
-    
-    console.log('Password updated successfully: ', user.password);
+
+    console.log('User found. Checking password...');
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    // Password does not match
+    if (!isPasswordValid) { 
+      console.log('Current password is not valid');
+      return res.status(401).json({ err: 'Invalid credentials.' });
+    }
+
+    // Password matches
+    console.log(`Password verified. Updating password for <${user.username}>.`);
+    user.password = newPassword;
+    await user.save();
+
+    console.log(`Password updated successfully for <${user.username}>.`);
     return next();
   } catch (err) {
     return next({
@@ -148,28 +161,33 @@ userController.deleteAccount = async (req, res, next) => {
 
   // Delete from database
   try {
-    // Check input password compared to user's password stored in database
-    const user = await User.findOne({ id: userId });
+    // Retrieve the user from the database to compare passwords
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ err: 'User not found.' });
+    }
+
     console.log('User found. Checking password...');
-    const result = await bcrypt.compare(password, user.password);
-    if (!result) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    // Password does not match
+    if (!isPasswordValid) { 
+      console.log('Password is not valid');
       return res.status(401).json({ err: 'Invalid credentials.' });
     }
 
-    // Proceed with deleting
-    else {
-      console.log(`Password verified. ${user.username} logged in.`);
+    // Password matches
+    console.log(`Password verified. Deleting account for <${user.username}>.`);
 
-      // Delete all clusters associated with the user
-      await Cluster.deleteMany({ ownerId: userId });
-      console.log('All clusters belonging to the user deleted successfully')
+    // Delete all clusters associated with the user
+    await Cluster.deleteMany({ ownerId: userId });
+    console.log(`All clusters belonging to <${user.username}> deleted successfully`)
 
-      // Delete the user account
-      await User.findByIdAndDelete(userId);
-      
-      console.log('Account deleted successfully');
-      return next();
-    }
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+    
+    console.log(`Account for <${user.username}> deleted successfully`);
+    return next();
   } catch (err) {
     return next({
       log: `userController.deleteAccount: ERROR ${err}`,
