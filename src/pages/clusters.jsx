@@ -126,11 +126,6 @@ export default function Home() {
     clustersStore.setState({isClusterNameEmpty: false});
     clustersStore.setState({isClusterPortEmpty: false});
     clustersStore.setState({isEditClusterOpen: false});
-    clustersStore.setState({clusterName: ''});
-    clustersStore.setState({clusterPort: ''});
-    clustersStore.setState({isClusterNameEmpty: false});
-    clustersStore.setState({isClusterPortEmpty: false});
-    clustersStore.setState({isEditClusterOpen: false});
   }
 
   /*
@@ -189,7 +184,7 @@ export default function Home() {
     }
     clustersStore.setState({isDeleteClusterOpen: false});
     try {
-      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {}, {withCredentials: true});
+      const response = await axios.delete(`http://localhost:3001/clusters/${deleteClusterID}`, {withCredentials: true});
       console.log('Delete Cluster Response:', response.data);
 
       addToast('Cluster Deleted', 'We\'ve deleted your cluster for you.', 'success', 3000);

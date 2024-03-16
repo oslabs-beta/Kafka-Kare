@@ -20,7 +20,7 @@ router.post(
   tokenController.verifyToken,
   clusterController.addCluster,
   (req, res) => {
-    return res.status(201).json({ message: 'Cluster added successfully' });
+    return res.status(201).json(res.locals.newCluster);
   }
 );
 
