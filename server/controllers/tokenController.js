@@ -25,7 +25,7 @@ tokenController.issueToken = (req, res, next) => {
   });
 
   const shortenedToken = token.slice(-10)
-  console.log('Token from cookie: ...', shortenedToken)
+  console.log(`Token from cookie: ...${shortenedToken}`);
 
   return next();
 };
@@ -37,9 +37,8 @@ tokenController.verifyToken = (req, res, next) => {
     const token = req.cookies.token; // Destructure from cookies
 
     // Shorten the console log
-    const shortenedToken = token.slice(-10)
-
-    console.log(`Token from cookie: ...${shortenedToken}`)
+    const shortenedToken = token.slice(-10);
+    console.log(`Token from cookie: ...${shortenedToken}`);
 
     // Check token
     if (!token) {
