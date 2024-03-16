@@ -33,7 +33,11 @@ tokenController.issueToken = (req, res, next) => {
 tokenController.verifyToken = (req, res, next) => {
     console.log("In tokenController.verifyToken"); // testing
     const token = req.cookies.token; // Destructure from cookies
-    console.log('Token from cookie: ', req.cookies.token)
+
+    // Shorten the console log
+    const shortenedToken = token.slice(-10)
+
+    console.log('Token from cookie: ...', shortenedToken)
 
     // Check token
     if (!token) {

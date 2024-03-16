@@ -68,7 +68,7 @@ userController.verifyUser = async (req, res, next) => {
         return res.status(401).json({ err: 'Invalid credentials.' });
       }
 
-      console.log(`Password verified. ${user.username} logged in.`);
+      console.log(`Password verified. $<{user.username}> logged in.`);
 
       res.locals.username = user.username;
       res.locals.userId = user.id;
@@ -137,13 +137,13 @@ userController.updatePassword = async (req, res, next) => {
     }
 
     // Password matches
-    console.log(`Password verified. Updating password for <${user.username}>.`);
+    console.log(`Password verified. Updating password for <${user.username}>`);
     user.password = newPassword;
     
     // This triggers the pre-save hook to hash the password
     await user.save(); 
 
-    console.log(`Password updated successfully for <${user.username}>.`);
+    console.log(`Password updated successfully for <${user.username}>`);
     return next();
   } catch (err) {
     return next({
@@ -179,7 +179,7 @@ userController.deleteAccount = async (req, res, next) => {
     }
 
     // Password matches
-    console.log(`Password verified. Deleting account for <${user.username}>.`);
+    console.log(`Password verified. Deleting account for <${user.username}>`);
 
     // Delete all clusters associated with the user
     await Cluster.deleteMany({ ownerId: userId });
