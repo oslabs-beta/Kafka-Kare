@@ -40,7 +40,7 @@ tokenController.verifyToken = (req, res, next) => {
     const shortenedToken = token.slice(-10)
 
     console.log('here');
-    console.log('Token from cookie: ...', shortenedToken)
+    console.log(`Token from cookie: ...${shortenedToken}`)
 
     // Check token
     if (!token) {

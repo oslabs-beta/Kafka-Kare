@@ -21,12 +21,12 @@ metricsController.getMetrics = async (req, res, next) => {
 
     console.log('query: ', query);
 
-    console.log('Querying Prometheus...')
+    console.log('Sending query to Prometheus...')
     const queryResponse = await axios.get(`http://prometheus:9090/api/v1/query`, { 
         params: { query }
       });
 
-    console.log('Query response data successfully received');
+    console.log('Metrics data retrieved successfully');
     const queryData = queryResponse.data.data.result // This is the form of the response from Prometheus
 
     res.locals.queryData = queryData;
