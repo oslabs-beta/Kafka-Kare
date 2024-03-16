@@ -81,7 +81,7 @@ export default function Home() {
               <EditClusterModal />
 
               {/* Delete Cluster Modal */}
-              <DeleteClusterModal/>
+              <DeleteClusterModal />
             </TabPanels>
           </Tabs>
         </Box>

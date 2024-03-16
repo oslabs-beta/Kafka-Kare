@@ -6,7 +6,6 @@ const tokenController = {};
 // ---------------------------- ISSUE TOKEN ---------------------------- //
 tokenController.issueToken = (req, res, next) => {
   console.log("In tokenController.issueToken"); // testing
-
   const { userId, username } = res.locals; // Destructure from prior middleware
 
   // Issue token
@@ -17,14 +16,16 @@ tokenController.issueToken = (req, res, next) => {
   );
 
   // Determine if running in a production environement
-  const isProduction = process.env.NODE_ENV === 'production';
+  // const isProduction = process.env.NODE_ENV === 'production';
 
   // Store the token in HTTP-only cookie
   res.cookie('token', token, { 
     httpOnly: true, 
-    secure: isProduction // use 'secure' flag only in production
+    // secure: isProduction // use 'secure' flag only in production
   });
-  console.log('Token issued: ', token);
+
+  const shortenedToken = token.slice(-10)
+  console.log(`Token from cookie: ...${shortenedToken}`);
 
   return next();
 };
@@ -34,7 +35,10 @@ tokenController.issueToken = (req, res, next) => {
 tokenController.verifyToken = (req, res, next) => {
     console.log("In tokenController.verifyToken"); // testing
     const token = req.cookies.token; // Destructure from cookies
-    console.log('token: ', req.cookies.token)
+
+    // Shorten the console log
+    const shortenedToken = token.slice(-10);
+    console.log(`Token from cookie: ...${shortenedToken}`);
 
     // Check token
     if (!token) {
@@ -44,7 +48,7 @@ tokenController.verifyToken = (req, res, next) => {
     // Verify token, extract userId and username
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
-      console.log('Token verified');
+      console.log('Token verified.');
       res.locals.userId = decoded.userId;
       res.locals.username = decoded.username;
       return next();
