@@ -36,13 +36,11 @@ userController.createUser = async (req, res, next) => {
     });
     console.log('New user stored in database: ', user.username);
     res.locals.userId = user.id;
-    res.locals.userId = user.id;
     res.locals.username = user.username;
     return next();
   } catch (err) {
     return next({
       log: `userController.createUser: ERROR ${err}`,
-      status: 500,
       status: 500,
       message: { err: "Error occurred in userController.createUser." },
     });
@@ -80,7 +78,6 @@ userController.verifyUser = async (req, res, next) => {
     return next({
       log: `userController.verifyUser: ERROR ${err}`,
       status: 500,
-      status: 500,
       message: { err: "Error occurred in userController.verifyUser." },
     });
   }
@@ -109,7 +106,6 @@ userController.logout = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `userController.logout: ERROR ${err}`,
-      status: 500,
       status: 500,
       message: { err: "Error occurred in userController.logout." },
     });
@@ -147,10 +143,18 @@ userController.updatePassword = async (req, res, next) => {
 /* ----------------------------- DELETE ACCOUNT ----------------------------- */
 userController.deleteAccount = async (req, res, next) => {
   console.log('In userController.deleteAccount'); // testing
+  console.log('req.body contains: ', req.body);
   const { userId } = res.locals; // Destructure from prior middleware
+  const { password } = req.body; // Destructure from req body
+
+
 
   // Delete from database
   try {
+    // Check input password compared to user's password stored in database
+    const user = await User.findById(userId);
+
+
     // Delete all clusters associated with the user
     await Cluster.deleteMany({ ownerId: userId });
     console.log('All clusters belonging to the user deleted successfully')
