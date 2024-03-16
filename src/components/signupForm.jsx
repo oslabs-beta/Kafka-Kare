@@ -41,7 +41,7 @@ const SignupForm = ({ onSubmit }) => {
     try {
       const response = await axios.post('http://localhost:3001/auth/signup', {
         username, password
-      });
+      }, {withCredentials: true});
       
       console.log('response: ', response.data);
 
