@@ -1,58 +1,127 @@
+// Access to environmental variables
+require("dotenv").config();
+const User = require('./models/userModel');//delete later, this is for testing
+// Import dependencies
 const express = require("express");
 const next = require("next");
 const path = require("path");
 const mongoose = require("mongoose");
-require("dotenv").config();
-// const cookieParser = require("cookie-parser");
-// const jwt = require ("jsonwebtoken");
-// const cors = require("cors");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
+// Import routes
+const authRoutes = require("./routes/authRoutes");
+const clustersRoutes = require("./routes/clustersRoutes");
+const metricsRoutes = require("./routes/metricsRoutes");
+const testingRoutes = require('./routes/testingRoutes');
+const slackRoutes = require('./routes/slackRoutes');
 
 // Setup Next app
 const PORT = 3001;
-const dev = process.env.NODE_ENV !== 'production'; // dev = true if node_env IS NOT production
+const dev = process.env.NODE_ENV !== "production"; // dev = true if node_env IS NOT production
 const app = next({ dev }); // initializes an instance of a NextJS app
 const handle = app.getRequestHandler(); // handles page routing
-
-
-// Import controllers
 
 
 // Prepare to serve the NextJS app
 app.prepare().then(() => {
   const server = express();
 
-  // // Middleware
-  // server.use(cors());
-  // server.use(cookieParser());
-  // server.use(express.json());
-  // server.use(express.urlencoded({ extended: true }));
+  // CORS middleware
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+  }
+  server.use(cors(corsOptions));
 
-  // // Connect to mongoDB
-  // mongoose.connect('');
-  // mongoose.connection.once('open', () => {
-  //   console.log('Connected to Database');
-  // });
+  // Middleware
+  server.use(cookieParser());
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
 
-  // Custom routes
-  server.get('/hello', (req, res) => {
-    return res.status(200).send('Hello world');
+  // Retrieve environmental variables for MongoDB auth // Defined in docker-compose.yml
+  // const DB_USER = process.env.MONGO_DB_USERNAME
+  // const DB_PASS = process.env.MONGO_DB_PWD
+
+  // Connect to mongoDB
+  // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
+  const mongoURI = `mongodb://admin:supersecret@mongo`
+  // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
+  const mongoURIAtlas = process.env.MONGODB_URI;
+
+  mongoose.connect(mongoURI);
+  mongoose.connection.once("open", () => {
+      console.log("Connected to Database");
+    });
+//options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
+
+//================== TEST
+
+  // Test MongoDB connection route
+  server.get('/test-db', async (req, res) => {
+    try {
+      await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+      const connectionState = mongoose.connection.readyState;
+      if (connectionState === 1) {
+        res.status(200).json({ message: 'Successfully connected to MongoDB' });
+      } else {
+        res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
+    }
   });
 
+
+  // TEST POST route to create a new user 
+  server.post('/users', async (req, res) => {
+    try {
+      const newUser = new User({
+        username: req.body.username,
+        password: req.body.password
+      });
+      await newUser.save();
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+  // TEST GET route to fetch all users
+  server.get('/users', async (req, res) => {
+    try {
+      const users = await User.find({}, 'username'); // Exclude passwords from the response
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+//=========================== TEST 
+
+  
+  // Custom routes
+  server.use("/auth", authRoutes); 
+  server.use("/clusters", clustersRoutes); 
+  server.use("/metrics", metricsRoutes);
+  server.use("/testing", testingRoutes); 
+  server.use("/slack", slackRoutes);
+
   // Fallback route
-  // This line is crucial when integrating Next.js with a custom server like Express
-  // It ensures that all GET requests not explicitly handled by your custom server logic are forwarded to Next.js's own handler
-  // If the request matches a Next.js page or API route, Next.js will handle it. If not, a 404 page is automatically served.
-  server.get('*', (req, res) => {
+  server.get("*", (req, res) => {
     return handle(req, res);
   });
 
   // Express global error handler
   server.use((err, req, res, next) => {
     const defaultObj = {
-      log: 'Express error handler caught unknown middleware error',
+      log: "Express error handler caught unknown middleware error",
       status: 500,
-      message: { err: 'An error occurred' },
+      message: { err: "An error occurred" },
     };
     const errObj = Object.assign({}, defaultObj, err);
     console.log(errObj.log);
@@ -61,9 +130,6 @@ app.prepare().then(() => {
 
   // Start server
   server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Server launching on http://localhost:${PORT}`);
   });
-})
-
-
-// In NextJS, static files such as html files should be placed in the public directory at the root of your NextJS project
+});
