@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const tokenController = require("../controllers/tokenController");
 
 // Route for user signup
+// Route for user signup
 router.post(
   '/signup', 
   userController.createUser, 
@@ -13,6 +14,7 @@ router.post(
 });
 
 
+// Route for user login
 // Route for user login
 router.post(
   '/login', 
@@ -39,6 +41,16 @@ router.patch(
   userController.updatePassword,
   (req, res) => {
     return res.status(200).json({ message: 'User updated password successfully' });
+  }
+)
+
+// Route for deleting a user account
+router.delete(
+  '/account/delete',
+  tokenController.verifyToken,
+  userController.deleteAccount,
+  (req, res) => {
+    return res.status(200).json({ message: 'User account deleted successfully '});
   }
 )
 
