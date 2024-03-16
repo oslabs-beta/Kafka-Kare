@@ -26,6 +26,12 @@ export const clustersStore = create((set) => ({
   // Port Input Value
   clusterPort: '',
 
+  // Old Password Input Value
+  oldPassword: '',
+
+  // New Password Input Value
+  newPassword: '',
+
   // Slack Webhook URL Input Value
   slackWebhookURL: '',
 
@@ -52,6 +58,15 @@ export const clustersStore = create((set) => ({
 
   // is Logout Modal Open
   isLogoutModalOpen: false,
+  
+  // is Old Password Input Empty
+  isOldPasswordEmpty: false,
+
+  // is New Password Input Empty
+  isNewPasswordEmpty: false,
+
+  // is Change Password Modal Open
+  isChangePasswordModalOpen: false,
 
   // ID of Edited Cluster
   editClusterID: '',

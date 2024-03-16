@@ -17,6 +17,7 @@ import AddClusterModal from '../components/clusters/addClusterModal';
 import ClusterCard from '../components/clusters/clusterCard';
 import EditClusterModal from '../components/clusters/editClusterModal';
 import DeleteClusterModal from '../components/clusters/deleteClusterModal';
+import ChangePasswordModal from '../components/clusters/changePasswordModal';
 import LogoutModal from '../components/clusters/logoutModal';
 import { handleClusterSearchValueChange, handleFetchClusters } from '../utils/clustersHandler';
 
@@ -82,11 +83,12 @@ export default function Home() {
           <Menu>
             <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
             <MenuList>
-              <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />}><b>Change Password</b></MenuItem>
+              <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />} onClick={() => clustersStore.setState({isChangePasswordModalOpen: true})}><b>Change Password</b></MenuItem>
               <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
               <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
               <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />}><b>Delete Account</b></MenuItem>
               <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />} onClick={() => clustersStore.setState({isLogoutModalOpen: true})}><b>Logout</b></MenuItem>
+              <ChangePasswordModal />
               <LogoutModal />
             </MenuList>
           </Menu>
