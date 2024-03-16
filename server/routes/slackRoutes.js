@@ -3,16 +3,6 @@ const router = express.Router();
 const slackController = require("../controllers/slackController");
 const tokenController = require("../controllers/tokenController");
 
-// Route for adding Slack link
-router.post(
-  "/add",
-  tokenController.verifyToken,
-  slackController.updateSlack,
-  (req, res) => {
-    return res.status(200).json({ message: "Slack link added successfully" });
-  }
-);
-
 // Route for editing Slack link
 router.patch(
   "/update",
