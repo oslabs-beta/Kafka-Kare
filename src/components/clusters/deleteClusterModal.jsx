@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useToast
+  Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useToast,
+  Alert, AlertIcon, AlertTitle, AlertDescription,
 } from '@chakra-ui/react';
 import { clustersStore } from '../../store/clusters';
 import { handleDeleteCluster } from '../../utils/clustersHandler';
@@ -21,10 +22,17 @@ const DeleteClusterModal = () => {
     <Modal isOpen={isDeleteClusterOpen} onClose={() => clustersStore.setState({isDeleteClusterOpen: false})} motionPreset='slideInBottom'>
       <ModalOverlay />
       <ModalContent top='3.5rem'>
+        
+        {/* Title */}
         <ModalHeader>Delete Cluster: {oldClusterName}</ModalHeader>
         <ModalCloseButton />
+
+        {/* Warning */}
         <ModalBody>
-          Are you sure? You can't undo this action afterwards.
+          <Alert status='warning' variant='left-accent' mb={4} borderRadius={10} borderInlineStartWidth={6}>
+            <AlertIcon />
+            <AlertDescription>Are you sure? You can't undo this action afterwards.</AlertDescription>
+          </Alert>
         </ModalBody>
         <ModalFooter>
 
@@ -32,7 +40,7 @@ const DeleteClusterModal = () => {
           <Button mr={3} onClick={() => clustersStore.setState({isDeleteClusterOpen: false})}>Cancel</Button>
 
           {/* Delete Button */}
-          <Button colorScheme='red' onClick={() => handleDeleteCluster(toast, deleteClusterID)}>Delete</Button>
+          <Button colorScheme='orange' onClick={() => handleDeleteCluster(toast, deleteClusterID)}>Delete</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

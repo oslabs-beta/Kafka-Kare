@@ -7,7 +7,7 @@ const addToast = (title, description, status, duration, toast) => {
 }
 
 // fetch user clusters when page loaded
-export const handleFetchClusters = async (toast, push) => {
+export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
   try {
     // update states about user's all clusters
     const responseAll = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});

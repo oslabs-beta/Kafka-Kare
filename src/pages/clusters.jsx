@@ -9,7 +9,7 @@ import Navbar from '../components/clusters/navbar';
 import ClusterCard from '../components/clusters/clusterCard';
 import EditClusterModal from '../components/clusters/editClusterModal';
 import DeleteClusterModal from '../components/clusters/deleteClusterModal';
-import { handleFetchClusters } from '../utils/clustersHandler';
+import { handleFetchClustersAndSlackWebhookURL } from '../utils/clustersHandler';
 
 export default function Home() {
 
@@ -23,8 +23,9 @@ export default function Home() {
   const clusterNotFavoriteDisplayMap = clustersStore(state => state.clusterNotFavoriteDisplayMap);
   const renderClustersPage = clustersStore(state => state.renderClustersPage);
 
+  // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
-    handleFetchClusters(toast, push);
+    handleFetchClustersAndSlackWebhookURL(toast, push);
   }, []);
   // const drawerBtnRef = React.useRef();
 

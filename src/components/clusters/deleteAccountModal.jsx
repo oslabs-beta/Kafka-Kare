@@ -34,6 +34,7 @@ const DeleteAccountModal = () => {
         <ModalCloseButton />
         <ModalBody>
 
+          {/* Warning */}
           <Alert status='error' variant='left-accent' mb={4} borderRadius={10} borderInlineStartWidth={6}>
             <AlertIcon />
             <AlertDescription>This will delete your <b>account</b> and <b>clusters</b>. You can't undo this action afterwards.</AlertDescription>
