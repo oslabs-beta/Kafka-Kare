@@ -26,11 +26,11 @@ export const clustersStore = create((set) => ({
   // Port Input Value
   clusterPort: '',
 
-  // Search Input Value
-  clusterSearchValue: '',
-
   // Slack Webhook URL Input Value
   slackWebhookURL: '',
+
+  // render clusters page or not
+  renderClustersPage: false,
 
   // is Name Input Empty
   isClusterNameEmpty: false,

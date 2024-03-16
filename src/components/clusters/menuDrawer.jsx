@@ -4,10 +4,11 @@ import {
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
-import { RiSendPlane2Fill } from 'react-icons/ri';
+import { RiSendPlane2Fill, RiDeleteBinFill } from 'react-icons/ri';
 import { clustersStore } from '../../store/clusters';
+import { handleSlackWebhookURLSubmit, handleSlackWebhookURLDelete } from '../../utils/clustersHandler';
 
-const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
+const MenuDrawer = () => {
 
   // declare state variables
   const isDrawerOpen = clustersStore(state => state.isDrawerOpen);
@@ -16,18 +17,7 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
 
-  // check slack url format before submit
-  const submitSlackWebhookUrl = () => {
-    if (slackWebhookURL.slice(0, 34) === 'https://hooks.slack.com/services/T'
-      && slackWebhookURL.indexOf('/B') - slackWebhookURL.indexOf('/T') >= 10
-      && slackWebhookURL.lastIndexOf('/') - slackWebhookURL.indexOf('/B') >= 9
-      && slackWebhookURL.length >= 77
-    ) {
-      clustersStore.setState({slackWebhookURL: slackWebhookURL});
-      handleSlackWebhookURLSubmit();
-    }
-    else toast({position: 'top', title: 'URL Format Incorrect', description: 'Format of Slack Webhook URL is Incorrect.', status: 'error', duration: 3000, isClosable: true, containerStyle: {marginTop: '70px'}});
-  }
+  // declare variable to use toast
   const toast = useToast();
 
   // declare slack webhook step array
@@ -89,10 +79,18 @@ const MenuDrawer = ({ handleSlackWebhookURLSubmit }) => {
             />
 
             {/* Submit URL Input */}
-            <IconButton
-              aria-label='submit slack url' h={20} colorScheme='twitter' ml={2}
-              icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {submitSlackWebhookUrl()}}
-            />
+            <Box>
+              <IconButton
+                aria-label='submit slack url' h={10} colorScheme='twitter' ml={1.5}
+                borderBottomLeftRadius={0} borderBottomRightRadius={0} borderBottomColor={'white'} borderBottomWidth={2}
+                icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {handleSlackWebhookURLSubmit(toast)}}
+              />
+              <IconButton
+                aria-label='delete slack url' h={10} colorScheme='twitter' ml={1.5}
+                borderTopLeftRadius={0} borderTopRightRadius={0} borderTopColor={'white'} borderTopWidth={2}
+                icon={<Icon as={RiDeleteBinFill} boxSize={6} />} onClick = {() => {handleSlackWebhookURLDelete(toast)}}
+              />
+            </Box>
           </Flex>
 
           {/* Step Subtitle */}
