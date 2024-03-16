@@ -36,6 +36,7 @@ clusterController.addCluster = async (req, res, next) => {
     const newCluster = await Cluster.create({ name, hostnameAndPort, ownerId });
     console.log("New cluster added: ", newCluster);
     res.locals.newCluster = newCluster;
+    
     return next();
   } catch (err) {
     return next({

@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
     "build": "next build",
+    "prod": "set \"NODE_ENV=production\" && nodemon server/server.js",
     "start": "next start",
-    "server": "nodemon server/server.js"
+    "server": "nodemon server/server.js",
+    "watch": "nodemon --watch server --ext js "
   },
   "keywords": [],
   "author": "",

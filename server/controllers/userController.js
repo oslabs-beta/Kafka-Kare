@@ -38,7 +38,6 @@ userController.createUser = async (req, res, next) => {
     res.locals.userId = user.id;
     res.locals.userId = user.id;
     res.locals.username = user.username;
-    res.locals.userId = user.id;
     return next();
   } catch (err) {
     return next({
