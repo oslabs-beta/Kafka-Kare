@@ -19,12 +19,18 @@ export const clustersStore = create((set) => ({
   
   // Not Favorite Clusters for Display
   clusterNotFavoriteDisplayMap: new Map(),
+
+  // Timeout Function to Debounce Search
+  clusterDebounceSearchTimeout: null,
   
   // Name Input Value
   clusterName: '',
 
   // Port Input Value
   clusterPort: '',
+
+  // Cluster Search Input Value
+  clusterSearchValue: '',
 
   // Old Password Input Value
   oldPassword: '',
