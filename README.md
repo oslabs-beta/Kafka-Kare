@@ -2,7 +2,7 @@
 A Kafka error handling visualizer 
 
 
-# Instructions to start the application
+## Instructions to start the application
 1. Build frontend image
 ```
 docker build -f Dockerfile-ui -t kafka-kare-ui .
@@ -46,7 +46,7 @@ node producer.js
 - Enjoy
 
 
-# Instructions to stop the application
+## Instructions to stop the application
 1. Spin down application container
 ```
 docker compose down
@@ -63,7 +63,7 @@ docker compose down
 ```
 
 
-# Authors
+## Authors
 - Matt Konop <mattsterprogrammer@gmail.com>
 - Allison Scott <allisonbscott97@gmail.com>
 - Justin Lin <hozion612356@gmail.com>
