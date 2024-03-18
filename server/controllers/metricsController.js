@@ -82,11 +82,13 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   }
 
   // Throttle check, threshold check
-  console.log('Metrics still exceed threshold. Sending Slack notification.')
+  console.log('Metrics still exceed threshold. Sending Slack notification...')
+  // text: `Throughput has climbed over 1.5 messages per second. Current rate: ${graphData.dataPoint} messasges/second`
+  
 
   try {
       await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${graphData.dataPoint} messasges/second`
+        text: `Throughput has climbed over 1.5 messages per second. Current rate: <2.0> messasges/second`
       });
       console.log(`Notification sent to Slack successfully at <${currentTime}>`);
       lastNotificationTime = currentTime; // Update the time of the last notification
