@@ -15,7 +15,7 @@ metricsController.getMetrics = async (req, res, next) => {
 
     // PromQL query for throughput
     // ** Must start producer/consumer scripts to see meaningful data
-    const query = `rate(kafka_server_brokertopicmetrics_messagesin_total[1m])`;
+    const query = `rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])`;
 
     // // // More visually interesting, useless metric // testing
     // const query = `scrape_duration_seconds`
