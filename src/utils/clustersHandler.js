@@ -205,30 +205,44 @@ export const handleClusterPortChange = (event) => {
 
 // actions when search input changes
 export const handleClusterSearchValueChange = (curClusterSearchValue) => {
-  const clusterMap = clustersStore.getState().clusterMap;
-  const clusterFavoriteMap = clustersStore.getState().clusterFavoriteMap;
-  const clusterNotFavoriteMap = clustersStore.getState().clusterNotFavoriteMap;
 
-  // update states about user search value and display cluster
-  clustersStore.setState({clusterDisplayMap: new Map(
-    [...clusterMap].filter(([id, clusterObj]) =>
-      clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-  ))});
+  // execute search process
+  const executeSearch = (executeSearchValue) => {
+    const clusterMap = clustersStore.getState().clusterMap;
+    const clusterFavoriteMap = clustersStore.getState().clusterFavoriteMap;
+    const clusterNotFavoriteMap = clustersStore.getState().clusterNotFavoriteMap;
 
-  // update states about user search value and favorite display cluster
-  clustersStore.setState({clusterFavoriteDisplayMap: new Map(
-    [...clusterFavoriteMap].filter(([id, clusterObj]) =>
-      clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-  ))});
+    // update states about user search value and display cluster
+    clustersStore.setState({clusterDisplayMap: new Map(
+      [...clusterMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+    ))});
 
-  // update states about user search value and not favorite display cluster
-  clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(
-    [...clusterNotFavoriteMap].filter(([id, clusterObj]) =>
-      clusterObj.name.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-      || clusterObj.hostnameAndPort.toLowerCase().search(curClusterSearchValue.toLowerCase()) !== -1
-  ))});
+    // update states about user search value and favorite display cluster
+    clustersStore.setState({clusterFavoriteDisplayMap: new Map(
+      [...clusterFavoriteMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+    ))});
+
+    // update states about user search value and not favorite display cluster
+    clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(
+      [...clusterNotFavoriteMap].filter(([id, clusterObj]) =>
+        clusterObj.name.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+        || clusterObj.hostnameAndPort.toLowerCase().search(executeSearchValue.toLowerCase()) !== -1
+    ))});
+  }
+
+  // debounce search
+  clustersStore.setState({clusterSearchValue: curClusterSearchValue});
+  clearTimeout(clustersStore.getState().clusterDebounceSearchTimeout);
+  const newSearchTimeout = setTimeout((executeSearchValue) => {
+
+    // execute search process
+    executeSearch(executeSearchValue);
+  }, 400, curClusterSearchValue);
+  clustersStore.setState({clusterDebounceSearchTimeout: newSearchTimeout});
 }
 
 /*
@@ -320,8 +334,11 @@ export const handleDeleteAccount = async (toast, push) => {
   if (password !== '') {
     handleDeleteAccountClose();
     try {
-      const response = await axios.delete(`http://localhost:3001/auth/account/delete`, {password}, {withCredentials: true});
+      const response = await axios.delete(`http://localhost:3001/auth/account/delete`, {data: {password}, withCredentials: true});
       console.log('Delete Account Response:', response.data);
+      clustersStore.setState({clusterDisplayMap: new Map()});
+      clustersStore.setState({clusterFavoriteDisplayMap: new Map()});
+      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map()});
       push('/');
       addToast('Delete Account', 'We\'ve deleted your account for you.', 'success', 3000, toast);
     } catch (err) {
@@ -339,6 +356,9 @@ export const handleLogout = async (toast, push) => {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
     clustersStore.setState({isLogoutModalOpen: false});
+    clustersStore.setState({clusterDisplayMap: new Map()});
+    clustersStore.setState({clusterFavoriteDisplayMap: new Map()});
+    clustersStore.setState({clusterNotFavoriteDisplayMap: new Map()});
     push('/');
     addToast('Logout', 'User logged out successfully.', 'success', 3000, toast);
   } catch (err) {

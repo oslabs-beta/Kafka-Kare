@@ -25,7 +25,7 @@ const DeleteAccountModal = () => {
   return (
 
     /* Delete Account Modal */
-    <Modal isOpen={isDeleteAccountModalOpen} onClose={handleDeleteAccountClose} initialFocusRef={initialRef}>
+    <Modal isOpen={isDeleteAccountModalOpen} onClose={handleDeleteAccountClose} motionPreset='slideInBottom' initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent top='3.5rem'>
 

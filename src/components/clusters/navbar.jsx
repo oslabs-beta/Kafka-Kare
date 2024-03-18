@@ -16,6 +16,8 @@ import LogoutModal from './logoutModal';
 import { handleClusterSearchValueChange } from '../../utils/clustersHandler';
 
 const Navbar = () => {
+  const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
+
   return (
     <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
 
@@ -30,7 +32,7 @@ const Navbar = () => {
           <Search2Icon />
         </InputLeftElement>
         <Input
-          type='tel' placeholder={'Name or Port'}
+          type='tel' placeholder={'Name or Port'} value={clusterSearchValue}
           onChange={(event) => handleClusterSearchValueChange(event.target.value)}
         />
         <InputRightElement>
@@ -55,16 +57,22 @@ const Navbar = () => {
 
       {/* Personal Menu */}
       <Menu>
-        <MenuButton as={Avatar} src='' boxSize={10} bg='gray.400' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
+        <MenuButton as={Avatar} src='' display='-webkit-box' name='' boxSize={10} bg='gray.400' color='white' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
         <MenuList>
-          <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />} onClick={() => clustersStore.setState({isChangePasswordModalOpen: true})}><b>Change Password</b></MenuItem>
+          <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />} onClick={() => clustersStore.setState({isChangePasswordModalOpen: true})}>
+            <b>Change Password</b>
+            <ChangePasswordModal />
+          </MenuItem>
           <MenuItem icon={<Icon as={RiDownload2Fill} boxSize={6} />}><b>Download Information</b></MenuItem>
           <MenuItem icon={<Icon as={RiImageAddFill} boxSize={6} />}><b>Upload Image</b></MenuItem>
-          <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />} onClick={() => clustersStore.setState({isDeleteAccountModalOpen: true})}><b>Delete Account</b></MenuItem>
-          <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />} onClick={() => clustersStore.setState({isLogoutModalOpen: true})}><b>Logout</b></MenuItem>
-          <DeleteAccountModal />
-          <ChangePasswordModal />
-          <LogoutModal />
+          <MenuItem icon={<Icon as={RiUserUnfollowFill} boxSize={6} />} onClick={() => clustersStore.setState({isDeleteAccountModalOpen: true})}>
+            <b>Delete Account</b>
+            <DeleteAccountModal />
+          </MenuItem>
+          <MenuItem icon={<Icon as={FaSignOutAlt} boxSize={6} pl={0.5} />} onClick={() => clustersStore.setState({isLogoutModalOpen: true})}>
+            <b>Logout</b>
+            <LogoutModal />
+          </MenuItem>
         </MenuList>
       </Menu>
 
