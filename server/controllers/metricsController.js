@@ -86,7 +86,7 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
 
   try {
       await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${graphData.data} messasges/second`
+        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${graphData.dataPoint} messasges/second`
       });
       console.log(`Notification sent to Slack successfully at <${currentTime}>`);
       lastNotificationTime = currentTime; // Update the time of the last notification
