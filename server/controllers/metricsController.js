@@ -31,6 +31,18 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('Retrieved data successfully');
     const queryData = queryResponse.data.data.result // This is the form of the response from Prometheus
 
+    // Testing
+    const timestamp = queryData[0].value[0];
+    const data = queryData[0].value[1];
+
+    console.log('timestamp: ', timestamp);
+    console.log('data: ', data);
+
+    if (parseFloat(data) > 1.5) {
+
+    })
+    // Testing
+
     res.locals.queryData = queryData;
     return next();
   } catch (err) {
