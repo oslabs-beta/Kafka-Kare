@@ -37,21 +37,17 @@ metricsController.getMetrics = async (req, res, next) => {
 
     // Testing
     const timestamp = queryData[0].value[0];
-    const data = queryData[0].value[1];
+    const dataPoint = queryData[0].value[1];
 
     console.log('timestamp: ', timestamp);
-    console.log('data: ', data);
+    console.log('dataPoint: ', dataPoint);
 
-    if (parseFloat(data) > 1.5) {
-      // Throughput threshold exceeded, send notification to Slack
-      await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
-      });
-      console.log('Notification sent to Slack.');
-    };
-    // Testing
+    const graphData = {
+      timestamp: timestamp,
+      dataPoint: dataPoint
+    }
 
-    res.locals.queryData = queryData;
+    res.locals.graphData = graphData;
     return next();
   } catch (err) {
     return next({
@@ -70,7 +66,9 @@ let lastNotificationTime = 0;
 
 metricsController.checkAndSendNotification = async (req, res, next) => {
   console.log("In metricsController.checkAndSendNotification"); // testing
-  const currentTime = Date.now();
+  const { graphData } = res.locals; // Destructure from prior middleware 
+  
+  const currentTime = graphData.timestamp;
   const timeSinceLastNotification = currentTime - lastNotificationTime;
 
   // Throttling to once per minute
@@ -79,7 +77,7 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   }
   
   // Been at least a minute, check for threshold
-  if (parseFloat(data) <= 1.5) {
+  if (parseFloat(graphData.dataPoint) <= 1.5) {
     return next();
   }
 
@@ -88,12 +86,12 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
 
   try {
       await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
+        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${graphData.data} messasges/second`
       });
-      console.log('Notification sent to Slack successfully');
+      console.log(`Notification sent to Slack successfully at <${currentTime}>`);
       lastNotificationTime = currentTime; // Update the time of the last notification
       return next();
-      
+
   } catch (err) {
     return next({
       log: `metricsController.checkAndSendNotification: ERROR ${err}`,
