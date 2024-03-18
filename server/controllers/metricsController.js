@@ -13,12 +13,12 @@ metricsController.getMetrics = async (req, res, next) => {
   try {
     // Prometheus query string
 
-    // // PromQL query for throughput
-    // // The actual query for throughput. Not as interesting because flatlines at 0 unless starting producer/consumer.
-    // const query = `rate(kafka_server_brokertopicmetrics_messagesin_total[5m])`;
+    // PromQL query for throughput
+    // ** Must start producer/consumer scripts to see meaningful data
+    const query = `rate(kafka_server_brokertopicmetrics_messagesin_total[1m])`;
 
-    // // More visually interesting, useless metric // testing
-    const query = `scrape_duration_seconds`
+    // // // More visually interesting, useless metric // testing
+    // const query = `scrape_duration_seconds`
 
     // Explicitly print out our prometheus query // testing
     console.log('query: ', query);
@@ -39,8 +39,12 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('data: ', data);
 
     if (parseFloat(data) > 1.5) {
-
-    })
+      // // Throughput threshold exceeded, send notification to Slack
+      // await axios.post(SLACK_WEBHOOK_URL, {
+      //   text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
+      // });
+      console.log('Notification sent to Slack.');
+    };
     // Testing
 
     res.locals.queryData = queryData;
