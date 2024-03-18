@@ -10,6 +10,7 @@ router.get(
   "/:clusterId",
   tokenController.verifyToken,
   metricsController.getMetrics,
+  metricsController.checkAndSendNotification,
   (req, res) => {
     console.log('Sending metrics back to client...');
     return res.status(200).json(res.locals.queryData);

@@ -1,8 +1,12 @@
 const axios = require("axios");
 const metricsController = {};
+const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
+
+// Setting maximum rate of Slack notifications to once per minute
+const THROTTLE_TIME_IN_MS = 60000;
 
 
-/* ------------------------------- Get metrics ------------------------------ */
+/* ------------------------------- GET METRICS ------------------------------ */
 metricsController.getMetrics = async (req, res, next) => {
   console.log("In metricsController.getMetrics"); // testing
   const { clusterId } = req.params; // Destructure from prior request params // Later use clusterId 
@@ -39,10 +43,10 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('data: ', data);
 
     if (parseFloat(data) > 1.5) {
-      // // Throughput threshold exceeded, send notification to Slack
-      // await axios.post(SLACK_WEBHOOK_URL, {
-      //   text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
-      // });
+      // Throughput threshold exceeded, send notification to Slack
+      await axios.post(SLACK_WEBHOOK_URL, {
+        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
+      });
       console.log('Notification sent to Slack.');
     };
     // Testing
@@ -57,6 +61,47 @@ metricsController.getMetrics = async (req, res, next) => {
     });
   }
 };
+
+
+/* --------------------------- SLACK NOTIFICATION --------------------------- */
+
+// Initialize a variable to keep track of the last time a Slack notification was sent
+let lastNotificationTime = 0;
+
+metricsController.checkAndSendNotification = async (req, res, next) => {
+  console.log("In metricsController.checkAndSendNotification"); // testing
+  const currentTime = Date.now();
+  const timeSinceLastNotification = currentTime - lastNotificationTime;
+
+  // Throttling to once per minute
+  if (timeSinceLastNotification <= THROTTLE_TIME_IN_MS) {
+    return next();
+  }
+  
+  // Been at least a minute, check for threshold
+  if (parseFloat(data) <= 1.5) {
+    return next();
+  }
+
+  // Throttle check, threshold check
+  console.log('Metrics still exceed threshold. Sending Slack notification.')
+
+  try {
+      await axios.post(SLACK_WEBHOOK_URL, {
+        text: `Throughput has climbed over 1.5 messages per second. Current rate: ${data} messasges/second`
+      });
+      console.log('Notification sent to Slack successfully');
+      lastNotificationTime = currentTime; // Update the time of the last notification
+      return next();
+      
+  } catch (err) {
+    return next({
+      log: `metricsController.checkAndSendNotification: ERROR ${err}`,
+      status: 500,
+      message: { err: "Error occurred in metricsController.checkAndSendNotification." },
+    });
+  }
+}
 
 // Export
 module.exports = metricsController;
