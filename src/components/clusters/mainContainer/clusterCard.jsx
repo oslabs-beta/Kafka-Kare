@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { RxStar, RxStarFilled } from 'react-icons/rx';
 import path from 'path';
-import { handleEditClusterOpen, handleDeleteClusterOpen, handleFavoriteChange } from '../../utils/clustersHandler';
+import { handleEditClusterOpen, handleDeleteClusterOpen, handleFavoriteChange } from '../../../utils/clustersHandler';
 
 const ClusterCard = ({ clusterObj }) => {
   

@@ -6,12 +6,13 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { clustersStore } from '../../store/clusters';
-import { handleDeleteAccountClose, handleDeleteAccount } from '../../utils/clustersHandler';
+import { clustersStore } from '../../../../store/clusters';
+import { handleDeleteAccountClose, handleDeleteAccount } from '../../../../utils/clustersHandler';
 
 const DeleteAccountModal = () => {
 
   // declare state variables
+  const oldPassword = clustersStore((state) => state.oldPassword);
   const isOldPasswordEmpty = clustersStore((state) => state.isOldPasswordEmpty);
   const isDeleteAccountModalOpen = clustersStore((state) => state.isDeleteAccountModalOpen);
   const [showPassword, setShowPassword] = useState(false);
@@ -49,8 +50,8 @@ const DeleteAccountModal = () => {
                 <Icon as={RiLockPasswordLine} boxSize={5} />
               </InputLeftElement>
               <Input
-                isRequired type={showPassword ? 'text' : 'password'} placeholder='*****' size='md' ref={initialRef}
-                onChange={(e) => {clustersStore.setState({oldPassword: e.target.value}); clustersStore.setState({isOldPasswordEmpty: false});}}
+                isRequired type={showPassword ? 'text' : 'password'} placeholder='*****' size='md' ref={initialRef} value={oldPassword}
+                onChange={(e) => {clustersStore.setState({oldPassword: e.target.value.trim()});}} onFocus={() => {clustersStore.setState({isOldPasswordEmpty: false});}}
               />
               <InputRightElement w={20}>
                 <Button h={7} w={16} size='sm' onClick={() => setShowPassword(!showPassword)}>{showPassword ? 'Hide' : 'Show'}</Button>

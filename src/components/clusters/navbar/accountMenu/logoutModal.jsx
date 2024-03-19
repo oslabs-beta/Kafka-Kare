@@ -3,8 +3,8 @@ import {
   Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useToast
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { clustersStore } from '../../store/clusters';
-import { handleLogout } from '../../utils/clustersHandler';
+import { clustersStore } from '../../../../store/clusters';
+import { handleLogout } from '../../../../utils/clustersHandler';
 
 const LogoutModal = () => {
 

@@ -56,8 +56,8 @@ export const handleNewClusterClose = () => {
  * Add Cluster Event
  */
 export const handleNewCluster = async (toast) => {
-  const clusterName = clustersStore.getState().clusterName;
-  const clusterPort = clustersStore.getState().clusterPort;
+  const clusterName = clustersStore.getState().clusterName.trim();
+  const clusterPort = clustersStore.getState().clusterPort.trim();
   const clusterMap = clustersStore.getState().clusterMap;
   const clusterDisplayMap = clustersStore.getState().clusterDisplayMap;
   const clusterNotFavoriteMap = clustersStore.getState().clusterNotFavoriteMap;
@@ -109,8 +109,8 @@ export const handleEditClusterClose = () => {
  * Edit Cluster Event
  */
 export const handleEditCluster = async (toast, editClusterID) => {
-  const clusterName = clustersStore.getState().clusterName;
-  const clusterPort = clustersStore.getState().clusterPort;
+  const clusterName = clustersStore.getState().clusterName.trim();
+  const clusterPort = clustersStore.getState().clusterPort.trim();
   const clusterMap = clustersStore.getState().clusterMap;
   const clusterDisplayMap = clustersStore.getState().clusterDisplayMap;
   const clusterFavoriteMap = clustersStore.getState().clusterFavoriteMap;
