@@ -14,11 +14,10 @@ metricsController.getMetrics = async (req, res, next) => {
   const { clusterId } = req.params; // Destructure from prior request params // Later use clusterId 
   const userId = res.locals.userId; // Destructure from prior middleware // Later use userId
 
-  // Prometheus query for throughput
-  // ** Must start producer/consumer scripts to see meaningful data
+  // Prometheus query for throughput ** Must start producer/consumer scripts to see meaningful data
   const query = `rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])`;
 
-  // // // More visually interesting query, but useless metric // testing
+  // // More visually interesting query, but useless metric
   // const query = `scrape_duration_seconds`
 
   try {
@@ -43,6 +42,7 @@ metricsController.getMetrics = async (req, res, next) => {
     const timestamp = queryData[0].value[0];
     const dataPointFloat = parseFloat(queryData[0].value[1]);
     const dataPoint = dataPointFloat.toFixed(2);
+    
     console.log('timestamp: ', timestamp);
     console.log('dataPoint: ', dataPoint);
     res.locals.graphData = { timestamp, dataPoint };
