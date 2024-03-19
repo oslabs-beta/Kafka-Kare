@@ -29,8 +29,9 @@ router.get(
     tokenController.verifyToken,
     slackController.getSlack,
     (req, res) => {
-      console.log("Sending slackUrl to client...");
-      return res.status(200).json(res.locals.slackUrl);
+      console.log("Sending slackUrl and username to client...");
+      // return res.status(200).json(res.locals.slackUrl);
+      return res.status(200).json({ slackUrl: res.locals.slackUrl, username: res.locals.username })
     }
   );
 
