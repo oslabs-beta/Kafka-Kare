@@ -60,3 +60,6 @@ cd kafka-cluster
 ```
 docker compose down
 ```
+
+## Instructions to connect Slack Notifications
+- For detailed instructions on how to set up and connect Slack notifications, please refer to our [Slack Setup Guide](./docs/SLACK_SETUP_GUIDE.md).
