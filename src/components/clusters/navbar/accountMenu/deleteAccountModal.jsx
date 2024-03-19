@@ -12,6 +12,7 @@ import { handleDeleteAccountClose, handleDeleteAccount } from '../../../../utils
 const DeleteAccountModal = () => {
 
   // declare state variables
+  const username = clustersStore((state) => state.username);
   const oldPassword = clustersStore((state) => state.oldPassword);
   const isOldPasswordEmpty = clustersStore((state) => state.isOldPasswordEmpty);
   const isDeleteAccountModalOpen = clustersStore((state) => state.isDeleteAccountModalOpen);
@@ -32,7 +33,7 @@ const DeleteAccountModal = () => {
       <ModalContent top='3.5rem'>
 
         {/* Title */}
-        <ModalHeader>Delete Account</ModalHeader>
+        <ModalHeader>Delete Account: {username}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
 

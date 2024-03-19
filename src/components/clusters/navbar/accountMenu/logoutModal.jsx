@@ -10,6 +10,7 @@ const LogoutModal = () => {
 
   // declare state variables
   const isLogoutModalOpen = clustersStore(state => state.isLogoutModalOpen);
+  const username = clustersStore(state => state.username);
 
   // declare variable to use toast and push
   const { push } = useRouter();
@@ -24,7 +25,7 @@ const LogoutModal = () => {
         <ModalHeader>Logout</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Are you sure you want to log out?
+          <b>{username}</b>, are you sure you want to log out?
         </ModalBody>
         <ModalFooter>
 

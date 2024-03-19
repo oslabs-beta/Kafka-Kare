@@ -11,10 +11,12 @@ import DeleteAccountModal from './accountMenu/deleteAccountModal';
 import LogoutModal from './accountMenu/logoutModal';
 
 const AccountMenu = () => {
+  const username = clustersStore(state => state.username);
+
   return (
     /* Account Menu */
     <Menu>
-      <MenuButton as={Avatar} src='' display='-webkit-box' name='' boxSize={10} bg='gray.400' color='white' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
+      <MenuButton as={Avatar} src='' display='-webkit-box' name={username} boxSize={10} bg='gray.400' color='white' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
       <MenuList>
 
         {/* Change Password */}

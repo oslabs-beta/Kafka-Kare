@@ -8,33 +8,39 @@ const addToast = (title, description, status, duration, toast) => {
 
 // fetch user clusters when page loaded
 export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
+  clustersStore.getState().reset();
   try {
+    // update states about user's slack webhook url
+    const responseSlackWebhookURLAndUsername = await axios('http://localhost:3001/slack', {withCredentials: true});
+    clustersStore.setState({renderClustersPage: true});
+    console.log('Get User\'s Slack Webhook URL and Username Response:', responseSlackWebhookURLAndUsername.data);
+
     // update states about user's all clusters
     const responseAll = await axios('http://localhost:3001/clusters/userClusters', {withCredentials: true});
     clustersStore.setState({renderClustersPage: true});
     console.log('Get User Clusters Response:', responseAll.data);
-    clustersStore.setState({clusterMap: new Map(responseAll.data.map((obj) => [obj._id, obj]))});
-    clustersStore.setState({clusterDisplayMap: new Map(responseAll.data.map((obj) => [obj._id, obj]))});
 
     // update states about user's favorite clusters
     const responseFavorite = await axios('http://localhost:3001/clusters/favorites', {withCredentials: true});
     clustersStore.setState({renderClustersPage: true});
     console.log('Get User\'s Favorite Clusters Response:', responseFavorite.data);
-    clustersStore.setState({clusterFavoriteMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj]))});
-    clustersStore.setState({clusterFavoriteDisplayMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj]))});
 
     // update states about user's not favorite clusters
     const responseNotFavorite = await axios('http://localhost:3001/clusters/notFavorites', {withCredentials: true});
     clustersStore.setState({renderClustersPage: true});
     console.log('Get User\'s Not Favorite Clusters Response:', responseNotFavorite.data);
-    clustersStore.setState({clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
-    clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))});
-    
-    // update states about user's slack webhook url
-    const responseSlackWebhookURL = await axios('http://localhost:3001/slack', {withCredentials: true});
-    clustersStore.setState({renderClustersPage: true});
-    console.log('Get User\'s Slack Webhook URL Response:', responseSlackWebhookURL.data);
-    clustersStore.setState({slackWebhookURL: responseSlackWebhookURL.data});
+
+    clustersStore.setState({
+      slackWebhookURL: responseSlackWebhookURLAndUsername.data.slackUrl,
+      username: responseSlackWebhookURLAndUsername.data.username,
+      clusterMap: new Map(responseAll.data.map((obj) => [obj._id, obj])),
+      clusterDisplayMap: new Map(responseAll.data.map((obj) => [obj._id, obj])),
+      clusterFavoriteMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj])),
+      clusterFavoriteDisplayMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj])),
+      clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj])),
+      clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj])),
+      clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))
+    });
   } catch (err) {
     console.log(err);
     clustersStore.setState({renderClustersPage: false});
@@ -45,11 +51,13 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
 
 // actions when addClusterModal closes
 export const handleNewClusterClose = () => {
-  clustersStore.setState({clusterName: ''});
-  clustersStore.setState({clusterPort: ''});
-  clustersStore.setState({isClusterNameEmpty: false});
-  clustersStore.setState({isClusterPortEmpty: false});
-  clustersStore.setState({isNewClusterOpen: false});
+  clustersStore.setState({
+    clusterName: '',
+    clusterPort: '',
+    isClusterNameEmpty: false,
+    isClusterPortEmpty: false,
+    isNewClusterOpen: false
+  });
 }
 
 /*
@@ -76,10 +84,12 @@ export const handleNewCluster = async (toast) => {
       addToast('Cluster Created', 'We\'ve created your cluster for you.', 'success', 3000, toast);
 
       // update states about user clusters
-      clustersStore.setState({clusterMap: new Map(clusterMap.set(response.data._id, response.data))});
-      clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(response.data._id, response.data))});
-      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(response.data._id, response.data))});
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(response.data._id, response.data))});
+      clustersStore.setState({
+        clusterMap: new Map(clusterMap.set(response.data._id, response.data)),
+        clusterDisplayMap: new Map(clusterDisplayMap.set(response.data._id, response.data)),
+        clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(response.data._id, response.data)),
+        clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(response.data._id, response.data))
+      });
     } catch (err) {
       console.log(err);
       addToast('Error Occurred', 'Something went wrong when adding new cluster.', 'error', 3000, toast);
@@ -89,20 +99,24 @@ export const handleNewCluster = async (toast) => {
 
 // actions when editClusterModal open
 export const handleEditClusterOpen = (clusterObj) => {
-  clustersStore.setState({isEditClusterOpen: true});
-  clustersStore.setState({clusterName: clusterObj.name});
-  clustersStore.setState({oldClusterName: clusterObj.name});
-  clustersStore.setState({clusterPort: clusterObj.hostnameAndPort});
-  clustersStore.setState({editClusterID: clusterObj._id});
+  clustersStore.setState({
+    isEditClusterOpen: true,
+    oldClusterName: clusterObj.name,
+    clusterName: clusterObj.name,
+    clusterPort: clusterObj.hostnameAndPort,
+    editClusterID: clusterObj._id
+  });
 }
 
 // actions when editClusterModal closes
 export const handleEditClusterClose = () => {
-  clustersStore.setState({clusterName: ''});
-  clustersStore.setState({clusterPort: ''});
-  clustersStore.setState({isClusterNameEmpty: false});
-  clustersStore.setState({isClusterPortEmpty: false});
-  clustersStore.setState({isEditClusterOpen: false});
+  clustersStore.setState({
+    clusterName: '',
+    clusterPort: '',
+    isClusterNameEmpty: false,
+    isClusterPortEmpty: false,
+    isEditClusterOpen: false
+  });
 }
 
 /*
@@ -132,8 +146,10 @@ export const handleEditCluster = async (toast, editClusterID) => {
       addToast('Cluster Edited', 'We\'ve edited your cluster for you.', 'success', 3000, toast);
 
       // update states about user clusters
-      clustersStore.setState({clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
-      clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(editClusterID, {...clusterDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
+      clustersStore.setState({
+        clusterMap: new Map(clusterMap.set(editClusterID, {...clusterMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort})),
+        clusterDisplayMap: new Map(clusterDisplayMap.set(editClusterID, {...clusterDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))
+      });
       if (clusterFavoriteMap.has(editClusterID)) clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(editClusterID, {...clusterFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       if (clusterFavoriteDisplayMap.has(editClusterID)) clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(editClusterID, {...clusterFavoriteDisplayMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
       if (clusterNotFavoriteMap.has(editClusterID)) clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(editClusterID, {...clusterNotFavoriteMap.get(editClusterID), name: clusterName, hostnameAndPort: clusterPort}))});
@@ -147,9 +163,11 @@ export const handleEditCluster = async (toast, editClusterID) => {
 
 // actions when deleteClusterModal open
 export const handleDeleteClusterOpen = (clusterObj) => {
-  clustersStore.setState({isDeleteClusterOpen: true});
-  clustersStore.setState({oldClusterName: clusterObj.name});
-  clustersStore.setState({deleteClusterID: clusterObj._id});
+  clustersStore.setState({
+    isDeleteClusterOpen: true,
+    oldClusterName: clusterObj.name,
+    deleteClusterID: clusterObj._id
+  });
 }
 
 /*
@@ -171,19 +189,25 @@ export const handleDeleteCluster = async (toast, deleteClusterID) => {
 
     // update states about user clusters
     clusterMap.delete(deleteClusterID);
-    clustersStore.setState({clusterMap: new Map(clusterMap)});
     clusterDisplayMap.delete(deleteClusterID);
-    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap)});
+    clustersStore.setState({
+      clusterMap: new Map(clusterMap),
+      clusterDisplayMap: new Map(clusterDisplayMap)
+    });
     if (clusterFavoriteMap.has(deleteClusterID)) {
       clusterFavoriteMap.delete(deleteClusterID);
-      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
       clusterFavoriteDisplayMap.delete(deleteClusterID);
-      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
+      clustersStore.setState({
+        clusterFavoriteMap: new Map(clusterFavoriteMap),
+        clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)
+      });
     } else {
       clusterNotFavoriteMap.delete(deleteClusterID);
-      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
       clusterNotFavoriteDisplayMap.delete(deleteClusterID);
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
+      clustersStore.setState({
+        clusterNotFavoriteMap: new Map(clusterNotFavoriteMap),
+        clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)
+      });
     }
   } catch (err) {
     console.log(err);
@@ -193,14 +217,18 @@ export const handleDeleteCluster = async (toast, deleteClusterID) => {
 
 // actions when name input changes
 export const handleClusterNameChange = (event) => {
-  clustersStore.setState({isClusterNameEmpty: false});
-  clustersStore.setState({clusterName: event.target.value});
+  clustersStore.setState({
+    isClusterNameEmpty: false,
+    clusterName: event.target.value
+  });
 };
 
 // actions when port input changes
 export const handleClusterPortChange = (event) => {
-  clustersStore.setState({isClusterPortEmpty: false});
-  clustersStore.setState({clusterPort: event.target.value});
+  clustersStore.setState({
+    isClusterPortEmpty: false,
+    clusterPort: event.target.value
+  });
 };
 
 // actions when search input changes
@@ -261,24 +289,30 @@ export const handleFavoriteChange = async (toast, favoriteClusterID) => {
     console.log('Set Favorite Cluster Response:', response.data);
 
     // update states about user clusters
-    clustersStore.setState({clusterDisplayMap: new Map(clusterDisplayMap.set(favoriteClusterID, {...clusterDisplayMap.get(favoriteClusterID), favorite: !clusterDisplayMap.get(favoriteClusterID).favorite}))});
-    clustersStore.setState({clusterMap: new Map(clusterMap.set(favoriteClusterID, {...clusterMap.get(favoriteClusterID), favorite: !clusterMap.get(favoriteClusterID).favorite}))});
+    clustersStore.setState({
+      clusterMap: new Map(clusterMap.set(favoriteClusterID, {...clusterMap.get(favoriteClusterID), favorite: !clusterMap.get(favoriteClusterID).favorite})),
+      clusterDisplayMap: new Map(clusterDisplayMap.set(favoriteClusterID, {...clusterDisplayMap.get(favoriteClusterID), favorite: !clusterDisplayMap.get(favoriteClusterID).favorite}))
+    });
     if (clusterFavoriteMap.has(favoriteClusterID)) {
       const changedClusterObj = clusterFavoriteMap.get(favoriteClusterID);
       clusterFavoriteMap.delete(favoriteClusterID);
-      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap)});
       clusterFavoriteDisplayMap.delete(favoriteClusterID);
-      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap)});
-      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({
+        clusterFavoriteMap: new Map(clusterFavoriteMap),
+        clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap),
+        clusterNotFavoriteMap: new Map(clusterNotFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite})),
+        clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))
+      });
     } else {
       const changedClusterObj = clusterNotFavoriteMap.get(favoriteClusterID);
       clusterNotFavoriteMap.delete(favoriteClusterID);
-      clustersStore.setState({clusterNotFavoriteMap: new Map(clusterNotFavoriteMap)});
       clusterNotFavoriteDisplayMap.delete(favoriteClusterID);
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap)});
-      clustersStore.setState({clusterFavoriteMap: new Map(clusterFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
-      clustersStore.setState({clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))});
+      clustersStore.setState({
+        clusterNotFavoriteMap: new Map(clusterNotFavoriteMap),
+        clusterNotFavoriteDisplayMap: new Map(clusterNotFavoriteDisplayMap),
+        clusterFavoriteMap: new Map(clusterFavoriteMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite})),
+        clusterFavoriteDisplayMap: new Map(clusterFavoriteDisplayMap.set(favoriteClusterID, {...changedClusterObj, favorite: !changedClusterObj.favorite}))
+      });
     }  
   } catch (err) {
     console.log(err);
@@ -288,11 +322,13 @@ export const handleFavoriteChange = async (toast, favoriteClusterID) => {
 
 // actions when changePasswordModal closes
 export const handleChangePasswordClose = () => {
-  clustersStore.setState({isChangePasswordModalOpen: false});
-  clustersStore.setState({isOldPasswordEmpty: false});
-  clustersStore.setState({isNewPasswordEmpty: false});
-  clustersStore.setState({oldPassword: ''});
-  clustersStore.setState({newPassword: ''});
+  clustersStore.setState({
+    isChangePasswordModalOpen: false,
+    isOldPasswordEmpty: false,
+    isNewPasswordEmpty: false,
+    oldPassword: '',
+    newPassword: ''
+  });
 }
 
 /*
@@ -319,9 +355,11 @@ export const handleChangePassword = async (toast) => {
 
 // actions when deleteAccountModal closes
 export const handleDeleteAccountClose = () => {
-  clustersStore.setState({isDeleteAccountModalOpen: false});
-  clustersStore.setState({isOldPasswordEmpty: false});
-  clustersStore.setState({oldPassword: ''});
+  clustersStore.setState({
+    isDeleteAccountModalOpen: false,
+    isOldPasswordEmpty: false,
+    oldPassword: ''
+  });
 }
 
 /*
@@ -336,9 +374,11 @@ export const handleDeleteAccount = async (toast, push) => {
     try {
       const response = await axios.delete(`http://localhost:3001/auth/account/delete`, {data: {password}, withCredentials: true});
       console.log('Delete Account Response:', response.data);
-      clustersStore.setState({clusterDisplayMap: new Map()});
-      clustersStore.setState({clusterFavoriteDisplayMap: new Map()});
-      clustersStore.setState({clusterNotFavoriteDisplayMap: new Map()});
+      clustersStore.setState({
+        clusterDisplayMap: new Map(),
+        clusterFavoriteDisplayMap: new Map(),
+        clusterNotFavoriteDisplayMap: new Map()
+      });
       push('/');
       addToast('Delete Account', 'We\'ve deleted your account for you.', 'success', 3000, toast);
     } catch (err) {
@@ -355,10 +395,12 @@ export const handleLogout = async (toast, push) => {
   try {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
-    clustersStore.setState({isLogoutModalOpen: false});
-    clustersStore.setState({clusterDisplayMap: new Map()});
-    clustersStore.setState({clusterFavoriteDisplayMap: new Map()});
-    clustersStore.setState({clusterNotFavoriteDisplayMap: new Map()});
+    clustersStore.setState({
+      isLogoutModalOpen: false,
+      clusterDisplayMap: new Map(),
+      clusterFavoriteDisplayMap: new Map(),
+      clusterNotFavoriteDisplayMap: new Map()
+    });
     push('/');
     addToast('Logout', 'User logged out successfully.', 'success', 3000, toast);
   } catch (err) {
@@ -395,10 +437,12 @@ export const handleSlackWebhookURLSubmit = async (toast) => {
  */
 export const handleSlackWebhookURLDelete = async (toast) => {
   try {
-    clustersStore.setState({slackWebhookURL: ''});
     const response = await axios.get(`http://localhost:3001/slack/delete`, {withCredentials: true});
     console.log('Delete Slack Webhook URL Response:', response.data);
-    clustersStore.setState({isDrawerOpen: false});
+    clustersStore.setState({
+      slackWebhookURL: '',
+      isDrawerOpen: false
+    });
     addToast('Slack Webhook URL Deleted', 'We\'ve deleted your Slack Webhook URL for you.', 'success', 3000, toast);
   } catch (err) {
     console.log(err);

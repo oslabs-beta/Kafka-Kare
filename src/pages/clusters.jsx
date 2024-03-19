@@ -33,6 +33,7 @@ export default function Home() {
   // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
     handleFetchClustersAndSlackWebhookURL(toast, push);
+    // setTimeout(() => {alert('finish')}, 250);
   }, []);
   // const drawerBtnRef = React.useRef();
 
