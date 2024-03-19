@@ -108,7 +108,7 @@ app.prepare().then(() => {
   server.use("/auth", authRoutes); 
   server.use("/clusters", clustersRoutes); 
   server.use("/metrics", metricsRoutes);
-  server.use("/testing", testingRoutes); 
+  server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
 
   // Fallback route
