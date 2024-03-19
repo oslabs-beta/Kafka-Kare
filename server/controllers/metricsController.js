@@ -4,7 +4,7 @@ const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/T06Q7C73V44/B06PYCR2
 
 // Setting maximum rate of Slack notifications to once per minute
 const THROTTLE_TIME_IN_MS = 60000;
-const THROUGHPUT_THRESHOLD_UPPER = 1.2;
+const THROUGHPUT_THRESHOLD_UPPER = 1.2; // Explain business logic in comments here
 let lastNotificationTime = 0; // Initialize outside for closure
 
 
@@ -86,6 +86,7 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   const messagesPerSecond = graphData.dataPoint;
 
   try {
+      // text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
       await axios.post(SLACK_WEBHOOK_URL, {
         text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
       });
