@@ -85,6 +85,11 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   console.log('Metrics exceed threshold. Sending Slack notification...')
   const messagesPerSecond = graphData.dataPoint;
 
+  // testing
+  console.log(SLACK_WEBHOOK_URL);
+  console.log(THROUGHPUT_THRESHOLD_UPPER);
+  // testing
+
   try {
       // text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
       await axios.post(SLACK_WEBHOOK_URL, {
