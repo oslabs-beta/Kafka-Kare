@@ -4,6 +4,7 @@ const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/T06Q7C73V44/B06PYCR2
 
 // Setting maximum rate of Slack notifications to once per minute
 const THROTTLE_TIME_IN_MS = 60000;
+const THROUGHPUT_THRESHOLD_UPPER = 1.5;
 let lastNotificationTime = 0; // Initialize outside for closure
 
 
@@ -63,8 +64,8 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   
 
   // This is the threshold check
-  console.log('Metrics below threshold, proceeding')
-  if (graphData.dataPoint <= 1.5) {
+  if (graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
+    console.log('Metrics below threshold, proceeding')
     return next();
   }
 
@@ -72,14 +73,14 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   const currentTime = Date.now();
   const timeSinceLastNotification = currentTime - lastNotificationTime;
   if (timeSinceLastNotification <= THROTTLE_TIME_IN_MS) {
-    console.log('Message is being throttled, proceeding');
+    console.log('Message is being throttled to avoid spamming');
     return next();
   }
 
   console.log('Metrics exceed threshold. Sending Slack notification...')
   try {
       await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Throughput has climbed over 1.5 messages per second. Current rate: <${graphData.dataPoint}> messasges/second`
+        text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. \nCurrent rate: <${graphData.dataPoint.toFixed(2)}> messages per second.`
       });
       console.log(`Notification sent to Slack successfully`);
       lastNotificationTime = currentTime; // Update the time of the last notification
