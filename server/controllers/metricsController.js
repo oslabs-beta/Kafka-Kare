@@ -4,7 +4,7 @@ const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/T06Q7C73V44/B06PYCR2
 
 // Setting maximum rate of Slack notifications to once per minute
 const THROTTLE_TIME_IN_MS = 60000;
-const THROUGHPUT_THRESHOLD_UPPER = 1.5;
+const THROUGHPUT_THRESHOLD_UPPER = 1.2;
 let lastNotificationTime = 0; // Initialize outside for closure
 
 
@@ -41,10 +41,15 @@ metricsController.getMetrics = async (req, res, next) => {
 
     // Persist data retrieved from Prometheus
     const timestamp = queryData[0].value[0];
-    const dataPoint = parseFloat(queryData[0].value[1]);
+    const dataPointFloat = parseFloat(queryData[0].value[1]);
+    const dataPoint = dataPointFloat.toFixed(2);
     console.log('timestamp: ', timestamp);
     console.log('dataPoint: ', dataPoint);
     res.locals.graphData = { timestamp, dataPoint };
+
+    // Converting to human-readable timestamp
+    const readableTimestamp = new Date(timestamp * 1000).toISOString();
+    console.log('Readable Timestamp: ', readableTimestamp);
 
     return next();
   } catch (err) {
@@ -78,9 +83,11 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   }
 
   console.log('Metrics exceed threshold. Sending Slack notification...')
+  const messagesPerSecond = graphData.dataPoint;
+
   try {
       await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. \nCurrent rate: <${graphData.dataPoint.toFixed(2)}> messages per second.`
+        text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
       });
       console.log(`Notification sent to Slack successfully`);
       lastNotificationTime = currentTime; // Update the time of the last notification
