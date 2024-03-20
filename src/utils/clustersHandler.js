@@ -414,11 +414,13 @@ export const handleLogout = async (toast, push) => {
  */
 export const handleSlackWebhookURLSubmit = async (toast) => {
   const slackWebhookURL = clustersStore.getState().slackWebhookURL;
-  if (slackWebhookURL.slice(0, 34) === 'https://hooks.slack.com/services/T'
-    && slackWebhookURL.indexOf('/B') - slackWebhookURL.indexOf('/T') >= 10
-    && slackWebhookURL.lastIndexOf('/') - slackWebhookURL.indexOf('/B') >= 9
-    && slackWebhookURL.length >= 77
-  ) {
+  const slackWebhookURLRegex = /^https:\/\/hooks\.slack\.com\/services\/T[A-Za-z0-9]{8,12}\/B[A-Za-z0-9]{8,12}\/[A-Za-z0-9]{24,26}/;
+  // if (slackWebhookURL.slice(0, 34) === 'https://hooks.slack.com/services/T'
+  //   && slackWebhookURL.indexOf('/B') - slackWebhookURL.indexOf('/T') >= 10
+  //   && slackWebhookURL.lastIndexOf('/') - slackWebhookURL.indexOf('/B') >= 9
+  //   && slackWebhookURL.length >= 77
+  // ) 
+   if (slackWebhookURL.match(slackWebhookURLRegex)) {
     try {
       const response = await axios.patch(`http://localhost:3001/slack/update`, {slackUrl: slackWebhookURL}, {withCredentials: true});
       console.log('Update Slack Webhook URL Response:', response.data);
