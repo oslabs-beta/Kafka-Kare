@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export const clustersStore = create((set) => ({
+const initialState = {
 
   // User's Clusters
   clusterMap: new Map(),
@@ -19,12 +19,21 @@ export const clustersStore = create((set) => ({
   
   // Not Favorite Clusters for Display
   clusterNotFavoriteDisplayMap: new Map(),
+
+  // Timeout Function to Debounce Search
+  clusterDebounceSearchTimeout: null,
+
+  // Username
+  username: '',
   
   // Name Input Value
   clusterName: '',
 
   // Port Input Value
   clusterPort: '',
+
+  // Cluster Search Input Value
+  clusterSearchValue: '',
 
   // Old Password Input Value
   oldPassword: '',
@@ -79,4 +88,9 @@ export const clustersStore = create((set) => ({
 
   // Name before Edit
   oldClusterName: '',
+};
+
+export const clustersStore = create((set) => ({
+  ...initialState,
+  reset: () => {set(initialState)}
 }));

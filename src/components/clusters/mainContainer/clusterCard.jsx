@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { RxStar, RxStarFilled } from 'react-icons/rx';
 import path from 'path';
-import { handleEditClusterOpen, handleDeleteClusterOpen, handleFavoriteChange } from '../../utils/clustersHandler';
+import { handleEditClusterOpen, handleDeleteClusterOpen, handleFavoriteChange } from '../../../utils/clustersHandler';
 
 const ClusterCard = ({ clusterObj }) => {
   
@@ -43,7 +43,7 @@ const ClusterCard = ({ clusterObj }) => {
         </Flex>
       </CardHeader>
       <CardBody>
-        <Stack divider={<StackDivider />} spacing='4'>
+        <Stack divider={<StackDivider />} spacing={4}>
 
           {/* Hostname and Port */}
           <Box>
@@ -58,10 +58,10 @@ const ClusterCard = ({ clusterObj }) => {
           {/* Any Information */}
           <Box>
             <Heading size='xs' textTransform='uppercase'>
-              Something Else
+             Number of Brokers
             </Heading>
             <Text pt='2' fontSize='sm'>
-              {'Something Else'}
+              {clusterObj.numberOfBrokers}
             </Text>
           </Box>
         </Stack>

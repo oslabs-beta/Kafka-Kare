@@ -102,6 +102,7 @@ userController.logout = async (req, res, next) => {
     }
     else {
       console.log('User logged out successfully');
+      // Delete token
       res.cookie('token', 'none', {
         expires: new Date(Date.now() + 5 * 1000),
         httpOnly: true,
@@ -194,6 +195,11 @@ userController.deleteAccount = async (req, res, next) => {
     await User.findByIdAndDelete(userId);
     
     console.log(`Account for <${user.username}> deleted successfully`);
+    // Delete token
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+    })
     return next();
   } catch (err) {
     return next({

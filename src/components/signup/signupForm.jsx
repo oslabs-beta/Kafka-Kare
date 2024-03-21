@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 // import { auth, signIn } from '../../NextAuth/auth.js';
-import axios from 'axios'; // Import axios for making HTTP requests
 import {
   Stack,
   FormControl,
@@ -11,53 +10,35 @@ import {
   Input,
   Image,
   Button,
-  FormHelperText,
+  FormErrorMessage,
   chakra,
   Box,
   Link,
+  useToast
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
+import { userStore } from '../../store/user';
+import { handleSignUp } from '../../utils/userHandler'; 
 
-
-const SignupForm = ({ onSubmit }) => {
+const SignupForm = () => {
   // const session = await auth();
-  const [username, setUsername] = useState(''); // State to store username
-  const [password, setPassword] = useState(''); // State to store password
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const [errorMessage, setErrorMessage] = useState(''); // State to store error message
+  const username = userStore(state => state.username); // State to store username
+  const password = userStore(state => state.password); // State to store password
+  const showPassword = userStore(state => state.showPassword); // State to toggle password visibility
+  const usernameInvalid = userStore(state => state.usernameInvalid); // State to manage password validity
+  const usernameErrorMessage = userStore(state => state.usernameErrorMessage); // State to store username error message
+  const passwordInvalid = userStore(state => state.passwordInvalid); // State to manage username validity
+  const passwordErrorMessage = userStore(state => state.passwordErrorMessage); // State to store password error message
+  const resetUserStore = userStore(state => state.reset);
   const router = useRouter();
+  const toast = useToast();
+  const initialRef = useRef();
+  useEffect(() => {
+    resetUserStore();
+    initialRef.current.focus();
+  }, []);
   // Function to toggle password visibility
-  const handleShowClick = () => setShowPassword(!showPassword);
-
-  // Function to handle form submission
-  const handleSignUp = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    // Validate input fields
-    if (!username || !password) {
-      setErrorMessage('All fields are required');
-      return;
-    }
-
-    try {
-      const response = await axios.post('http://localhost:3001/auth/signup', {
-        username, password
-      }, {withCredentials: true});
-      
-      console.log('response: ', response.data);
-
-      if (response.data.message) {
-        console.log('signup successful!');
-        router.replace('/clusters')
-      } else {
-        setErrorMessage('Signup Failed');
-      }
-    } catch (error) {
-      console.error('error: ', error);
-      if (error.response.data.err === 'username already exists in database') {
-        setErrorMessage('Please choose a different username')
-      } else setErrorMessage('An error occurred during signup.')
-    }
-  };
+  const handleShowClick = () => userStore.setState({showPassword: !showPassword});
   
   // Function to handle navigation to the login page
   const handleLogin = () => {
@@ -67,7 +48,7 @@ const SignupForm = ({ onSubmit }) => {
   return (
     // Form component to handle form submission
     <FormControl>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={(e) => handleSignUp(e, toast, router)}>
         <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
           <Box mb={6} display='flex' justifyContent='center'>
@@ -76,26 +57,34 @@ const SignupForm = ({ onSubmit }) => {
             <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
           </Box>
           {/* Username input field */}
-          <FormControl>
+          <FormControl isInvalid={usernameInvalid}>
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<FaUserAlt color="gray.300" />} />
-              <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <Input
+                type="text" placeholder="Username" value={username} onChange={(e) => {userStore.setState({username: e.target.value.trim()})}}
+                onFocus={() => {userStore.setState({usernameErrorMessage: ''}); userStore.setState({usernameInvalid: false});}} ref={initialRef}
+                />
             </InputGroup>
+            {/* Display error message if any */}
+            <FormErrorMessage>{usernameErrorMessage}</FormErrorMessage>
           </FormControl>
           {/* Password input field */}
-          <FormControl>
+          <FormControl isInvalid={passwordInvalid}>
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<FaLock color="gray.300" />} />
-              <Input type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={(e) => {userStore.setState({password: e.target.value.trim()})}}
+                onFocus={() => {userStore.setState({passwordErrorMessage: ''}); userStore.setState({passwordInvalid: false});}}
+              />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                   {showPassword ? 'Hide' : 'Show'}
                 </Button>
               </InputRightElement>
             </InputGroup>
+            {/* Display error message if any */}
+            <FormErrorMessage>{passwordErrorMessage}</FormErrorMessage>
           </FormControl>
-          {/* Display error message if any */}
-          {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
           {/* Submit button */}
           <FormControl>
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Sign Up</Button>
