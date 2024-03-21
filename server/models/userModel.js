@@ -43,9 +43,15 @@ const userSchema = new Schema({
     type: String,
     default: ''
   },
-  darkMode: {
-    type: Boolean,
-    default: false
+  settings: {
+    darkMode: {
+      type: Boolean,
+      default: false
+    },
+    language: {
+      type: String,
+      default: 'English'
+    }
   }
 });
 
