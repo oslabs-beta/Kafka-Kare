@@ -1,8 +1,16 @@
 import { create } from 'zustand';
 
+const initialState = {
+  username: '', // State to store username
+  password: '', // State to store password
+  showPassword: false, // State to toggle password visibility
+  usernameInvalid: false, // State to manage password validity
+  usernameErrorMessage: '', // State to store username error message
+  passwordInvalid: false, // State to manage username validity
+  passwordErrorMessage: '', // State to store password error message
+}
+
 export const userStore = create((set) => ({
-  username: 'test',
-  userID: '65e8fc7fc0d2eafacb7698a9',
-  updateUsername: (username) => set(() => ({ username: username })),
-  updateUserID: (userID) => set(() => ({ userID: userID })),
+  ...initialState,
+  reset: () => {set(initialState)},
 }));

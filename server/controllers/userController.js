@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel.js");
 const Cluster = require("../models/clusterModel.js");
-const Cluster = require("../models/clusterModel.js");
 
 const userController = {};
 
@@ -35,7 +34,6 @@ userController.createUser = async (req, res, next) => {
       password: password
     });
     console.log(`New user stored in database: <${user.username}>`);
-    console.log(`New user stored in database: <${user.username}>`);
     res.locals.userId = user.id;
     res.locals.username = user.username;
     return next();
@@ -64,10 +62,7 @@ userController.verifyUser = async (req, res, next) => {
     else {
       console.log('User found. Checking password...');
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-      if (!isPasswordValid) {
-        console.log('Password is not valid');
       if (!isPasswordValid) {
         console.log('Password is not valid');
         return res.status(401).json({ err: 'Invalid credentials.' });
@@ -107,6 +102,7 @@ userController.logout = async (req, res, next) => {
     }
     else {
       console.log('User logged out successfully');
+      // Delete token
       res.cookie('token', 'none', {
         expires: new Date(Date.now() + 5 * 1000),
         httpOnly: true,
@@ -127,36 +123,13 @@ userController.updatePassword = async (req, res, next) => {
   console.log('In userController.updatePassword'); // testing
   console.log('req.body contains: ', req.body);
   const { oldPassword, newPassword } = req.body; // Destructure from req.body
-  const { oldPassword, newPassword } = req.body; // Destructure from req.body
   const { userId } = res.locals; // Destructure from prior middleware
 
   // Update password in database
   try {
     // Retrieve the user from the database to compare passwords
     const user = await User.findById(userId);
-    // Retrieve the user from the database to compare passwords
-    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ err: 'User not found.' });
-    }
-
-    console.log('User found. Checking password...');
-    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
-
-    // Password does not match
-    if (!isPasswordValid) { 
-      console.log('Current password is not valid');
-      return res.status(401).json({ err: 'Invalid credentials.' });
-    }
-
-    // Password matches
-    console.log(`Password verified. Updating password for <${user.username}>`);
-    user.password = newPassword;
-    
-    // This triggers the pre-save hook to hash the password
-    await user.save(); 
-
-    console.log(`Password updated successfully for <${user.username}>`);
       return res.status(404).json({ err: 'User not found.' });
     }
 
@@ -222,6 +195,11 @@ userController.deleteAccount = async (req, res, next) => {
     await User.findByIdAndDelete(userId);
     
     console.log(`Account for <${user.username}> deleted successfully`);
+    // Delete token
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+    })
     return next();
   } catch (err) {
     return next({
@@ -231,52 +209,6 @@ userController.deleteAccount = async (req, res, next) => {
     });
   }
 };
-
-/* ----------------------------- DELETE ACCOUNT ----------------------------- */
-userController.deleteAccount = async (req, res, next) => {
-  console.log('In userController.deleteAccount'); // testing
-  console.log('req.body contains: ', req.body);
-  const { userId } = res.locals; // Destructure from prior middleware
-  const { password } = req.body; // Destructure from req body
-
-  // Delete from database
-  try {
-    // Retrieve the user from the database to compare passwords
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ err: 'User not found.' });
-    }
-
-    console.log('User found. Checking password...');
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    // Password does not match
-    if (!isPasswordValid) { 
-      console.log('Password is not valid');
-      return res.status(401).json({ err: 'Invalid credentials.' });
-    }
-
-    // Password matches
-    console.log(`Password verified. Deleting account for <${user.username}>`);
-
-    // Delete all clusters associated with the user
-    await Cluster.deleteMany({ ownerId: userId });
-    console.log(`All clusters belonging to <${user.username}> deleted successfully`)
-
-    // Delete the user account
-    await User.findByIdAndDelete(userId);
-    
-    console.log(`Account for <${user.username}> deleted successfully`);
-    return next();
-  } catch (err) {
-    return next({
-      log: `userController.deleteAccount: ERROR ${err}`,
-      status: 500,
-      message: { err: "Error occurred in userController.deleteAccount." },
-    });
-  }
-};
-
 
 
 // Export

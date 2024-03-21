@@ -1,6 +1,6 @@
 const axios = require("axios");
 const metricsController = {};
-const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
 // Setting maximum rate of Slack notifications to once per minute
 const THROTTLE_TIME_IN_MS = 60000;
@@ -89,12 +89,12 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   console.log('graphData.dataPoint: ', graphData.dataPoint)
 
   try {
-      await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. \nCurrent rate: <${graphData.dataPoint}> messages per second.`
-      });
-      console.log(`Notification sent to Slack successfully`);
-      lastNotificationTime = currentTime; // Update the time of the last notification
-      return next();
+    await axios.post(SLACK_WEBHOOK_URL, {
+      text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. \nCurrent rate: <${graphData.dataPoint}> messages per second.`
+    });
+    console.log(`Notification sent to Slack successfully`);
+    lastNotificationTime = currentTime; // Update the time of the last notification
+    return next();
 
   } catch (err) {
     console.log(`Failed to send notification to Slack: ${err}`);
