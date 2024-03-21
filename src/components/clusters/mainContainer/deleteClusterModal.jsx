@@ -3,8 +3,8 @@ import {
   Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useToast,
   Alert, AlertIcon, AlertTitle, AlertDescription,
 } from '@chakra-ui/react';
-import { clustersStore } from '../../store/clusters';
-import { handleDeleteCluster } from '../../utils/clustersHandler';
+import { clustersStore } from '../../../store/clusters';
+import { handleDeleteCluster } from '../../../utils/clustersHandler';
 
 const DeleteClusterModal = () => {
 

@@ -1,16 +1,11 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import LoginForm from '../components/loginForm.jsx'
 import {
-    Flex,
-    Heading,
-    Box,
-    Stack,
-    Link,
-  } from "@chakra-ui/react";
+  Flex,
+  Box,
+} from "@chakra-ui/react";
+import LoginForm from '../components/login/loginForm.jsx'; // Import the LoginForm component
 
 const Login = () => {
-  const router = useRouter();
 
   return (
     // Flex container to center the content vertically and horizontally
@@ -21,6 +16,6 @@ const Login = () => {
       </Box>
     </Flex>
   );
-}
+};
 
-  export default Login;
+export default Login;

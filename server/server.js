@@ -53,7 +53,7 @@ app.prepare().then(() => {
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
-//options for mongoose.connect
+  // options for mongoose.connect
   //   {useNewUrlParser: true,
   //   useUnifiedTopology: true,
   //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
@@ -75,7 +75,6 @@ app.prepare().then(() => {
       res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
     }
   });
-
 
   // TEST POST route to create a new user 
   server.post('/users', async (req, res) => {

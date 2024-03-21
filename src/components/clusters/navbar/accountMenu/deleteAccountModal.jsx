@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, Button, Icon, useToast,
+  FormControl, FormLabel, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Button, Icon, useToast,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
   Alert, AlertIcon, AlertTitle, AlertDescription,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { RiLockPasswordLine, RiRotateLockLine } from "react-icons/ri";
-import { clustersStore } from '../../store/clusters';
-import { handleDeleteAccountClose, handleDeleteAccount } from '../../utils/clustersHandler';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { clustersStore } from '../../../../store/clusters';
+import { handleDeleteAccountClose, handleDeleteAccount } from '../../../../utils/clustersHandler';
 
 const DeleteAccountModal = () => {
 
   // declare state variables
+  const username = clustersStore((state) => state.username);
+  const oldPassword = clustersStore((state) => state.oldPassword);
   const isOldPasswordEmpty = clustersStore((state) => state.isOldPasswordEmpty);
   const isDeleteAccountModalOpen = clustersStore((state) => state.isDeleteAccountModalOpen);
+  const [showPassword, setShowPassword] = useState(false);
 
   // declare reference modal initial focus
   const initialRef = React.useRef(null);
@@ -25,12 +28,12 @@ const DeleteAccountModal = () => {
   return (
 
     /* Delete Account Modal */
-    <Modal isOpen={isDeleteAccountModalOpen} onClose={handleDeleteAccountClose} initialFocusRef={initialRef}>
+    <Modal isOpen={isDeleteAccountModalOpen} onClose={handleDeleteAccountClose} motionPreset='slideInBottom' initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent top='3.5rem'>
 
         {/* Title */}
-        <ModalHeader>Delete Account</ModalHeader>
+        <ModalHeader>Delete Account: {username}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
 
@@ -48,9 +51,12 @@ const DeleteAccountModal = () => {
                 <Icon as={RiLockPasswordLine} boxSize={5} />
               </InputLeftElement>
               <Input
-                isRequired placeholder='*****' size='md' ref={initialRef}
-                onChange={(e) => {clustersStore.setState({oldPassword: e.target.value}); clustersStore.setState({isOldPasswordEmpty: false});}}
+                isRequired type={showPassword ? 'text' : 'password'} placeholder='*****' size='md' ref={initialRef} value={oldPassword}
+                onChange={(e) => {clustersStore.setState({oldPassword: e.target.value.trim()});}} onFocus={() => {clustersStore.setState({isOldPasswordEmpty: false});}}
               />
+              <InputRightElement w={20}>
+                <Button h={7} w={16} size='sm' onClick={() => setShowPassword(!showPassword)}>{showPassword ? 'Hide' : 'Show'}</Button>
+              </InputRightElement>
             </InputGroup>
             <FormErrorMessage><b>Password</b>&nbsp;shouldn't be Empty</FormErrorMessage>
           </FormControl>
