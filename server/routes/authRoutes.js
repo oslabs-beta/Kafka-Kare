@@ -4,7 +4,6 @@ const userController = require("../controllers/userController");
 const tokenController = require("../controllers/tokenController");
 
 // Route for user signup
-// Route for user signup
 router.post(
   '/signup', 
   userController.createUser, 
@@ -13,8 +12,6 @@ router.post(
     return res.status(201).json({ message: `User registered successfully: ${res.locals.username}` });
 });
 
-
-// Route for user login
 // Route for user login
 router.post(
   '/login', 
@@ -23,7 +20,6 @@ router.post(
   (req, res) => {
     return res.status(200).json({ message: `User logged in successfully: ${res.locals.username}` });
 });
-
 
 // Route for user logout
 router.get(

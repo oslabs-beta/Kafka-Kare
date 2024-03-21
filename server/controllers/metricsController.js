@@ -1,6 +1,6 @@
 const axios = require("axios");
 const metricsController = {};
-const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
 // Setting maximum rate of Slack notifications to once per minute
 const THROTTLE_TIME_IN_MS = 60000;
@@ -14,11 +14,10 @@ metricsController.getMetrics = async (req, res, next) => {
   const { clusterId } = req.params; // Destructure from prior request params // Later use clusterId 
   const userId = res.locals.userId; // Destructure from prior middleware // Later use userId
 
-  // Prometheus query for throughput
-  // ** Must start producer/consumer scripts to see meaningful data
+  // Prometheus query for throughput ** Must start producer/consumer scripts to see meaningful data
   const query = `rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])`;
 
-  // // // More visually interesting query, but useless metric // testing
+  // // More visually interesting query, but useless metric
   // const query = `scrape_duration_seconds`
 
   try {
@@ -43,6 +42,7 @@ metricsController.getMetrics = async (req, res, next) => {
     const timestamp = queryData[0].value[0];
     const dataPointFloat = parseFloat(queryData[0].value[1]);
     const dataPoint = dataPointFloat.toFixed(2);
+    
     console.log('timestamp: ', timestamp);
     console.log('dataPoint: ', dataPoint);
     res.locals.graphData = { timestamp, dataPoint };
@@ -66,10 +66,9 @@ metricsController.getMetrics = async (req, res, next) => {
 metricsController.checkAndSendNotification = async (req, res, next) => {
   console.log("In metricsController.checkAndSendNotification"); // testing
   const { graphData } = res.locals; // Destructure from prior middleware 
-  
 
   // This is the threshold check
-  if (graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
+  if (!graphData || graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
     console.log('Metrics below threshold, proceeding')
     return next();
   }
@@ -83,29 +82,25 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   }
 
   console.log('Metrics exceed threshold. Sending Slack notification...')
-  const messagesPerSecond = graphData.dataPoint;
 
   // testing
-  console.log(SLACK_WEBHOOK_URL);
-  console.log(THROUGHPUT_THRESHOLD_UPPER);
-  // testing
+  console.log('SLACK_WEBHOOK_URL: ', SLACK_WEBHOOK_URL);
+  console.log('THROUGHPUT_THRESHOLD_UPPER: ', THROUGHPUT_THRESHOLD_UPPER);
+  console.log('graphData.dataPoint: ', graphData.dataPoint)
 
   try {
-      // text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
-      await axios.post(SLACK_WEBHOOK_URL, {
-        text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. Current rate: <${messagesPerSecond}> messages per second.`
-      });
-      console.log(`Notification sent to Slack successfully`);
-      lastNotificationTime = currentTime; // Update the time of the last notification
-      return next();
+    await axios.post(SLACK_WEBHOOK_URL, {
+      text: `Alert set for: <${THROUGHPUT_THRESHOLD_UPPER}> messages per second. \nCurrent rate: <${graphData.dataPoint}> messages per second.`
+    });
+    console.log(`Notification sent to Slack successfully`);
+    lastNotificationTime = currentTime; // Update the time of the last notification
+    return next();
 
   } catch (err) {
-    return next({
-      log: `metricsController.checkAndSendNotification: ERROR ${err}`,
-      status: 500,
-      message: { err: "Error occurred in metricsController.checkAndSendNotification." },
-    });
+    console.log(`Failed to send notification to Slack: ${err}`);
   }
+
+  return next();
 }
 
 // Export

@@ -1,4 +1,4 @@
-import { userStore } from "../store/user";
+import { userStore } from "../store/user"; // Import state store for user
 import axios from "axios"; // Import axios for making HTTP requests
 
 // Funcion to check input format
@@ -27,7 +27,7 @@ const inputFormatCheck = () => {
   return inputFormatValid;
 }
 
-// Function to handle form submission
+// Function to handle sign-up form submission
 export const handleSignUp = async (event, toast, router) => {
   event.preventDefault(); // Prevent the default form submission behavior
   const username = userStore.getState().username;
@@ -93,6 +93,7 @@ export const handleSignUp = async (event, toast, router) => {
   }
 };
 
+// Function to handle login form submission
 export const handleLogin = async (toast, router) => {
   const username = userStore.getState().username;
   const password = userStore.getState().password;
