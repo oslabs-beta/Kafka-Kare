@@ -18,7 +18,7 @@ export const BackgroundGradientAnimation = ({
   interactive = true,
   containerClassName,
 }) => {
-  console.log('background is rendered')
+  
   const interactiveRef = useRef(null);
 
   const [curX, setCurX] = useState(0);
@@ -27,6 +27,7 @@ export const BackgroundGradientAnimation = ({
   const [tgY, setTgY] = useState(0);
   
   useEffect(() => {
+    
     document.body.style.setProperty(
       "--gradient-background-start",
       gradientBackgroundStart
@@ -46,9 +47,10 @@ export const BackgroundGradientAnimation = ({
   }, []);
 
   useEffect(() => {
+    
     function move() {
       if (!interactiveRef.current) {
-        return;
+         return;
       }
       setCurX(curX + (tgX - curX) / 20);
       setCurY(curY + (tgY - curY) / 20);
@@ -56,11 +58,12 @@ export const BackgroundGradientAnimation = ({
         curX
       )}px, ${Math.round(curY)}px)`;
     }
-
+    
     move();
   }, [tgX, tgY]);
 
   const handleMouseMove = (event) => {
+    console.log('background is rendered')
     if (interactiveRef.current) {
       const rect = interactiveRef.current.getBoundingClientRect();
       setTgX(event.clientX - rect.left);

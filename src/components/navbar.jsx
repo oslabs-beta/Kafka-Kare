@@ -1,4 +1,4 @@
-"use client"; //unsure what this is for, but was included on Aceternity UI source code
+"use client"; 
 import React from "react";
 import { Menu, MenuItem } from "../ui/navbar-menu";
 import { cn } from "../styles/cn";

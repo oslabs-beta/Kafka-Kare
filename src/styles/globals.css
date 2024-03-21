@@ -9,12 +9,12 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-}
+} 
 
 .menu-item {
     cursor: pointer;
     color: black;
-  }
+  } 
   
   .menu-item:hover {
     opacity: 0.9;
@@ -42,15 +42,6 @@
     border-color: #000;
   }
 
-  .hovered-link {
-    color: #3b82f6; /* Default text color */
-    transition: color 0.3s ease; /* Transition for color change on hover */
-  }
-  
-  .hovered-link:hover {
-    color: #000; /* Color on hover */
-  }
-
 .fixed-navbar {
     position: fixed;
     top: 10px;
@@ -62,7 +53,7 @@
   
   .menu-item-container {
     padding: 1rem;
-  }
+  } */
 
   /* STYLING FOR LOGIN PAGE AND SIGNUP PAGE */
   .login-content, .signup-content{

@@ -8,7 +8,7 @@ const ColorMode = () => {
     return (
         <header>
             <Button onClick={toggleColorMode}>
-                {`${colorMode[0].toUpperCase() + colorMode.slice(1)} Mode`} {colorMode === 'light' ? 'dark' : 'light'}
+                Color Mode: {colorMode === 'light' ? 'dark' : 'light'}
             </Button>
         </header>
     )
