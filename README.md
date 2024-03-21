@@ -1,69 +1,40 @@
 # Kafka-Kare
 A Kafka error handling visualizer 
 
+## Description
+Kafka Kare is a comprehensive monitoring solution designed to provide real-time insights into Kafka cluster health and performance. Our project bridges the gap between Kafka cluster metrics and actionable insights by delivering a user-friendly dashboard interface. We leverage Docker, Prometheus, and Grafana for metrics collection and visualization, with a robust backend built on Express and MongoDB, and a reactive frontend developed with React and the Zustand state management library.
 
-# Instructions to start the application
-1. Build frontend image
-```
-docker build -f Dockerfile-ui -t kafka-kare-ui .
-```
+## Key Features:
+- Real-time Kafka Metrics: Visualize key performance indicators such as throughput, latency, and error rates in real-time.
+- Custom Metrics Visualization: Move beyond Grafana with a direct Prometheus to Chart.js integration for more granular control over data presentation.
+- User Management: Secure user authentication, profile management, and personalized dashboard settings.
+- Responsive Design: A modern, responsive UI that ensures a seamless user experience across various devices.
 
-2. Build backend image
-```
-docker build -f Dockerfile-server -t kafka-kare-server .
-```
+## Tech Stack:
+- Frontend: React, Zustand, Chart.js
+- Backend: Node.js, Express, MongoDB
+- Monitoring: Prometheus, Grafana
+- Containerization: Docker
 
-3. Spin up application container
-```
-docker compose up -d
-```
+## Getting Started:
+For detailed instructions on how to set up and run Kafka Kare Dashboard, please refer to our [Setup Guide](./docs/SETUP_GUIDE.md).
 
-4. Change directory to /kafka-cluster
-```
-cd kafka-cluster
-```
+## Quick Start
+Here's a quick overview to get you started:
+1. Build the frontend and backend images.
+2. Use `docker compose up-d` to spin up the application.
+3. Navigate to `/kafka-cluster` and set up the demo Kafka cluster.
+4. Visit the application frontend at `localhost:3000`.
 
-5. (First time running the application) Build kafka cluster image 
-```
-docker build -t dockerpromkafka:latest .
-```
+For full details, including prerequisites and step-by-step instructions, please see the setup guide. 
 
-6. Spin up demo kafka-cluster container (demo Kafka-cluster container must be spun up after application container)
-```
-docker compose up -d
-```
+## Contributing:
+We welcome contributions! Whether it's feature requests, bug reports, or pull requests, your input helps us make Kafka Kare better for everyone.
 
-7. Run the consumer followed by producer script
-```
-node consumer.js
-node producer.js
-```
+## Roadmap: 
+- Optimize Dockerfiles to copy only needed files
 
-8. Log into Grafana account at locahost:3002
-- Sign in with credentials admin/kafkakarepw
-
-9. Visit application frontend at localhost:3000
-- Enjoy
-
-
-# Instructions to stop the application
-1. Spin down application container
-```
-docker compose down
-```
-
-2. Change directory to /kafka-cluster
-```
-cd kafka-cluster
-```
-
-3. Spin down demo kafka-cluster container
-```
-docker compose down
-```
-
-
-# Authors
+## Authors
 - Matt Konop <mattsterprogrammer@gmail.com>
 - Allison Scott <allisonbscott97@gmail.com>
 - Justin Lin <hozion612356@gmail.com>

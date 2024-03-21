@@ -1,7 +1,7 @@
 "use client"; 
 import React from "react";
-import { Menu, MenuItem } from "../ui/navbar-menu";
-import { cn } from "../styles/cn";
+import { Menu, MenuItem } from "../../ui/navbar-menu";
+import { cn } from "../../styles/cn";
 
 const Navbar = ({ className }) => {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/navbar.jsx';
+import Navbar from '../components/index/navbar.jsx';
 import { BackgroundGradientAnimation } from '../ui/home-background-animation.jsx';
 
 

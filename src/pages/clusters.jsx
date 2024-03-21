@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box, Flex, SimpleGrid, Button, Spacer, Image, useToast,
-  Input, InputGroup, InputLeftElement, InputRightElement, Icon, IconButton,
-  Tabs, TabList, TabIndicator, TabPanels, Tab, TabPanel,
-  Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar,
-} from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { Box, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { Search2Icon, AddIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { RxStar, RxStarFilled } from 'react-icons/rx';
-import { MdOutlineLockReset } from 'react-icons/md';
-import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from 'react-icons/ri';
-import { FaSignOutAlt } from 'react-icons/fa';
 import { clustersStore } from '../store/clusters';
+<<<<<<< HEAD
 import MenuDrawer from '../components/clusters/menuDrawer';
 import AddClusterModal from '../components/clusters/addClusterModal';
 import ClusterCard from '../components/clusters/clusterCard';
@@ -21,6 +12,27 @@ import LogoutModal from '../components/clusters/logoutModal';
 import ColorMode from '../components/colorModeButton';
 import { handleClusterSearchValueChange, handleFetchClusters } from '../utils/clustersHandler';
 
+=======
+import Navbar from '../components/clusters/navbar';
+import MainContainer from '../components/clusters/mainContainer';
+import { handleFetchClustersAndSlackWebhookURL } from '../utils/clustersHandler';
+/*
+Cluster Page Structure:
+  |-- clusters.jsx
+      |-- navbar
+          |-- searchInput
+          |-- addClusterModal
+          |-- accountMenu
+              |-- changePasswordModal
+              |-- deleteAccountModal
+              |-- logoutModal
+          |-- menuDrawer
+      |-- mainContainer
+          |-- clusterCard
+          |-- deleteClusterModal
+          |-- editClusterModal
+*/
+>>>>>>> dev
 export default function Home() {
 
   // declare variable to use toast and push
@@ -28,13 +40,12 @@ export default function Home() {
   const toast = useToast();
 
   // declare state variables
-  const clusterDisplayMap = clustersStore(state => state.clusterDisplayMap);
-  const clusterFavoriteDisplayMap = clustersStore(state => state.clusterFavoriteDisplayMap);
-  const clusterNotFavoriteDisplayMap = clustersStore(state => state.clusterNotFavoriteDisplayMap);
   const renderClustersPage = clustersStore(state => state.renderClustersPage);
 
+  // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
-    handleFetchClusters(toast, push);
+    handleFetchClustersAndSlackWebhookURL(toast, push);
+    // setTimeout(() => {alert('finish')}, 250);
   }, []);
 
   // actions when addClusterModal close
@@ -261,8 +272,9 @@ export default function Home() {
       <Box width='full' height='100vh'>
 
         {/* Navbar */}
-        <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
+        <Navbar />
 
+<<<<<<< HEAD
           {/* Logo */}
           <Image src='/kafka-kare-logo-v3.png' h={10} borderRadius={8} />
 
@@ -369,6 +381,10 @@ export default function Home() {
           </Tabs>
           <ColorMode bottom={4} left={4}></ColorMode>
         </Box>
+=======
+        {/* Main Container */}
+        <MainContainer />
+>>>>>>> dev
       </Box>
     );
   }
