@@ -22,6 +22,7 @@ services:
       ALLOW_ANONYMOUS_LOGIN: yes
     networks:
       - local-cluster-prom-network
+
   prometheus: 
     image: prom/prometheus
     volumes:
@@ -50,8 +51,8 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9093
-      KAFKA_BROKER_ID: 2
       KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_BROKER_ID: 2
       # KAFKA_ADVERTISED_PORT: 9093
       JMX_PORT: 1099 # This is separate from JMX Exporter
       KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote=true

@@ -42,6 +42,10 @@ const userSchema = new Schema({
   promUrl: {
     type: String,
     default: ''
+  },
+  darkMode: {
+    type: Boolean,
+    default: false
   }
 });
 
