@@ -36,6 +36,10 @@
 /metrics
 - **GET /metrics/:clusterId**: Route for obtaining metrics from a cluster
 
+/settings
+- **GET /settings/colormode**: Route for obtaining user's color mode
+- **GET /settings/colormode/toggle**: Route for toggling a user's color mode
+
 ## Configuration
 
 Environment vairables: 
