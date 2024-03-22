@@ -44,9 +44,9 @@ const userSchema = new Schema({
     default: ''
   },
   settings: {
-    darkModeStatus: {
-      type: Boolean,
-      default: false
+    colorMode: {
+      type: String,
+      default: 'light'
     },
     language: {
       type: String,

@@ -1,58 +1,65 @@
+const { color } = require("framer-motion");
 const User = require("../models/userModel.js");
 
 const settingsController = {};
 
 /* -------------------------- GET DARK MODE STATUS -------------------------- */
-settingsController.getDarkModeStatus = async (req, res, next) => {
-  console.log("In settingsController.getDarkModeStatus"); // testing  
+settingsController.getColor = async (req, res, next) => {
+  console.log("In settingsController.getColor"); // testing
   const { userId } = res.locals; // Destructure from prior middleware
 
-  // Get user from database 
+  // Get user from database
   try {
     const user = await User.findById(userId);
     if (!user) {
-        return res.status(404).send('User not found');
-    }  
+      return res.status(404).send("User not found");
+    }
 
-    res.locals.darkModeStatus = user.settings.darkModeStatus;
-    console.log('User dark mode status retrieved');
+    res.locals.colorMode = user.settings.colorMode;
+    console.log("User color mode status retrieved");
     return next();
   } catch (err) {
     return next({
-      log: `settingsController.getDarkModeStatus: ERROR ${err}`,
+      log: `settingsController.getColor: ERROR ${err}`,
       status: 500,
-      message: { err: "Error occurred in settingsController.getDarkModeStatus." },
+      message: { err: "Error occurred in settingsController.getColor." },
     });
   }
 };
 
 /* ------------------------- TOGGLE DARK MODE STATUS ------------------------ */
-settingsController.toggleDarkModeStatus = async (req, res, next) => {
-    console.log("In settingsController.toggleDarkModeStatus"); // testing  
-    const { userId } = res.locals; // Destructure from prior middleware
-    const { darkModeStatus } = req.body;
+settingsController.toggleColor = async (req, res, next) => {
+  console.log("In settingsController.toggleColor"); // testing
+  const { userId } = res.locals; // Destructure from prior middleware
+  const { colorMode } = req.body;
 
-    // Toggle darkModeStatus
-    
-  
-    // Get user from database 
-    try {
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).send('User not found');
-      }  
-  
-      res.locals.darkMode = user.settings.darkMode;
-      console.log('User dark mode status updated successfully');
-      return next();
-    } catch (err) {
-      return next({
-        log: `settingsController.toggleDarkModeStatus: ERROR ${err}`,
-        status: 500,
-        message: { err: "Error occurred in settingsController.toggleDarkModeStatus." },
-      });
+  // Get user from database
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send("User not found");
     }
-  };
+    // Toggle color mode
+    const colorMode = user.settings.colorMode;
+    colorMode !== 'dark'
+    ? colorMode = 'dark'
+    : colorMode = 'light';
+
+    user.settings.colorMode = colorMode;
+    await user.save();
+    console.log(`User switched color mode to <${user.settings.colorMode}>`);
+
+    res.locals.colorMode = colorMode;
+    console.log("User color mode toggled successfully");
+    return next();
+  } catch (err) {
+    return next({
+      log: `settingsController.toggleColor: ERROR ${err}`,
+      status: 500,
+      message: { err: "Error occurred in settingsController.toggleColor." },
+    });
+  }
+};
 
 // Export
 module.exports = settingsController;

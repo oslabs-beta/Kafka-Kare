@@ -6,24 +6,24 @@ const tokenController = require("../controllers/tokenController");
 
 // WIP // Route for retrieving user's dark mode status
 router.get(
-    '/settings/darkmode', 
+    '/settings/colormode', 
     tokenController.verifyToken,
-    settingsController.getDarkModeStatus,
+    settingsController.getColor,
     (req, res) => {
-      console.log('Sending dark mode status and username back to client...');
-      return res.status(200).json({ darkMode: res.locals.darkMode, username: res.locals.username })
+      console.log('Sending color mode and username back to client...');
+      return res.status(200).json({ colorMode: res.locals.colorMode, username: res.locals.username })
     }
 )
 
 
 // WIP // Route for toggling user's dark mode status
 router.get(
-    '/settings/darkmode/toggle', 
+    '/settings/colormode/toggle', 
     tokenController.verifyToken,
-    settingsController.toggleDarkModeStatus,
+    settingsController.toggleColor,
     (req, res) => {
-      console.log('Sending new dark mode status back to client...');
-      return res.status(200).json({ darkMode: res.locals.darkMode, username: res.locals.username })
+      console.log('Sending new color mode back to client...');
+      return res.status(200).json({ colorMode: res.locals.colorMode, username: res.locals.username })
     }
 )
 
