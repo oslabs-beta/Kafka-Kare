@@ -20,9 +20,9 @@ router.get(
 router.post(
     '/settings/darkmode', 
     tokenController.verifyToken,
-    settingsController.getDarkModeStatus,
+    settingsController.toggleDarkModeStatus,
     (req, res) => {
-      console.log('Sending dark mode status and username back to client...');
+      console.log('Sending toggled dark mode status back to client...');
       return res.status(200).json({ darkMode: res.locals.darkMode, username: res.locals.username })
     }
 )
