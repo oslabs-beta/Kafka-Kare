@@ -6,7 +6,6 @@ const tokenController = {};
 // ---------------------------- ISSUE TOKEN ---------------------------- //
 tokenController.issueToken = (req, res, next) => {
   console.log("In tokenController.issueToken"); // testing
-
   const { userId, username } = res.locals; // Destructure from prior middleware
 
   // Issue token
@@ -15,16 +14,23 @@ tokenController.issueToken = (req, res, next) => {
     SECRET_KEY,
     { expiresIn: '1h' }
   );
+  //res.cookie('token', 'none', {
+  //   expires: new Date(Date.now() + 5 * 1000),
+  //   httpOnly: true,
+  // })
 
   // Determine if running in a production environement
-  const isProduction = process.env.NODE_ENV === 'production';
+  // const isProduction = process.env.NODE_ENV === 'production';
 
   // Store the token in HTTP-only cookie
-  res.cookie('token', token, { 
+  res.cookie('token', token, {
+    expires: new Date(Date.now() + 60 * 60 * 1000),
     httpOnly: true, 
-    secure: isProduction // use 'secure' flag only in production
+    // secure: isProduction // use 'secure' flag only in production
   });
-  console.log('Token issued: ', token);
+
+  const shortenedToken = token.slice(-10)
+  console.log(`Token from cookie: ...${shortenedToken}`);
 
   return next();
 };
@@ -32,25 +38,28 @@ tokenController.issueToken = (req, res, next) => {
 
 // ---------------------------- VERIFY TOKEN ---------------------------- //
 tokenController.verifyToken = (req, res, next) => {
-    console.log("In tokenController.verifyToken"); // testing
-    const token = req.cookies.token; // Destructure from cookies
-    console.log('token: ', req.cookies.token)
+  console.log("In tokenController.verifyToken"); // testing
+  const token = req.cookies.token; // Destructure from cookies
 
-    // Check token
-    if (!token) {
-      return res.status(403).send('A token is required for authentication');
-    }
+  // Shorten the console log
+  const shortenedToken = token.slice(-10);
+  console.log(`Token from cookie: ...${shortenedToken}`);
 
-    // Verify token, extract userId and username
-    try {
-      const decoded = jwt.verify(token, SECRET_KEY);
-      console.log('Token verified');
-      res.locals.userId = decoded.userId;
-      res.locals.username = decoded.username;
-      return next();
-    } catch (err) {
-        return res.status(401).send('Invalid token');
-    }
+  // Check token
+  if (!token) {
+    return res.status(403).send('A token is required for authentication');
+  }
+
+  // Verify token, extract userId and username
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    console.log('Token verified.');
+    res.locals.userId = decoded.userId;
+    res.locals.username = decoded.username;
+    return next();
+  } catch (err) {
+      return res.status(401).send('Invalid token');
+  }
 };
 
 
