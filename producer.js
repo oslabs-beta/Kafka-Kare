@@ -12,12 +12,14 @@ const produceMessages = async () => {
   await producer.connect();
   setInterval(async () => {
     try {
-      const message = { value: `Message from producer at ${new Date().toISOString()}` };
-      console.log(`Sending message: ${message.value}`);
-      await producer.send({
-        topic,
-        messages: [message],
-      });
+      if (Math.random() < 0.5) {
+        const message = { value: `Message from producer at ${new Date().toISOString()}` };
+        console.log(`Sending message: ${message.value}`);
+        await producer.send({
+          topic,
+          messages: [message],
+        });
+      }
     } catch (error) {
       console.error("Error producing message", error);
     }

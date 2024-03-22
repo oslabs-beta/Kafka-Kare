@@ -31,6 +31,9 @@ settingsController.toggleDarkModeStatus = async (req, res, next) => {
     console.log("In settingsController.toggleDarkModeStatus"); // testing  
     const { userId } = res.locals; // Destructure from prior middleware
     const { darkModeStatus } = req.body;
+
+    // Toggle darkModeStatus
+    
   
     // Get user from database 
     try {
