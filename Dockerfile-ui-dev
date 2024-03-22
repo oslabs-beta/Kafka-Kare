@@ -1,0 +1,26 @@
+# Front UI dockerfile
+FROM node:21-alpine
+
+# WORKDIR /app/ui
+#from the docerfile tutorial
+WORKDIR /usr/src/app
+# Copy package.json, package-lock.json, Next.js, Tailwind CSS configuration files
+# Necessary and differs from the backend for several reasons related to how Next.js and Tailwind CSS applications are built and run
+COPY package*.json ./
+COPY configs/next.config.js ./
+COPY configs/postcss.config.js ./
+COPY configs/tailwind.config.js ./
+
+COPY . .
+RUN npm install
+#for hot reloading per muticontainer tutorial/ idk if npm install already does this
+RUN npm install -g nodemon
+#added from multi container todo tutorial/ Runs app as a non-root user
+RUN  chown -R node /usr/src/app
+USER node
+
+EXPOSE 4000
+
+#CMD ["npm", "start"]
+#testing this from programming with UMA 
+CMD ["npm", "run", "dev"]

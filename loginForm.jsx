@@ -117,7 +117,7 @@ const LoginForm = () => {
           <Box mt={4} textAlign='center'>
             New to us?{' '}
             <Link color="brand.bg" onClick={handleSignup}>
-              Sign Up 
+              Sign ?Up
             </Link>
           </Box>
         </Stack>
