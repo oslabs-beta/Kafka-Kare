@@ -6,7 +6,7 @@ const tokenController = require("../controllers/tokenController");
 
 // WIP // Route for retrieving user's dark mode status
 router.get(
-    '/settings/colormode', 
+    '/colormode', 
     tokenController.verifyToken,
     settingsController.getColor,
     (req, res) => {
@@ -18,7 +18,7 @@ router.get(
 
 // WIP // Route for toggling user's dark mode status
 router.get(
-    '/settings/colormode/toggle', 
+    '/colormode/toggle', 
     tokenController.verifyToken,
     settingsController.toggleColor,
     (req, res) => {
