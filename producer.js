@@ -1,4 +1,5 @@
 const { Kafka } = require("kafkajs");
+const CHANCE_MESSAGE_SEND = 0.6;
 
 const kafka = new Kafka({
   clientId: "my-producer",
@@ -12,7 +13,7 @@ const produceMessages = async () => {
   await producer.connect();
   setInterval(async () => {
     try {
-      if (Math.random() < 0.5) {
+      if (Math.random() < CHANCE_MESSAGE_SEND) {
         const message = { value: `Message from producer at ${new Date().toISOString()}` };
         console.log(`Sending message: ${message.value}`);
         await producer.send({

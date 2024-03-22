@@ -131,4 +131,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-.grafana-data
+../grafana-data/grafana.db
