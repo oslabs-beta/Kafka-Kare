@@ -101,6 +101,10 @@ app.prepare().then(() => {
     }
   });
 
+  server.get('/testwhat', (req, res) => {
+    return res.status(200).send('coolcoolcool');
+  })
+
 //=========================== TEST 
 
   
