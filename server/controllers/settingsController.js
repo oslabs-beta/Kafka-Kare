@@ -31,7 +31,6 @@ settingsController.getColor = async (req, res, next) => {
 settingsController.toggleColor = async (req, res, next) => {
   console.log("In settingsController.toggleColor"); // testing
   const { userId } = res.locals; // Destructure from prior middleware
-  const { colorMode } = req.body;
 
   // Get user from database
   try {
@@ -40,7 +39,7 @@ settingsController.toggleColor = async (req, res, next) => {
       return res.status(404).send("User not found");
     }
     // Toggle color mode
-    const colorMode = user.settings.colorMode;
+    let colorMode = user.settings.colorMode;
     colorMode !== 'dark'
     ? colorMode = 'dark'
     : colorMode = 'light';
