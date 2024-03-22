@@ -46,7 +46,7 @@ settingsController.toggleColor = async (req, res, next) => {
 
     user.settings.colorMode = colorMode;
     await user.save();
-    console.log(`User switched color mode to <${user.settings.colorMode}>`);
+    console.log(`User switched color mode in database: <${user.settings.colorMode}>`);
 
     res.locals.colorMode = colorMode;
     console.log("User color mode toggled successfully");
