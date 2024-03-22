@@ -8,7 +8,6 @@ import MenuDrawer from './navbar/menuDrawer';
 import AddClusterModal from './navbar/addClusterModal';
 
 const Navbar = () => {
-  const clusterSearchValue = clustersStore(state => state.clusterSearchValue);
 
   return (
     <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
