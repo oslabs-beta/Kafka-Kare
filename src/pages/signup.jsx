@@ -6,11 +6,6 @@ import {
 import SignupForm from '../components/signup/signupForm.jsx'; // Import the SignupForm component
 
 const Signup = () => {
-<<<<<<< HEAD
-  const router = useRouter();
-
-=======
->>>>>>> dev
 
   return (
     // Flex container to center the content vertically and horizontally
