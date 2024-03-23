@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-// import { auth, signIn } from '../../NextAuth/auth.js';
+import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { FcGoogle } from "react-icons/fc";
 import { 
   Input,
   Box,
@@ -16,7 +19,9 @@ import {
   FormControl,
   FormErrorMessage,
   InputRightElement,
-  useToast
+  useToast,
+  Divider,
+  AbsoluteCenter 
 } from '@chakra-ui/react';
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { userStore } from '../../store/user';
@@ -44,7 +49,6 @@ const LoginForm = () => {
   //handles click of submit and calls handleLogin
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // await signIn();
     handleLogin(toast, router);
   };
   // Function to handle navigation to the login page
@@ -93,8 +97,15 @@ const LoginForm = () => {
           <FormControl>
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Login</Button>
           </FormControl>
+          <Box position='relative' width='full' p={2} h={2}>
+            <Divider />
+            <AbsoluteCenter bg='white' px={4}>
+              or
+            </AbsoluteCenter>
+          </Box>
+          <Button leftIcon={<FcGoogle size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('google')}>Continue with Google</Button>
           {/* Link to navigate to the signup page */}
-          <Box mt={4} textAlign='center'>
+          <Box mt={-2} textAlign='center'>
             New to us?{' '}
             <Link color="brand.bg" onClick={handleSignup}>
               Sign Up

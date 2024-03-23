@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 // import { auth, signIn } from '../../NextAuth/auth.js';
 import {
   Stack,
