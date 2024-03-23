@@ -16,18 +16,19 @@ const ClusterCard = ({ clusterObj }) => {
   // declare variable to use toast and push
   const { push } = useRouter();
   const toast = useToast();
-  const [redExist, setRedExist] = useState();
-  console.log(clusterObj);
+  const [redExist, setRedExist] = useState('green');
   useEffect(() => {
-    if (clusterObj.alertTopics.reduce((includeRed, alertTopic) => includeRed || alertTopic.color === 'red', false)) {
-      setRedExist(true);
-    } else setRedExist(false);
+    if (clusterObj.alertTopics.length < 1) setRedExist('green');
+    else if (
+      clusterObj.alertTopics.reduce((includeRed, alertTopic) => includeRed || alertTopic.color === 'red', false)
+    ) setRedExist('red');
+    else setRedExist('orange');
   }, [clusterObj]);
 
   return (
 
     /* Cluster Card */
-    <Card>
+    <Card boxShadow='lg'>
       <CardHeader>
         <Flex>
           {/* Title */}
@@ -85,8 +86,8 @@ const ClusterCard = ({ clusterObj }) => {
                   clusterObj.alertTopics.length > 0
                   ? clusterObj.alertTopics.map((alertTopic, index) => {
                     return <Badge key={'alertBadge'+index} colorScheme={alertTopic.color} mx={0.5}>{alertTopic.text}</Badge>
-                  }).filter((el, index) => index < 4).concat([<Badge colorScheme='white' mx={0}>...</Badge>])
-                  : [<Badge key={'alertBadge'+'...'} colorScheme='green' mx={1}>no_alert</Badge>]
+                  }).filter((el, index) => index < 4).concat([<Badge key={'alertBadge'+'...'} colorScheme='white' mx={0}>...</Badge>])
+                  : [<Badge key={'alertBadge'+'No'} colorScheme='green' mx={1}>no_alert</Badge>]
                 }
               </Box>
               <Spacer />
@@ -94,7 +95,7 @@ const ClusterCard = ({ clusterObj }) => {
               <Link href="/alert">
                 <IconButton
                   aria-label='redirect to alert' variant='ghost' 
-                  icon={<Icon as={AiFillAlert} color={redExist ? 'red' : 'orange'} boxSize={6} />}
+                  icon={<Icon as={AiFillAlert} color={redExist} boxSize={6} />}
                 />
               </Link>
             </Flex>

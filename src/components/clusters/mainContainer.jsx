@@ -14,7 +14,7 @@ const MainContainer = () => {
   const clusterNotFavoriteDisplayMap = clustersStore(state => state.clusterNotFavoriteDisplayMap);
   const alertTopics = [
     {text: 'Topic_Count', color: 'orange'},
-    {text: 'Request_Queue_Time_Max', color: 'red'},
+    // {text: 'Request_Queue_Time_Max', color: 'red'},
     {text: 'Broker_Count', color: 'orange'},
     {text: 'Active_Controller', color: 'orange'},
     //{text: 'Request_Queue_Time_Max', color: 'red'},

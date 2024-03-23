@@ -35,7 +35,6 @@ export default function Home() {
     handleFetchClustersAndSlackWebhookURL(toast, push);
     // setTimeout(() => {alert('finish')}, 250);
   }, []);
-  // const drawerBtnRef = React.useRef();
 
   if (renderClustersPage) {
     return (
