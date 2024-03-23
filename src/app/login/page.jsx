@@ -3,7 +3,7 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import LoginForm from '../components/login/loginForm.jsx'; // Import the LoginForm component
+import LoginForm from '../../components/login/loginForm'; // Import the LoginForm component
 
 const Login = () => {
 

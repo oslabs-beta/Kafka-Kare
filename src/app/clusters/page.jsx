@@ -1,10 +1,12 @@
+'use client';
+
 import React, { useEffect } from 'react';
 import { Box, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { clustersStore } from '../store/clusters';
-import Navbar from '../components/clusters/navbar';
-import MainContainer from '../components/clusters/mainContainer';
-import { handleFetchClustersAndSlackWebhookURL } from '../utils/clustersHandler';
+import { clustersStore } from '../../store/clusters';
+import Navbar from '../../components/clusters/navbar';
+import MainContainer from '../../components/clusters/mainContainer';
+import { handleFetchClustersAndSlackWebhookURL } from '../../utils/clustersHandler';
 /*
 Cluster Page Structure:
   |-- clusters.jsx
