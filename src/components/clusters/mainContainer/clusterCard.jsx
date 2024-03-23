@@ -91,8 +91,9 @@ const ClusterCard = ({ clusterObj }) => {
                 }
               </Box>
               <Spacer />
+
               {/* Alert Button */}
-              <Link href="/alert">
+              <Link href="/alerts">
                 <IconButton
                   aria-label='redirect to alert' variant='ghost' 
                   icon={<Icon as={AiFillAlert} color={redExist} boxSize={6} />}

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {
   Icon, Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar,
@@ -15,9 +17,9 @@ const AccountMenu = () => {
 
   return (
     /* Account Menu */
-    <Menu>
+    <Menu >
       <MenuButton as={Avatar} src='' display='-webkit-box' name={username} boxSize={10} bg='gray.400' color='white' _hover={{cursor: 'pointer', bg: 'gray.500'}}/>
-      <MenuList>
+      <MenuList color='black'>
 
         {/* Change Password */}
         <MenuItem icon={<Icon as={MdOutlineLockReset} boxSize={6} />} onClick={() => clustersStore.setState({isChangePasswordModalOpen: true})}>
