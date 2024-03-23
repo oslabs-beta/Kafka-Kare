@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+} from '@chakra-ui/react'
 
-function Graph({ selectedMetric }) {
+function Graph({ selectedMetricId }) {
+  [newUser, setNewUser] = useState(null);
+
+  useEffect(() => {
+    fetch('')
+  })
+
     return (
       <>
-          <iframe src={`http://localhost:3002/d-solo/cdgganhpqspvkd/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${id}`}
-          width="450" height="200" frameborder="0"></iframe>
+          <iframe src={`http://localhost:3002/d-solo/cdgganhpqspvkd/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${selectedMetricId}`}
+          className='graph' width="450" height="200" frameborder="0"></iframe>
       </>
     );
   }

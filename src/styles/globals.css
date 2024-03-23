@@ -106,3 +106,9 @@
 .signup-content {
   background-image: url("../../public/kafka-kare-background-v2.jpg");
 }
+
+/* STYLING FOR DASHBOARD PAGES */
+.graph {
+  margin-left: 220px;
+  border-radius: 20px;
+}

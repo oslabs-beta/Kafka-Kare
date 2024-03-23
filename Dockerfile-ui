@@ -1,19 +1,81 @@
 # Front UI dockerfile
 FROM node:21-alpine
+# RUN useradd -ms /bin/sh -u 1001 app
+# USER app
+# WORKDIR /app/ui
+#from the docerfile tutorial
+# RUN useradd -ms /bin/sh -u 1001 app
+# USER app
 
-WORKDIR /app/ui
-
+WORKDIR /usr/src/app
 # Copy package.json, package-lock.json, Next.js, Tailwind CSS configuration files
 # Necessary and differs from the backend for several reasons related to how Next.js and Tailwind CSS applications are built and run
-COPY package*.json ./
+# COPY package*.json ./
+COPY package.json package-lock.json ./
 COPY configs/next.config.js ./
 COPY configs/postcss.config.js ./
 COPY configs/tailwind.config.js ./
 
-COPY . .
 RUN npm install
+# COPY --chown=app:app . /usr/src/app
+COPY . .
+#for hot reloading per muticontainer tutorial/ idk if npm install already does this
+# RUN npm install -g nodemon
 RUN npm run build
+#added from multi container todo tutorial/ Runs app as a non-root user
+# RUN  chown -R node /usr/src/app
+# USER node
 
 EXPOSE 3000
+# COPY --chown=app:app . /usr/src/app
 
-CMD ["npm", "start"]
+# switch back to this if run dev
+#CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
+
+
+# # ======
+# # Stage 1: Build the application      
+# # ======
+
+
+# Use the official lightweight Node.js 18 image.
+# https://hub.docker.com/_/node
+# FROM node:21-alpine
+
+# # Create a directory for the app files
+# WORKDIR /usr/src/app
+
+# # Create a non-root user and change ownership of our apps directory
+# RUN addgroup -S app && adduser -S app -G app
+# RUN chown app:app /usr/src/app
+
+# # Set to your app's node environment
+# ENV NODE_ENV production
+
+# # Switch to the new user
+# USER app
+
+# COPY package.json package-lock.json ./
+# COPY configs/next.config.js ./
+# COPY configs/postcss.config.js ./
+# COPY configs/tailwind.config.js ./
+# # Copy the package.json and package-lock.json (or yarn.lock)
+# COPY --chown=app:app package*.json ./
+
+# # Install dependencies
+# RUN npm install --production
+
+# # Copy the rest of your app's source code from your host to your image filesystem.
+# COPY --chown=app:app . .
+
+# # Build the application
+# RUN npm run build
+
+# # The app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
+# EXPOSE 3000
+
+# # Last but not least, define the command to run your app using CMD which defines your runtime
+# # Here we will use the basic npm start which will run node server.js to start your server
+# CMD ["npm", "start"]
+
