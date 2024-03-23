@@ -13,6 +13,7 @@ const Navbar = () => {
   const bg = useColorModeValue("red.500", "red.200")
   const color = useColorModeValue("white", "gray.800")
   const colorModeIcon = useColorModeValue(<SunIcon />, <MoonIcon />);
+  const addClusterButtonVariant = useColorModeValue('solid', 'ghost');
   console.log(colorMode);
   
   // <Box mb={4} bg={bg} color={color}>
@@ -23,23 +24,26 @@ const Navbar = () => {
     <Flex p={5} px={20} width='full' borderWidth={1} boxShadow='lg'>
 
       {/* Logo */}
-      <Image src='/kafka-kare-logo-v3.png' h={10} borderRadius={8} />
+      <Image src='/kafka-kare-logo-v3-dark.png' h={10} borderRadius={8} />
 
       <Spacer />
-
+      <Spacer />
+      
       {/* Search input */}
       <SearchInput />
 
       <Spacer />
-
+      <Spacer />
+      
       {/* Add Cluster Button */}
-      <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant='solid'>
+      <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant={addClusterButtonVariant}>
         New Cluster
       </Button>
 
       {/* Add Cluster Modal */}
       <AddClusterModal />
 
+      <Spacer />
       <Spacer />
 
       {/* Account Menu */}
