@@ -13,7 +13,7 @@ function Graph({ selectedMetricId }) {
   [newUser, setNewUser] = useState(null);
 
   useEffect(() => {
-    fetch('')
+    fetch('/auth/check-new-user')
   })
 
     return (

@@ -211,14 +211,25 @@ userController.deleteAccount = async (req, res, next) => {
 };
 
 /* ----------------------------- CHECK IF USER IS NEW ----------------------------- */
-// userController.checkNewUsers = async (req, res, next) => {
-//   try {
-//     const { username } = req.params;
-//     const currentDate = new Date();
-//     const user = await User.findOne( { username });
+userController.checkNewUsers = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne( { username });
 
-//   }
-// }
+    if (!user) {
+      return res.status(404).json({ err: 'User not found' });
+    }
+
+    const newUserCutoff = new Date();
+    console.log('newUserCutoff: ', newUserCutoff)//date object
+    newUserCutoff.setDate(newUserCutoff.getDate() -1);
+    console.log('modified newUserCutoff: ', newUserCutoff);//subtract's one day from the current date
+    const isNewUser = user.createdAt >= newUserCutoff;
+    res.locals.isNewUser = isNewUser
+    
+
+  }
+}
 
 // Export
 module.exports = userController;
