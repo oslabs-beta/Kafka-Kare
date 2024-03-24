@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { clustersStore } from '../../store/clusters';
 import Navbar from '../../components/clusters/navbar';
 import MainContainer from '../../components/clusters/mainContainer';
+import LoadingModal from '../../components/loadingModal';
 import { handleFetchClustersAndSlackWebhookURL } from '../../utils/clustersHandler';
 /*
 Cluster Page Structure:
@@ -31,16 +32,19 @@ export default function Home() {
 
   // declare state variables
   const renderClustersPage = clustersStore(state => state.renderClustersPage);
+  const clustersStoreReset = clustersStore(state => state.reset);
 
   // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
+    // clustersStoreReset();
     handleFetchClustersAndSlackWebhookURL(toast, push);
-    // setTimeout(() => {alert('finish')}, 250);
+    setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 150000000);
   }, []);
 
   if (renderClustersPage) {
     return (
       <Box width='full' height='100vh'>
+        <LoadingModal />
 
         {/* Navbar */}
         <Navbar />

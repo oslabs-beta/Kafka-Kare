@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, SimpleGrid, Icon, Tabs, TabList, TabIndicator, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Box, SimpleGrid, Icon, Tabs, TabList, TabIndicator, TabPanels, Tab, TabPanel, useColorModeValue } from '@chakra-ui/react';
 import { RxStar, RxStarFilled } from 'react-icons/rx';
 import { clustersStore } from '../../store/clusters';
 import ClusterCard from './mainContainer/clusterCard';
@@ -7,6 +7,7 @@ import EditClusterModal from './mainContainer/editClusterModal';
 import DeleteClusterModal from './mainContainer/deleteClusterModal';
 
 const MainContainer = () => {
+  const notFavoriteStarColor = useColorModeValue('black', 'white');
 
   // declare state variables
   const clusterDisplayMap = clustersStore(state => state.clusterDisplayMap);
@@ -36,7 +37,7 @@ const MainContainer = () => {
         <TabList w='100%'>
           <Tab><b>All</b></Tab>
           <Tab><b>Favorite</b><Icon as={RxStarFilled} color='yellow.300' boxSize={6} /></Tab>
-          <Tab><b>Not Favorite</b><Icon as={RxStar} color='black' boxSize={5} /></Tab>
+          <Tab><b>Not Favorite</b><Icon as={RxStar} color={notFavoriteStarColor} boxSize={6} /></Tab>
         </TabList>
         <TabIndicator  mt='-2px' height='2px' bg='blue.500' />
         <TabPanels overflowY='auto' h='100%'>

@@ -3,12 +3,12 @@ import axios from "axios";
 
 // definition of using toast
 const addToast = (title, description, status, duration, toast) => {
+  toast.closeAll();
   toast({position: 'top', title, description, status, duration, isClosable: true, containerStyle: {marginTop: '70px'}});
 }
 
 // fetch user clusters when page loaded
 export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
-  clustersStore.getState().reset();
   try {
     // update states about user's slack webhook url
     const responseSlackWebhookURLAndUsername = await axios('http://localhost:3001/slack', {withCredentials: true});
@@ -37,7 +37,6 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
       clusterDisplayMap: new Map(responseAll.data.map((obj) => [obj._id, obj])),
       clusterFavoriteMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj])),
       clusterFavoriteDisplayMap: new Map(responseFavorite.data.map((obj) => [obj._id, obj])),
-      clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj])),
       clusterNotFavoriteMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj])),
       clusterNotFavoriteDisplayMap: new Map(responseNotFavorite.data.map((obj) => [obj._id, obj]))
     });
@@ -425,8 +424,9 @@ export const handleSlackWebhookURLSubmit = async (toast) => {
       console.log(err);
       addToast('Error Occurred', 'Something went wrong when updating Slack Webhook URL.', 'error', 3000, toast);
     }
+  } else {
+    addToast('URL Format Incorrect', 'Format of Slack Webhook URL is Incorrect.', 'error', 3000, toast);
   }
-  else toast({position: 'top', title: 'URL Format Incorrect', description: 'Format of Slack Webhook URL is Incorrect.', status: 'error', duration: 3000, isClosable: true, containerStyle: {marginTop: '70px'}});
 };
 
 /*

@@ -21,7 +21,8 @@ import {
   InputRightElement,
   useToast,
   Divider,
-  AbsoluteCenter 
+  AbsoluteCenter,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { userStore } from '../../store/user';
@@ -37,6 +38,7 @@ const LoginForm = () => {
   const passwordInvalid = userStore(state => state.passwordInvalid); // State to manage username validity
   const passwordErrorMessage = userStore(state => state.passwordErrorMessage); // State to store password error message
   const resetUserStore = userStore(state => state.reset);
+  const loginFormBGColor = useColorModeValue('whiteAlpha.900', 'gray.600');
   const router = useRouter();
   const toast = useToast();
   const initialRef = useRef(null);
@@ -60,10 +62,10 @@ const LoginForm = () => {
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={handleSubmit}>
-        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
+        <Stack spacing={8} px="4.5rem" backgroundColor={loginFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh" borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
           <Box mb={6} display='flex' justifyContent='center'>
-            <Image w={260} src='kafka-kare-logo-v3.png' />
+            <Image w={260} src='kafka-kare-logo-v3-dark.png' />
             {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
             <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
           </Box>
@@ -99,7 +101,7 @@ const LoginForm = () => {
           </FormControl>
           <Box position='relative' width='full' p={2} h={2}>
             <Divider />
-            <AbsoluteCenter bg='white' px={4}>
+            <AbsoluteCenter backgroundColor={loginFormBGColor} px={4}>
               or
             </AbsoluteCenter>
           </Box>

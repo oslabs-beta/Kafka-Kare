@@ -67,6 +67,9 @@ const initialState = {
 
   // is Logout Modal Open
   isLogoutModalOpen: false,
+
+  // is Loading Modal Open
+  isLoadingModalOpen: true,
   
   // is Old Password Input Empty
   isOldPasswordEmpty: false,
