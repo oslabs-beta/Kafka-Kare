@@ -7,6 +7,8 @@ const oAuthController = {};
 oAuthController.googleCreateUser = async (req, res, next) => {
     console.log("In oAuthController.googleCreateUser"); // testing
     const { email, oAuthProvider } = req.body; // Destructure from req.body
+
+    if (!email || !oAuthProvider) return res.status(403)
   
     // Store user in database
     try {

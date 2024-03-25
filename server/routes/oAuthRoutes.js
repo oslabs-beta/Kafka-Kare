@@ -3,7 +3,7 @@ const router = express.Router();
 const tokenController = require("../controllers/tokenController");
 const oAuthController = require("../controllers/oAuthController");
 
-// Route for user sign up - OAuth
+// Route for user verification via Google OAuth
 router.post(
   "/google",
   oAuthController.googleCreateUser,
