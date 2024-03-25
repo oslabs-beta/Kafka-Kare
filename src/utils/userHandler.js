@@ -63,7 +63,7 @@ export const handleSignUp = async (event, toast, router) => {
     } else toast({
       position: 'top',
       title: 'Error Occurred',
-      description: "Something went wrong when adding new cluster.",
+      description: "Something went wrong when signing up.",
       status: 'error',
       duration: 3000,
       isClosable: true,
@@ -85,7 +85,7 @@ export const handleSignUp = async (event, toast, router) => {
     } else toast({
       position: 'top',
       title: 'Error Occurred',
-      description: "Something went wrong when adding new cluster.",
+      description: "Something went wrong when signing up.",
       status: 'error',
       duration: 3000,
       isClosable: true,

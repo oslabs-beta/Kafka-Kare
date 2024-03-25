@@ -90,17 +90,7 @@ const BackgroundAnimation = ({
           <div
             ref={interactiveRef}
             onMouseMove={handleMouseMove}
-            className="absolute"
-            style={{
-              background: `radial-gradient(circle at center, rgba(0, 0, 255, 0.8) 0%, rgba(255, 255, 255, 0) 50%) no-repeat`,
-              mixBlendMode: "hard-light",
-              width: "100%",
-              height: "100%",
-              top: "1/2",
-              left: "1/2",
-              transform: "translate(-50%, -50%)",
-              opacity: "0.7",
-            }}
+            className="absolute animate-cursor"
           ></div>
         )}
       </div>
