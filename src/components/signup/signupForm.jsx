@@ -2,7 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
 // import { auth, signIn } from '../../NextAuth/auth.js';
+import { FcGoogle } from "react-icons/fc";
 import {
   Stack,
   FormControl,
@@ -16,7 +18,10 @@ import {
   chakra,
   Box,
   Link,
-  useToast
+  useToast,
+  useColorModeValue,
+  Divider,
+  AbsoluteCenter
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { userStore } from '../../store/user';
@@ -32,6 +37,7 @@ const SignupForm = () => {
   const passwordInvalid = userStore(state => state.passwordInvalid); // State to manage username validity
   const passwordErrorMessage = userStore(state => state.passwordErrorMessage); // State to store password error message
   const resetUserStore = userStore(state => state.reset);
+  const signupFormBGColor = useColorModeValue('whiteAlpha.900', 'gray.600');
   const router = useRouter();
   const toast = useToast();
   const initialRef = useRef();
@@ -51,10 +57,10 @@ const SignupForm = () => {
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={(e) => handleSignUp(e, toast, router)}>
-        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='550px' maxH='650px' h="70vh"  borderRadius="10px" justifyContent='center'>
+        <Stack spacing={8} px="4.5rem" backgroundColor={signupFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh"  borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
           <Box mb={6} display='flex' justifyContent='center'>
-            <Image w={260} src='kafka-kare-logo-v3.png' />
+            <Image w={260} src='kafka-kare-logo-v3-dark.png' />
             {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
             <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
           </Box>
@@ -91,8 +97,15 @@ const SignupForm = () => {
           <FormControl>
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Sign Up</Button>
           </FormControl>
+          <Box position='relative' width='full' p={2} h={2}>
+            <Divider />
+            <AbsoluteCenter backgroundColor={signupFormBGColor} px={4}>
+              or
+            </AbsoluteCenter>
+          </Box>
+          <Button leftIcon={<FcGoogle size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('google')}>Continue with Google</Button>
           {/* Link to navigate to the login page */}
-          <Box mt={4} textAlign='center'>
+          <Box mt={2} textAlign='center'>
             Welcome!{' '}
             <Link color="brand.bg" onClick={handleLogin}>Login</Link>
           </Box>

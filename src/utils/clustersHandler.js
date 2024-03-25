@@ -30,17 +30,6 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push, colorMo
     clustersStore.setState({renderClustersPage: true});
     console.log('Get User\'s Not Favorite Clusters Response:', responseNotFavorite.data);
 
-    // // update states about user's recent color mode
-    // const responseColorMode = await axios('http://localhost:3001/settings/colorMode', {withCredentials: true});
-    // clustersStore.setState({renderClustersPage: true});
-    // console.log('Get User\'s Recent Color Mode Response:', responseColorMode.data);
-    // console.log('user colormode:', responseColorMode.data.colorMode);
-    // console.log('current colormode:', colorMode);
-    // if (responseColorMode.data.colorMode !== colorMode) {
-    //   console.log('user colormode:', responseColorMode.data.colorMode);
-    //   toggleColorMode();
-    // }
-
     clustersStore.setState({
       slackWebhookURL: responseSlackWebhookURLAndUsername.data.slackUrl,
       username: responseSlackWebhookURLAndUsername.data.username,
@@ -58,6 +47,15 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push, colorMo
     addToast('Authentication Required', 'Please login or sign-up first.', 'error', 3000, toast);
   }
 };
+
+// actions when getting user's color mode
+export const handleGetUserColorMode = async (colorMode, toggleColorMode) => {
+
+  // update states about user's recent color mode
+  const responseColorMode = await axios('http://localhost:3001/settings/colorMode', {withCredentials: true});
+  console.log('Get User\'s Recent Color Mode Response:', responseColorMode.data);
+  if (responseColorMode.data.colorMode !== colorMode) toggleColorMode();
+}
 
 // actions when addClusterModal closes
 export const handleNewClusterClose = () => {

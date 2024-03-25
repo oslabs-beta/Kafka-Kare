@@ -86,7 +86,7 @@ const ClusterCard = ({ clusterObj }) => {
                   clusterObj.alertTopics.length > 0
                   ? clusterObj.alertTopics.map((alertTopic, index) => {
                     return <Badge key={'alertBadge'+index} colorScheme={alertTopic.color} mx={0.5}>{alertTopic.text}</Badge>
-                  }).filter((el, index) => index < 4).concat([<Badge key={'alertBadge'+'...'} colorScheme='white' mx={0}>...</Badge>])
+                  }).filter((el, index) => index < 4).concat([<Badge key={'alertBadge'+'...'} backgroundColor='transparent' mx={0}>...</Badge>])
                   : [<Badge key={'alertBadge'+'No'} colorScheme='green' mx={1}>no_alert</Badge>]
                 }
               </Box>
