@@ -52,6 +52,10 @@ const userSchema = new Schema({
       type: String,
       default: 'English'
     }
+  },
+  oAuthProvider: {
+    type: String,
+    default: 'none'
   }
 });
 

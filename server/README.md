@@ -2,7 +2,7 @@
 
 ## Setup Instructions
 
-1. You will need a .env file. Look at the .env.example file for inspiration. 
+1. You will need a `.env` file. Look at the `.env.example` file for inspiration. 
 2. Install depenendencies: `npm install`
 3. Start the server: `npm run server`
 

@@ -38,6 +38,7 @@ export default function Home() {
   // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
     // clustersStoreReset();
+    clustersStore.setState({isLoadingModalOpen: true});
     console.log(colorMode);
     handleFetchClustersAndSlackWebhookURL(toast, push, colorMode, toggleColorMode);
     setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 1500);
