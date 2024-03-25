@@ -11,7 +11,10 @@ oAuthController.googleCreateUser = async (req, res, next) => {
     // Store user in database
     try {
       console.log('Searching database for record of user');
-      const isUserInDatabase = await User.find({ username: email });
+      const isUserInDatabase = await User.find({ 
+        username: email, 
+        oAuthProvider: oAuthProvider
+      });
       console.log ('isUserInDatabase: ', isUserInDatabase);
 
       if (isUserInDatabase.length > 0) {
