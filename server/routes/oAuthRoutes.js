@@ -9,10 +9,8 @@ router.post(
   oAuthController.googleCreateUser,
   tokenController.issueToken,
   (req, res) => {
-    return res
-      .status(201)
-      .json({
-        message: `User registered successfully: ${res.locals.username}`,
-      });
+    return res.status(201).json({ message: `User registered successfully: ${res.locals.username} via OAuth` });
   }
-);
+)
+
+module.exports = router;
