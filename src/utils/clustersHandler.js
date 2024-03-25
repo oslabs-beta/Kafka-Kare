@@ -8,7 +8,7 @@ const addToast = (title, description, status, duration, toast) => {
 }
 
 // fetch user clusters when page loaded
-export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
+export const handleFetchClustersAndSlackWebhookURL = async (toast, push, colorMode, toggleColorMode) => {
   try {
     // update states about user's slack webhook url
     const responseSlackWebhookURLAndUsername = await axios('http://localhost:3001/slack', {withCredentials: true});
@@ -29,6 +29,17 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push) => {
     const responseNotFavorite = await axios('http://localhost:3001/clusters/notFavorites', {withCredentials: true});
     clustersStore.setState({renderClustersPage: true});
     console.log('Get User\'s Not Favorite Clusters Response:', responseNotFavorite.data);
+
+    // // update states about user's recent color mode
+    // const responseColorMode = await axios('http://localhost:3001/settings/colorMode', {withCredentials: true});
+    // clustersStore.setState({renderClustersPage: true});
+    // console.log('Get User\'s Recent Color Mode Response:', responseColorMode.data);
+    // console.log('user colormode:', responseColorMode.data.colorMode);
+    // console.log('current colormode:', colorMode);
+    // if (responseColorMode.data.colorMode !== colorMode) {
+    //   console.log('user colormode:', responseColorMode.data.colorMode);
+    //   toggleColorMode();
+    // }
 
     clustersStore.setState({
       slackWebhookURL: responseSlackWebhookURLAndUsername.data.slackUrl,

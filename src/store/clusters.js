@@ -44,6 +44,9 @@ const initialState = {
   // Slack Webhook URL Input Value
   slackWebhookURL: '',
 
+  // User Color Mode Value
+  userColorMode: 'light',
+
   // render clusters page or not
   renderClustersPage: false,
 
