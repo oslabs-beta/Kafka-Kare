@@ -42,6 +42,16 @@ const userSchema = new Schema({
   promUrl: {
     type: String,
     default: ''
+  },
+  settings: {
+    colorMode: {
+      type: String,
+      default: 'light'
+    },
+    language: {
+      type: String,
+      default: 'English'
+    }
   }
 });
 

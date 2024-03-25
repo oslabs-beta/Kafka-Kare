@@ -15,6 +15,7 @@ const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 const testingRoutes = require('./routes/testingRoutes');
 const slackRoutes = require('./routes/slackRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -100,6 +101,10 @@ app.prepare().then(() => {
     }
   });
 
+  server.get('/testwhat', (req, res) => {
+    return res.status(200).send('coolcoolcool');
+  })
+
 //=========================== TEST 
 
   
@@ -109,6 +114,7 @@ app.prepare().then(() => {
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
+  server.use("/settings", settingsRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {

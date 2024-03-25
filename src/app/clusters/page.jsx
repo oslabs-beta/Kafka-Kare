@@ -38,7 +38,7 @@ export default function Home() {
   useEffect(() => {
     // clustersStoreReset();
     handleFetchClustersAndSlackWebhookURL(toast, push);
-    setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 150000000);
+    setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 1500);
   }, []);
 
   if (renderClustersPage) {

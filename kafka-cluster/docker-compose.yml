@@ -22,6 +22,7 @@ services:
       ALLOW_ANONYMOUS_LOGIN: yes
     networks:
       - local-cluster-prom-network
+
   prometheus: 
     image: prom/prometheus
     volumes:
@@ -36,7 +37,7 @@ services:
     image: dockerpromkafka:latest
     container_name: kafka
     ports:
-      - '9092:9092' # Accessible to client on Port 9092
+      - '9093:9093' # Accessible to client on Port 9092
       - '7070:7070' # Exposes Port 7070 for JMX Exporter, which Prometheus scrapes
     depends_on:
       - zookeeper
@@ -48,7 +49,11 @@ services:
       EXTRA_ARGS: -javaagent:/opt/kafka_2.13-2.8.1/libs/jmx_prometheus_javaagent.jar=7070:/opt/kafka_2.13-2.8.1/libs/kafka.yml
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
-      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9093
+      KAFKA_BROKER_ID: 2
+      # KAFKA_ADVERTISED_PORT: 9093
       JMX_PORT: 1099 # This is separate from JMX Exporter
       KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote=true
         -Dcom.sun.management.jmxremote.authenticate=false
