@@ -210,6 +210,15 @@ userController.deleteAccount = async (req, res, next) => {
   }
 };
 
+/* ----------------------------- CHECK IF USER IS NEW ----------------------------- */
+// userController.checkNewUsers = async (req, res, next) => {
+//   try {
+//     const { username } = req.params;
+//     const currentDate = new Date();
+//     const user = await User.findOne( { username });
+
+//   }
+// }
 
 // Export
 module.exports = userController;
