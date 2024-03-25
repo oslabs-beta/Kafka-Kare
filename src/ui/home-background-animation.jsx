@@ -21,6 +21,10 @@ const BackgroundAnimation = ({
       "--gradient-background-end",
       gradientBackgroundEnd
     );
+    // document.body.style.setProperty(
+    //   "height",
+    //   "100vh"
+    // );
   }, []);
 
   useEffect(() => {
@@ -51,7 +55,10 @@ const BackgroundAnimation = ({
       className="h-screen w-screen relative overflow-hidden top-0 left-0"
       style={{
         background: `linear-gradient(40deg, ${gradientBackgroundStart}, ${gradientBackgroundEnd})`,
+        overflow: 'hidden',
+        height: '100%'
       }}
+      
     >
       <svg className="hidden">
         <defs>
@@ -97,7 +104,10 @@ const BackgroundAnimation = ({
           ></div>
         )}
       </div>
-      <div className="center-container text-white">{children}</div>
+      <div
+        className="center-container text-white"
+        style={{marginTop: "-18vh"}}
+      >{children}</div>
     </div>
   );
 };

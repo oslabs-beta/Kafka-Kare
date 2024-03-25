@@ -14,7 +14,7 @@ const Signup = () => {
   return (
     // Flex container to center the content vertically and horizontally
     <Flex
-      className='signup-content' backgroundImage={loginBGImage} backgroundSize={100} flexDirection="column"
+      className='signup-content' backgroundImage={loginBGImage} backgroundSize={200} flexDirection="column"
       width="100wh" height="100vh" backgroundColor="gray.700" justifyContent="center" alignItems="center"
     >
       {/* Render the SignupForm component */}

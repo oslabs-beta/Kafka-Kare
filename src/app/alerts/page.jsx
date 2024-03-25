@@ -4,10 +4,10 @@ import Navbar from '../../components/index/navbar';
 const Alerts = () => {
 
     return (
-    
     <div>
         <Navbar/>
-        testing alerts!</div>
+        testing alerts!
+    </div>
 )};
 
 export default Alerts;

@@ -105,7 +105,7 @@ const SignupForm = () => {
           </Box>
           <Button leftIcon={<FcGoogle size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('google')}>Continue with Google</Button>
           {/* Link to navigate to the login page */}
-          <Box mt={2} textAlign='center'>
+          <Box mt={-2} textAlign='center'>
             Welcome!{' '}
             <Link color="brand.bg" onClick={handleLogin}>Login</Link>
           </Box>
