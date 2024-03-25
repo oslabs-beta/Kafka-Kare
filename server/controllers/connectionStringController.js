@@ -13,11 +13,13 @@ connectionStringController.checkConnection = async (req, res, next) => {
     });
 
     if (response.data.status !== 'success') {
-        res.locals.onlineStatus = 'OFFLINE'
+        console.log('cluster online status: OFFLINE');
+        res.locals.onlineStatus = 'OFFLINE';
         return next();
     }
     
     // Persist online status
+    console.log('cluster online status: ONLINE');
     res.locals.onlineStatus = 'ONLINE'
     
     return next();
