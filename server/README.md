@@ -40,6 +40,9 @@
 - **GET /settings/colormode**: Route for obtaining user's color mode
 - **GET /settings/colormode/toggle**: Route for toggling a user's color mode
 
+/oauth/google
+- **POST /oauth/google**: Route for verifying user with Google OAuth
+
 ## Configuration
 
 Environment vairables: 

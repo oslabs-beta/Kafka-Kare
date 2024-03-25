@@ -5,7 +5,7 @@ const oAuthController = require("../controllers/oAuthController");
 
 // Route for user sign up - OAuth
 router.post(
-  "oauth/google",
+  "/google",
   oAuthController.googleCreateUser,
   tokenController.issueToken,
   (req, res) => {
