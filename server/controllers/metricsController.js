@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { connection, connections } = require("mongoose");
 const metricsController = {};
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
@@ -25,7 +26,9 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('query: ', query);
 
     console.log('Sending query to Prometheus...')
-    const queryResponse = await axios.get(`http://prometheus:9090/api/v1/query`, { 
+    const connectionString = 'http://prometheus:9090';
+    
+    const queryResponse = await axios.get(`${connectionString}/api/v1/query`, { 
         params: { query }
       });
     
