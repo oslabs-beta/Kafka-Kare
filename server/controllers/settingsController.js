@@ -3,7 +3,7 @@ const User = require("../models/userModel.js");
 
 const settingsController = {};
 
-/* -------------------------- GET DARK MODE STATUS -------------------------- */
+/* ----------------------------- GET COLOR MODE ----------------------------- */
 settingsController.getColor = async (req, res, next) => {
   console.log("In settingsController.getColor"); // testing
   const { userId } = res.locals; // Destructure from prior middleware
@@ -27,7 +27,7 @@ settingsController.getColor = async (req, res, next) => {
   }
 };
 
-/* ------------------------- TOGGLE DARK MODE STATUS ------------------------ */
+/* ---------------------------- TOGGLE COLOR MODE --------------------------- */
 settingsController.toggleColor = async (req, res, next) => {
   console.log("In settingsController.toggleColor"); // testing
   const { userId } = res.locals; // Destructure from prior middleware
