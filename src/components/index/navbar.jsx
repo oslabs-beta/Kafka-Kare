@@ -1,19 +1,38 @@
-"use client"; //unsure what this is for, but was included on Aceternity UI source code
-import React from "react";
-import { Menu, MenuItem } from "../../ui/navbar-menu";
-import { cn } from "../../styles/cn";
+import { Box, Link as ChakraLink, VStack } from "@chakra-ui/react";
+import Link from "next/link";
+import AccountMenu from "../clusters/navbar/accountMenu";
 
-const Navbar = ({ className }) => {
-
+const Navbar = () => {
   return (
-    <div className={cn("fixed-navbar", className)}>
-      <Menu>
-        <MenuItem item="About" href='/about'></MenuItem>
-        <MenuItem item="Login" href= '/login'></MenuItem>
-        <MenuItem item="Signup" href= '/signup'></MenuItem>
-      </Menu>
-    </div>
+    <Box
+      position="fixed"
+      left="0"
+      top="0"
+      bottom="0"
+      width="200px"
+      backgroundColor="gray.800"
+      color="white"
+      paddingY="4"
+      paddingX="2"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <VStack spacing="6">
+        <Link href="/clusters" passHref>
+          <ChakraLink>Home</ChakraLink>
+        </Link>
+        <Link href="/dashboard" passHref>
+          <ChakraLink>Dashboard</ChakraLink>
+        </Link>
+        <Link href="/alerts" passHref>
+          <ChakraLink>Alerts</ChakraLink>
+        </Link>
+        <AccountMenu></AccountMenu>
+      </VStack>
+    </Box>
   );
 };
 
 export default Navbar;
+
