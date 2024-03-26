@@ -107,7 +107,7 @@ const ClusterCard = ({ clusterObj }) => {
         <Flex width='full'>
 
           {/* Graphs Button */}
-          <Button w='80%' _active={{transform: 'scale(0.85)'}} onClick={() => setTimeout(() => {push('/dashboard')}, 100)}>Dashboard</Button>
+          <Button w='80%' _active={{transform: 'scale(0.85)'}} onClick={() => setTimeout(() => {push(path.join(__dirname, './dashboard'))}, 100)}>Dashboard</Button>
 
           <Spacer />
 

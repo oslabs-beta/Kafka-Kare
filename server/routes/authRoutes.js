@@ -50,6 +50,16 @@ router.delete(
   }
 )
 
+//Route for checking is user is new
+// router.get(
+//   '/check-new-user',
+//   tokenController.verifyToken,
+//   userController.checkNewUsers,
+//   (req, res) => {
+//     return res.status(200).json({ isNewUser })
+//   }
+// )
+
 
 
 module.exports = router;

@@ -12,6 +12,7 @@ const Navbar = () => {
     setShowDashboardOptions(!showDashboardOptions);
   }
 
+const Navbar = () => {
   return (
     <Box
       position="fixed"
@@ -59,3 +60,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
