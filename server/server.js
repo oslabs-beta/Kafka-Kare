@@ -51,7 +51,7 @@ app.prepare().then(() => {
   // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
   const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURIAtlas);
+  mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
