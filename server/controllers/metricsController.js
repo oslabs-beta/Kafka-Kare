@@ -27,7 +27,7 @@ metricsController.getMetrics = async (req, res, next) => {
 
     console.log('Sending query to Prometheus...');
     // const prometheusIP = process.env.PROMETHEUS_IP;
-    const prometheusIP = 'http://host.docker.internal';
+    const prometheusIP = 'host.docker.internal';
     const connectionString = `http://${prometheusIP}:9090`;
     console.log('connectionString: ', connectionString);
 
@@ -74,7 +74,7 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   const { graphData } = res.locals; // Destructure from prior middleware 
 
   // This is the threshold check
-  if (!graphData || graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
+  if (!graphData.dataPoint || graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
     console.log('Metrics below threshold, proceeding')
     return next();
   }
