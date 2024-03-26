@@ -12,12 +12,6 @@ connectionStringController.checkConnection = async (req, res, next) => {
         params: {query: 'up'} // simple way to test connectivity
     });
 
-    if (response.data.status !== 'success') {
-        console.log('cluster online status: OFFLINE');
-        res.locals.onlineStatus = 'OFFLINE';
-        return next();
-    }
-    
     // Persist online status
     console.log('cluster online status: ONLINE');
     res.locals.onlineStatus = 'ONLINE'
