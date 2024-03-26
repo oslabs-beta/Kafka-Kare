@@ -27,7 +27,7 @@ metricsController.getMetrics = async (req, res, next) => {
 
     console.log('Sending query to Prometheus...');
     const prometheusIP = process.env.PROMETHEUS_IP;
-    const connectionString = `${prometheusIP}:9090`;
+    const connectionString = `http://${prometheusIP}:9090`;
     console.log('connectionString: ', connectionString);
 
     const queryResponse = await axios.get(`${connectionString}/api/v1/query`, { 
