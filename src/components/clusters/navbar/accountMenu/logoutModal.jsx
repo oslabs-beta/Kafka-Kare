@@ -19,7 +19,7 @@ const LogoutModal = () => {
   // declare variable to use toast, push, and status
   const { push } = useRouter();
   const toast = useToast();
-  const { status } = useSession();
+  const { data: session } = useSession();
 
   return (
 
@@ -39,7 +39,7 @@ const LogoutModal = () => {
 
           {/* Delete Button */}
           <Button colorScheme={deleteButtonColor} onClick={() => {
-            if (status === 'authenticated') handleLogout(toast, push, {provider: 'google', signOut});
+            if (session) handleLogout(toast, push, {provider: session.user.provider, signOut});
             else handleLogout(toast, push, {provider: 'none'});
           }}>Logout</Button>
         </ModalFooter>

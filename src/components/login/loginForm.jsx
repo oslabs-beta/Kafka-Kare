@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
-import { FcGoogle } from "react-icons/fc";
 import { 
   Input,
   Box,
@@ -24,7 +23,8 @@ import {
   AbsoluteCenter,
   useColorModeValue
 } from '@chakra-ui/react';
-import { FaUserAlt, FaLock } from "react-icons/fa";
+import { FaUserAlt, FaLock, FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { userStore } from '../../store/user';
 import { handleLogin, handleLoggedInOAuth } from '../../utils/userHandler';
 
@@ -55,14 +55,17 @@ const LoginForm = () => {
   }
 
   // If user logged in using nextAuth, check and redirect to clusters page
-  if (session) handleLoggedInOAuth(session, router, toast);
+  if (session) {
+    console.log(session);
+    handleLoggedInOAuth(session, router, toast);
+  }
   return (
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={(e) => handleLogin(e, toast, router)}>
-        <Stack spacing={8} px="4.5rem" backgroundColor={loginFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh" borderRadius="10px" justifyContent='center'>
+        <Stack spacing={6} px="4.5rem" backgroundColor={loginFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh" borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
-          <Box mb={6} display='flex' justifyContent='center'>
+          <Box mb={5} display='flex' justifyContent='center'>
             <Image w={260} src='kafka-kare-logo-v3-dark.png' />
             {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
             <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
@@ -105,8 +108,9 @@ const LoginForm = () => {
             </AbsoluteCenter>
           </Box>
           <Button leftIcon={<FcGoogle size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('google')}>Continue with Google</Button>
+          <Button leftIcon={<FaGithub size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('github')}>Continue with Github</Button>
           {/* Link to navigate to the signup page */}
-          <Box mt={-2} textAlign='center'>
+          <Box textAlign='center'>
             New to us?{' '}
             <Link color="brand.bg" onClick={handleSignup}>
               Sign Up

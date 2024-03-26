@@ -165,8 +165,9 @@ export const handleLogin = async (e, toast, router) => {
  */
 export const handleLoggedInOAuth = async (session, router, toast) => {
   try {
-    const logInGoogleResponse = await axios.post('http://localhost:3001/oauth/google', {email: session.user.email, oAuthProvider: 'Google'}, {withCredentials: true});
-    console.log(logInGoogleResponse.data);
+    const oAuthProvider = session.user.provider;
+    const logInOAuthResponse = await axios.post(`http://localhost:3001/oauth/${oAuthProvider}`, {username: session.user.name, email: session.user.email, oAuthProvider}, {withCredentials: true});
+    console.log(logInOAuthResponse.data);
     router.push('/clusters');
     toast({
       position: 'top',

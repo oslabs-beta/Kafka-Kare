@@ -403,7 +403,7 @@ export const handleLogout = async (toast, push, oAuthLogout) => {
   try {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
-    if (oAuthLogout.provider === 'google') await oAuthLogout.signOut({redirect: false});
+    if (oAuthLogout.provider !== 'none') await oAuthLogout.signOut({redirect: false});
     clustersStore.setState({
       isLogoutModalOpen: false,
       clusterDisplayMap: new Map(),
