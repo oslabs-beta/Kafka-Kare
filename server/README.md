@@ -2,7 +2,7 @@
 
 ## Setup Instructions
 
-1. You will need a .env file. Look at the .env.example file for inspiration. 
+1. You will need a `.env` file. Look at the `.env.example` file for inspiration. 
 2. Install depenendencies: `npm install`
 3. Start the server: `npm run server`
 
@@ -39,6 +39,9 @@
 /settings
 - **GET /settings/colormode**: Route for obtaining user's color mode
 - **GET /settings/colormode/toggle**: Route for toggling a user's color mode
+
+/oauth/google
+- **POST /oauth/google**: Route for verifying user with Google OAuth
 
 ## Configuration
 

@@ -13,7 +13,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false
   },
   createdAt: {
     type: Date,
@@ -52,6 +52,10 @@ const userSchema = new Schema({
       type: String,
       default: 'English'
     }
+  },
+  oAuthProvider: {
+    type: String,
+    default: 'none'
   }
 });
 

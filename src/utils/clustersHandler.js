@@ -399,10 +399,11 @@ export const handleDeleteAccount = async (toast, push) => {
 /*
  * User Logout Event
  */
-export const handleLogout = async (toast, push) => {
+export const handleLogout = async (toast, push, oAuthLogout) => {
   try {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
+    if (oAuthLogout.provider === 'google') await oAuthLogout.signOut({redirect: false});
     clustersStore.setState({
       isLogoutModalOpen: false,
       clusterDisplayMap: new Map(),

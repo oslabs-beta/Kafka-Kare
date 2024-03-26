@@ -59,7 +59,7 @@ export const handleSignUp = async (event, toast, router) => {
         duration: 3000,
         isClosable: true,
         containerStyle: {marginTop: '70px'}
-      })
+      });
     } else toast({
       position: 'top',
       title: 'Error Occurred',
@@ -67,7 +67,7 @@ export const handleSignUp = async (event, toast, router) => {
       status: 'error',
       duration: 3000,
       isClosable: true,
-    })
+    });
   } catch (error) {
     // Handle any errors that occur during the fetch request
     console.error('error: ', error);
@@ -79,7 +79,7 @@ export const handleSignUp = async (event, toast, router) => {
         status: 'error',
         duration: 3000,
         isClosable: true,
-      })
+      });
       userStore.setState({username: ''});
       userStore.setState({password: ''});
     } else toast({
@@ -89,12 +89,13 @@ export const handleSignUp = async (event, toast, router) => {
       status: 'error',
       duration: 3000,
       isClosable: true,
-    })
+    });
   }
 };
 
 // Function to handle login form submission
-export const handleLogin = async (toast, router) => {
+export const handleLogin = async (e, toast, router) => {
+  e.preventDefault();
   const username = userStore.getState().username;
   const password = userStore.getState().password;
   console.log('username: ', username);
@@ -124,7 +125,7 @@ export const handleLogin = async (toast, router) => {
         duration: 3000,
         isClosable: true,
         containerStyle: {marginTop: '70px'}
-      })
+      });
     } else toast({
       position: 'top',
       title: 'Error Occurred',
@@ -132,7 +133,7 @@ export const handleLogin = async (toast, router) => {
       status: 'error',
       duration: 3000,
       isClosable: true,
-    })
+    });
   } catch (error) {
     // Handle any errors that occur during the fetch request
     console.log('Error:', error);
@@ -144,7 +145,7 @@ export const handleLogin = async (toast, router) => {
         status: 'error',
         duration: 3000,
         isClosable: true,
-      })
+      });
       userStore.setState({username: ''});
       userStore.setState({password: ''});
     }
@@ -155,6 +156,36 @@ export const handleLogin = async (toast, router) => {
       status: 'error',
       duration: 3000,
       isClosable: true,
-    })
+    });
+  }
+};
+
+/*
+ * After User Logged In With OAuth Event
+ */
+export const handleLoggedInOAuth = async (session, router, toast) => {
+  try {
+    const logInGoogleResponse = await axios.post('http://localhost:3001/oauth/google', {email: session.user.email, oAuthProvider: 'Google'}, {withCredentials: true});
+    console.log(logInGoogleResponse.data);
+    router.push('/clusters');
+    toast({
+      position: 'top',
+      title: 'User Logged In',
+      description: "You've successfully logged in.",
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      containerStyle: {marginTop: '70px'}
+    });
+  } catch (err) {
+    console.log(err);
+    toast({
+      position: 'top',
+      title: 'Error Occurred',
+      description: "Something went wrong when logging in.",
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
   }
 };

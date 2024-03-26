@@ -16,6 +16,7 @@ const metricsRoutes = require("./routes/metricsRoutes");
 const testingRoutes = require('./routes/testingRoutes');
 const slackRoutes = require('./routes/slackRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
+const oAuthRoutes = require('./routes/oAuthRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -115,6 +116,7 @@ app.prepare().then(() => {
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
   server.use("/settings", settingsRoutes);
+  server.use("/oauth", oAuthRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {
