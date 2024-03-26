@@ -26,7 +26,8 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('query: ', query);
 
     console.log('Sending query to Prometheus...');
-    const prometheusIP = process.env.PROMETHEUS_IP;
+    // const prometheusIP = process.env.PROMETHEUS_IP;
+    const prometheusIP = 'http://host.docker.internal';
     const connectionString = `http://${prometheusIP}:9090`;
     console.log('connectionString: ', connectionString);
 
