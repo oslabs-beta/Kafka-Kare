@@ -1,21 +1,39 @@
-import React from 'react';
-import Navbar from '../components/index/navbar.jsx';
-import { BackgroundGradientAnimation } from '../ui/home-background-animation.jsx';
+'use client';
 
+import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { Button, Image, Text, Box } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import BackgroundAnimation from "../ui/home-background-animation";
 
 const Home = () => {
-    return(
-        <BackgroundGradientAnimation style={{ position: 'relative', zIndex: 1 }}>
-            <div className="absolute z-50 inset-0 flex items-center justify-center text-white 
-            font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div>
-            <div className="center-container text-white">
-                <h1 className="bg-clip-text text-transparent drop-shadow-2xl 
-                bg-gradient-to-b from-white/80 to-white/20"> Kafka Kare</h1>
-                <div><Navbar /></div> 
-            </div>
-        </BackgroundGradientAnimation>        
-    )
+  
 
+  return (
+    <BackgroundAnimation>
+    <Box className="absolute z-50 inset-0 flex items-center justify-center pointer-events-none"
+        textAlign="center"
+      >
+        <Text f fontSize={{ base: "9xl", md: "20xl", lg: "20xl" }}
+          fontWeight="bold"
+        //   fontColor='white'
+          bgGradient="linear(to-b, whiteAlpha.80, whiteAlpha.20)"
+          _hover={{
+            bgGradient: "linear(to-b, whiteAlpha.20, whiteAlpha.80)",
+          }}
+          boxShadow="2xl"
+        >Kafka Kare</Text> 
+        {/* <Image src='/kafka-kare-logo-v3.png' h={200} borderRadius={8} margin='20px' /> */}
+        <Link href='/login' passHref>
+            <Button height='40px' width='155px' margin='20px' borderRadius='30px'>Login</Button>
+        </Link>
+        <Link href='/signup' passHref>
+            <Button height='40px' width='155px' margin='20px' borderRadius='30px'>Signup</Button>
+        </Link>
+    </Box>
+{/* </div> */}
+</BackgroundAnimation>
+  );
 };
 
 export default Home;

@@ -9,7 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 export function Providers({ children }) {
   return (
     <SessionProvider>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         {children}
       </ChakraProvider>
     </SessionProvider>

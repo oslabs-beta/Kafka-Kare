@@ -35,6 +35,7 @@ const SignupForm = () => {
   const router = useRouter();
   const toast = useToast();
   const initialRef = useRef();
+  
   useEffect(() => {
     resetUserStore();
     initialRef.current.focus();

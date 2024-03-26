@@ -46,6 +46,14 @@ const Navbar = () => {
       <AccountMenu />
 
       <Spacer />
+
+      {/* Toggle Color Mode Button */}
+      <IconButton
+        aria-label='toggle color mode' icon={colorModeIcon}
+        onClick={toggleColorMode} isRound variant='outline' borderWidth={3}
+      />
+      
+      <Spacer />
       
       {/* Open Menu Button */}
       <IconButton aria-label='open drawer' icon={<HamburgerIcon boxSize={5} />} variant='ghost'
@@ -53,14 +61,6 @@ const Navbar = () => {
 
       {/* Menu Drawer */}
       <MenuDrawer />
-      
-      <Spacer />
-
-      {/* Toggle Color Mode Button */}
-      <IconButton
-        aria-label='toggle color mode' icon={colorModeIcon}
-        onClick={toggleColorMode} isRound variant='outline' borderWidth={3}
-      />
     </Flex>
   )
 }
