@@ -28,7 +28,7 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('Sending query to Prometheus...');
     // const prometheusIP = process.env.PROMETHEUS_IP;
     const prometheusIP = 'host.docker.internal';
-    const connectionString = `http://${prometheusIP}:9090`;
+    let connectionString = `http://${prometheusIP}:9090`;
     console.log('connectionString: ', connectionString);
 
     // demo test cluster Id switches to listen to Kafka cluster on another port
