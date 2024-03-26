@@ -32,7 +32,7 @@ metricsController.getMetrics = async (req, res, next) => {
     console.log('connectionString: ', connectionString);
 
     // demo test cluster Id switches to listen to Kafka cluster on another port
-    if (clusterId = '12345') {
+    if (clusterId === '12345') {
       console.log('Changing to listen to port 9063');
       connectionString = `http://${prometheusIP}:9063`;
       console.log('connectionString changed: ', connectionString);
