@@ -18,6 +18,7 @@ const testingRoutes = require("./routes/testingRoutes");
 const slackRoutes = require("./routes/slackRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 const oAuthRoutes = require("./routes/oAuthRoutes");
+const grafanaApiRoutes = require("./routes/grafanaApiRoutes");
 
 // Setup Next app
 const PORT = 3001;
@@ -232,6 +233,7 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
   server.use("/slack", slackRoutes);
   server.use("/settings", settingsRoutes);
   server.use("/oauth", oAuthRoutes);
+  server.use("/api", grafanaApiRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {

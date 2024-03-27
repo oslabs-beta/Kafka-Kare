@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const tokenController = require("../controllers/tokenController");
-const apiController = require("../controllers/apiController");
+const grafanaApiController = require("../controllers/grafanaApiController");
 
 // Route for adding user data source to Grafana
 router.post(
   "create-datasource",
   tokenController.verifyToken,
-  apiController.addDatasource,
+  grafanaApiController.addDatasource,
   (req, res) => {
     return res.status(200).json({});
   }
@@ -17,7 +17,7 @@ router.post(
 router.post(
   "/create-dashboard",
   tokenController.verifyToken,
-  apiController.addDashboard,
+  grafanaApiController.addDashboard,
   (req, res) => {
     return res.status(200).json({});
   }
