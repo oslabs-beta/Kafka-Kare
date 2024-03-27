@@ -139,7 +139,7 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
           },
           panels: [
             {
-              type: 'graph',
+              type: 'timeseries',
               title: 'New Throughput Graph',
               gridPos: { x: 0, y: 0, w: 24, h: 9 },
               targets: [
@@ -148,13 +148,35 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
                   expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
                 },
               ],
-              yaxes: [
-                {
-                  format: 'ops', // Use 'ops' to denote operations per second, which is suitable for messages per second
-                  label: 'Messages per Second',
-                  show: true, // Set to true to ensure the axis is displayed
-                }
-              ],
+              options: {
+                legend: {
+                  displayMode: 'list',
+                  placement: 'bottom',
+                },
+                tooltip: {
+                  mode: 'single',
+                },
+              },
+              fieldConfig: {
+                defaults: {
+                  unit: 'ops', // operations per second, suitable for messages per second
+                },
+                overrides: [
+                  {
+                    matcher: { id: 'name' },
+                    properties: [
+                      {
+                        id: 'unit',
+                        value: 'ops',
+                      },
+                      {
+                        id: 'custom.label', // Specify custom label for Y-axis
+                        value: 'Messages per Second',
+                      },
+                    ],
+                  },
+                ],
+              },
             },
           ],
         },
