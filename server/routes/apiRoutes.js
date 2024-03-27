@@ -5,15 +5,21 @@ const apiController = require("../controllers/apiController");
 
 // Route for adding user data source to Grafana
 router.post(
-  "/google",
-  oAuthController.googleCreateUser,
-  tokenController.issueToken,
+  "create-datasource",
+  tokenController.verifyToken,
+  apiController.addDatasource,
   (req, res) => {
-    return res
-      .status(201)
-      .json({
-        message: `User registered successfully: ${res.locals.username} via OAuth`,
-      });
+    return res.status(200).json({});
+  }
+);
+
+// Route for initializing user's dashboard to Grafana
+router.post(
+  "/create-dashboard",
+  tokenController.verifyToken,
+  apiController.addDashboard,
+  (req, res) => {
+    return res.status(200).json({});
   }
 );
 
