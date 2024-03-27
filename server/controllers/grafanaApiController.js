@@ -52,10 +52,10 @@ grafanaApiController.addDatasource = async (req, res, next) => {
 /* ----------------- CREATE DASHBOARD CONNECTED TO DATA SOURCE ----------------- */
 grafanaApiController.createDashboard = async (req, res, next) => {
   console.log("In grafanaApiController.createDashboard"); // testing
-  const { userId, username, dataSourceName } = res.locals; // Destructure from prior middleware
+  const { userId, username, datasourceName } = res.locals; // Destructure from prior middleware
 
-  console.log(`Creating dashboard for ${username}`);
-  console.log(`Datasource for dashboard: ${datasourceName}`);
+  console.log(`Creating dashboard for <${username}>`);
+  console.log(`Datasource for dashboard: <${datasourceName}>`);
 
   // Template for new dashboard
   const newDashboardData = {
@@ -72,7 +72,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
           type: "timeseries",
           title: "Throughput Graph",
           gridPos: { x: 0, y: 0, w: 24, h: 9 },
-          datasource: `${dataSourceName}`, // Specify the datasource here
+          datasource: `${datasourceName}`, // Specify the datasource here
           targets: [
             {
               refId: "A",
