@@ -118,7 +118,7 @@ app.prepare().then(() => {
   // Define your service account token
   const serviceAccountToken = "glsa_uGqGjZKB1hL9MoGo3CeLAjALae8wSPUy_d4008537";
 
-  // Define your datasource configuration
+  // Define your datasource configuration // Check datasourceConfig format
   const datasourceConfig = {
     name: "Prometheus",
     type: "prometheus",
@@ -137,8 +137,8 @@ app.prepare().then(() => {
     try {
       console.log("datasourceConfig: ", datasourceConfig);
       // Perform the POST request to create the datasource
-      const response = await axios.post(
-        "http://localhost:3002/api/datasources",
+      const response = await axios.put(
+        "http://grafana:3000/api/datasources",
         datasourceConfig,
         {
           headers: {
@@ -147,6 +147,8 @@ app.prepare().then(() => {
           },
         }
       );
+      
+      console.log('response: ', response);
 
       // Return a success response
       res
