@@ -1,6 +1,8 @@
 const axios = require("axios");
-const grafanaApiController = {};
+const User = require("../models/userModel.js");
 const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
+
+const grafanaApiController = {};
 
 /* ------------------ ADD PROMETHEUS DATA SOURCE TO GRAFANA ----------------- */
 grafanaApiController.addDatasource = async (req, res, next) => {
@@ -155,6 +157,27 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
     });
   }
 };
+
+
+
+
+
+
+
+/* ------------------------- SAVE DASHBOARD TO USER ------------------------- */
+grafanaApiController.saveUid = async (req, res, next) => {
+
+} catch (err) {
+    return next({
+      log: `grafanaApiController.saveUid: ERROR ${err}`,
+      status: 500,
+      message: {
+        err: "Error occurred in grafanaApiController.saveUid.",
+      },
+    });
+  }
+};
+
 
 // Export
 module.exports = grafanaApiController;
