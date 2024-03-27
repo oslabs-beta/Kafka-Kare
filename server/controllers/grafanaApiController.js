@@ -32,13 +32,10 @@ grafanaApiController.addDatasource = async (req, res, next) => {
       datasourceConfig,
       requestHeaders
     );
-    console.log("Received response from API request: ", response);
 
     // Persist datasource name
     res.locals.datasourceName = datasourceConfig.name;
-
     console.log("Datasource created successfully");
-
     return next();
   } catch (err) {
     return next({
@@ -62,7 +59,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     dashboard: {
       id: null,
       refresh: "5s", // Refresh every 5 seconds
-      title: `${username}'s Dashboard`,
+      title: `${username} Dashboard`,
       time: {
         from: "now-5m",
         to: "now",
@@ -97,9 +94,9 @@ grafanaApiController.createDashboard = async (req, res, next) => {
       newDashboardData,
       requestHeaders
     );
-    console.log("Received response from API request : ", response);
 
     console.log("Dashboard created successfully");
+    res.locals.data = response.data;
     return next();
   } catch (err) {
     return next({

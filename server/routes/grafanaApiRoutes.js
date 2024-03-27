@@ -10,18 +10,8 @@ router.post(
   grafanaApiController.addDatasource,
   grafanaApiController.createDashboard,
   (req, res) => {
-    return res.status(200).json({});
+    return res.status(200).json({message: "Dashboard created from datasource successfully", data: res.locals.data});
   }
 );
-
-// // Route for initializing user's dashboard to Grafana
-// router.post(
-//   "/create-dashboard",
-//   tokenController.verifyToken,
-//   grafanaApiController.addDashboard,
-//   (req, res) => {
-//     return res.status(200).json({});
-//   }
-// );
 
 module.exports = router;
