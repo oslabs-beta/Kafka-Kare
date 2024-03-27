@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { connection, connections } = require("mongoose");
 const metricsController = {};
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
@@ -24,8 +25,21 @@ metricsController.getMetrics = async (req, res, next) => {
     // Explicitly print out our prometheus query // testing
     console.log('query: ', query);
 
-    console.log('Sending query to Prometheus...')
-    const queryResponse = await axios.get(`http://prometheus:9090/api/v1/query`, { 
+    console.log('Sending query to Prometheus...');
+    // const prometheusIP = process.env.PROMETHEUS_IP;
+    const prometheusIP = 'host.docker.internal';
+    let connectionString = `http://${prometheusIP}:9090`;
+    console.log('connectionString: ', connectionString);
+
+
+    // demo test - Switches to listen to Kafka cluster on another port
+    if (clusterId === '12345') {
+      console.log('Changing to listen to port 9063');
+      connectionString = `http://${prometheusIP}:9063`;
+      console.log('connectionString changed: ', connectionString);
+    }
+
+    const queryResponse = await axios.get(`${connectionString}/api/v1/query`, { 
         params: { query }
       });
     
@@ -68,7 +82,7 @@ metricsController.checkAndSendNotification = async (req, res, next) => {
   const { graphData } = res.locals; // Destructure from prior middleware 
 
   // This is the threshold check
-  if (!graphData || graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
+  if (!graphData.dataPoint || graphData.dataPoint <= THROUGHPUT_THRESHOLD_UPPER) {
     console.log('Metrics below threshold, proceeding')
     return next();
   }

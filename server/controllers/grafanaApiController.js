@@ -1,7 +1,15 @@
 const axios = require("axios");
+<<<<<<< HEAD
 const grafanaApiController = {};
 const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
 
+=======
+const User = require("../models/userModel.js");
+const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
+
+const grafanaApiController = {};
+
+>>>>>>> dev
 /* ------------------ ADD PROMETHEUS DATA SOURCE TO GRAFANA ----------------- */
 grafanaApiController.addDatasource = async (req, res, next) => {
   console.log("In grafanaApiController.addDatasource"); // testing
@@ -23,7 +31,11 @@ grafanaApiController.addDatasource = async (req, res, next) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${serviceAccountToken}`,
+<<<<<<< HEAD
     }
+=======
+    },
+>>>>>>> dev
   };
 
   // Send request to Grafana API to add a datasource
@@ -56,7 +68,12 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   console.log(`Creating dashboard for <${username}>`);
   console.log(`Datasource for dashboard: <${datasourceName}>`);
 
+<<<<<<< HEAD
   // Template for new dashboard
+=======
+
+  // // Template for new dashboard
+>>>>>>> dev
   const newDashboardData = {
     dashboard: {
       id: null,
@@ -84,6 +101,11 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     folderId: 0,
     overwrite: false,
   };
+<<<<<<< HEAD
+=======
+  // // End of Template for new dashboard
+
+>>>>>>> dev
 
   // Use for API call
   const requestHeaders = {
@@ -99,7 +121,15 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     );
 
     console.log(`Dashboard using data from <${url}> created successfully`);
+<<<<<<< HEAD
     res.locals.data = response.data;
+=======
+    
+    // Persist uid
+    console.log('response.data.uid: ', response.data.uid)
+    res.locals.uid = response.data.uid;
+
+>>>>>>> dev
     return next();
   } catch (err) {
     return next({
@@ -112,5 +142,81 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+
+/* ---------------------------- DISPLAY DASHBOARD --------------------------- */
+grafanaApiController.displayDashboard = async (req, res, next) => {
+  console.log("In grafanaApiController.displayDashboard"); // testing
+  const { uid } = res.locals;
+  console.log('uid: ', uid);
+  
+  // const fakeUid = 'adgxqf88b1p1cb';
+  const requestHeaders = {
+    headers: { Authorization: `Bearer ${serviceAccountToken}` },
+  };
+
+  // Send request to Grafana API to dislpay a dashboard
+  try {
+    const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`, requestHeaders);
+    // const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${fakeUid}`, requestHeaders);
+
+    const dashboardConfig = response.data.dashboard;
+    console.log('dashboardConfig: ', dashboardConfig);
+    console.log('API call to Grafana successful');
+
+    res.locals.dashboardConfig = dashboardConfig;
+
+    // Working on iFrame
+    const iFrame = `http://localhost:3002/d/${dashboardConfig.uid}/${dashboardConfig.id}?orgId=1&theme=light`;
+
+    console.log('iFrame: ', iFrame);
+    res.locals.iFrame = iFrame;
+
+    //http://grafana:3000/d-solo/fdgy6ul23iadca/20?orgId=1&theme=light
+
+    // <iframe src="http://<grafana-host>:<grafana-port>/d-solo/<dashboard-uid>/<panel-id>?orgId=<org-id>&theme=<theme>" width="450" height="200" frameborder="0"></iframe>
+//http://<grafana-host>:<grafana-port>/d-solo/<dashboard-uid>/<panel-id>?orgId=<org-id>&theme=<theme>
+
+    return next();
+  } catch (err) {
+    return next({
+      log: `grafanaApiController.displayDashboard: ERROR ${err}`,
+      status: 500,
+      message: {
+        err: "Error occurred in grafanaApiController.displayDashboard.",
+      },
+    });
+  }
+};
+
+
+
+
+/* ------------------------- SAVE DASHBOARD TO USER ------------------------- */
+// grafanaApiController.saveUid = async (req, res, next) => {
+//   console.log("In grafanaApiController.saveUid"); // testing
+//   const { userId, uid } = res.locals;
+
+//   console.log(`Saving graph <${uid}> to user <${userId}>`);
+
+//   // Save to database
+//   try {
+
+
+//   return next();
+// } catch (err) {
+//     return next({
+//       log: `grafanaApiController.saveUid: ERROR ${err}`,
+//       status: 500,
+//       message: {
+//         err: "Error occurred in grafanaApiController.saveUid.",
+//       },
+//     });
+//   }
+// };
+
+
+>>>>>>> dev
 // Export
 module.exports = grafanaApiController;

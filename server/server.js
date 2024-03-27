@@ -1,6 +1,6 @@
 // Access to environmental variables
 require("dotenv").config();
-const User = require('./models/userModel');//delete later, this is for testing
+
 // Import dependencies
 const express = require("express");
 const next = require("next");
@@ -8,14 +8,21 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+<<<<<<< HEAD
 const axios = require('axios');
+=======
+const axios = require("axios");
+>>>>>>> dev
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
-const testingRoutes = require('./routes/testingRoutes');
-const slackRoutes = require('./routes/slackRoutes');
+const testingRoutes = require("./routes/testingRoutes");
+const slackRoutes = require("./routes/slackRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
+const oAuthRoutes = require("./routes/oAuthRoutes");
+const grafanaApiRoutes = require("./routes/grafanaApiRoutes");
 
 // Setup Next app
 const PORT = 3001;
@@ -23,16 +30,15 @@ const dev = process.env.NODE_ENV !== "production"; // dev = true if node_env IS 
 const app = next({ dev }); // initializes an instance of a NextJS app
 const handle = app.getRequestHandler(); // handles page routing
 
-
 // Prepare to serve the NextJS app
 app.prepare().then(() => {
   const server = express();
 
   // CORS middleware
   const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true
-  }
+    origin: "http://localhost:3000",
+    credentials: true,
+  };
   server.use(cors(corsOptions));
 
   // Middleware
@@ -40,17 +46,11 @@ app.prepare().then(() => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 
-  // Retrieve environmental variables for MongoDB auth // Defined in docker-compose.yml
-  // const DB_USER = process.env.MONGO_DB_USERNAME
-  // const DB_PASS = process.env.MONGO_DB_PWD
-
   // Connect to mongoDB
-  // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
-  const mongoURI = `mongodb://admin:supersecret@mongo`
-  // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
+  const mongoURI = `mongodb://admin:supersecret@mongo`;
   const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURI);
+  mongoose.connect(mongoURIAtlas);
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
@@ -126,11 +126,16 @@ server.get('/api/get-datasources', async (req, res) => {
 
 //=============================  
   // Custom routes
-  server.use("/auth", authRoutes); 
-  server.use("/clusters", clustersRoutes); 
+  server.use("/auth", authRoutes);
+  server.use("/clusters", clustersRoutes);
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
+<<<<<<< HEAD
+=======
+  server.use("/settings", settingsRoutes);
+  server.use("/oauth", oAuthRoutes);
+>>>>>>> dev
   server.use("/api", grafanaApiRoutes);
 
   // Fallback route

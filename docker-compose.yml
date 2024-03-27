@@ -14,7 +14,7 @@ services:
     #   - ./server:/app/server
     #   - /app/node_modules
     #overides CMD in Dockerfile-server. This will start the server in dev mode(using nodemon)   
-    # command: npm run server        
+    command: npm run server        
     depends_on:
       - mongo
     environment:
@@ -93,7 +93,7 @@ services:
     volumes:
       - ./grafana-data:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources #added in for user input with provisioning
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources #needed for provisioning
     depends_on:
      - kafka-kare-server
     networks:

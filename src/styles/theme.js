@@ -3,13 +3,9 @@ import { extendTheme } from '@chakra-ui/react';
 
 //if we want to use Chakra UI
 const theme = extendTheme({
-  styles: {
-    global: {
-        '.background-gradient-animation': {
-            backgroundColor: 'pink'
-        }
-    },
-  },
-});
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  }   
+);
 
 export default theme;

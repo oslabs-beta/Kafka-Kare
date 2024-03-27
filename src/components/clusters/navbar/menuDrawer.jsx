@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FormLabel, Box, Link, Code, Textarea, Flex, Icon, IconButton, useToast,
+  FormLabel, Box, Link, Code, Textarea, Flex, Icon, IconButton, useToast, useColorModeValue,
   Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
   Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper
 } from '@chakra-ui/react';
@@ -9,6 +9,7 @@ import { clustersStore } from '../../../store/clusters';
 import { handleSlackWebhookURLSubmit, handleSlackWebhookURLDelete } from '../../../utils/clustersHandler';
 
 const MenuDrawer = () => {
+  const slackButtonsBorderColor = useColorModeValue('white', 'gray.700');
 
   // declare state variables
   const isDrawerOpen = clustersStore(state => state.isDrawerOpen);
@@ -83,12 +84,12 @@ const MenuDrawer = () => {
             <Box>
               <IconButton
                 aria-label='submit slack url' h={10} colorScheme='twitter' ml={1.5} borderTopLeftRadius={0}
-                borderBottomLeftRadius={0} borderBottomRightRadius={0} borderBottomColor={'white'} borderBottomWidth={2}
+                borderBottomLeftRadius={0} borderBottomRightRadius={0} borderBottomColor={slackButtonsBorderColor} borderBottomWidth={2}
                 icon={<Icon as={RiSendPlane2Fill} boxSize={6} />} onClick = {() => {handleSlackWebhookURLSubmit(toast)}}
               />
               <IconButton
                 aria-label='delete slack url' h={10} colorScheme='twitter' ml={1.5} borderBottomLeftRadius={0}
-                borderTopLeftRadius={0} borderTopRightRadius={0} borderTopColor={'white'} borderTopWidth={2}
+                borderTopLeftRadius={0} borderTopRightRadius={0} borderTopColor={slackButtonsBorderColor} borderTopWidth={2}
                 icon={<Icon as={RiDeleteBinFill} boxSize={6} />} onClick = {() => {handleSlackWebhookURLDelete(toast)}}
               />
             </Box>

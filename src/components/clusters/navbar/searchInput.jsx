@@ -10,7 +10,7 @@ const SearchInput = () => {
   return (
     
     /* Search input */
-    <InputGroup w={['22%', '22%', '32%', '50%', '62%', '68%']}>
+    <InputGroup w={['18%', '18%', '28%', '44%', '58%', '66%']}>
       <InputLeftElement pointerEvents='none'>
         <Search2Icon />
       </InputLeftElement>
