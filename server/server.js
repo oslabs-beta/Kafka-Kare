@@ -62,6 +62,7 @@ app.prepare().then(() => {
   server.use("/oauth", oAuthRoutes);
   server.use("/api", grafanaApiRoutes);
 
+  
   // Fallback route
   server.get("*", (req, res) => {
     return handle(req, res);

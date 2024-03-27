@@ -18,6 +18,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
   };
   console.log("datasourceConfig: ", datasourceConfig);
 
+  // Use for API call
   const requestHeaders = {
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +37,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
     // Persist datasource name
     res.locals.datasourceName = datasourceConfig.name;
     res.locals.url = datasourceConfig.url;
-    console.log("Datasource created successfully");
+    console.log("Datasource connected successfully");
     return next();
   } catch (err) {
     return next({
@@ -84,6 +85,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     overwrite: false,
   };
 
+  // Use for API call
   const requestHeaders = {
     headers: { Authorization: `Bearer ${serviceAccountToken}` },
   };
