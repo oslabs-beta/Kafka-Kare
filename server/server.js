@@ -137,7 +137,7 @@ app.prepare().then(() => {
     //   editable: true,
     // };
     const datasourceConfig = {
-      name: "PrometheusZ",
+      name: "PrometheusZZ",
       type: "prometheus",
       url: `${url}`,
       access: "proxy",
