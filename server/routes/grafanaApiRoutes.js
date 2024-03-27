@@ -3,12 +3,12 @@ const router = express.Router();
 const tokenController = require("../controllers/tokenController");
 const grafanaApiController = require("../controllers/grafanaApiController");
 
-// Route for adding user data source to Grafana
+// Route for adding user data source then initializing user's dashboard to Grafana
 router.post(
-  "create-datasource",
+  '/create-datasource',
   tokenController.verifyToken,
   grafanaApiController.addDatasource,
-  grafanaApiController.addDashboard,
+  grafanaApiController.createDashboard,
   (req, res) => {
     return res.status(200).json({});
   }
