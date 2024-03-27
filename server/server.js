@@ -131,7 +131,7 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
       const newDashboardData = {
         dashboard: {
           id: null,
-          refresh: '5s',  // Refresh every 5 seconds
+          refresh: '5s', // Refresh every 5 seconds
           title: 'New Dashboard',
           time: {
             from: "now-5m",
@@ -148,41 +148,14 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
                   expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
                 },
               ],
-              options: {
-                legend: {
-                  displayMode: 'list',
-                  placement: 'bottom',
-                },
-                tooltip: {
-                  mode: 'single',
-                },
-              },
-              fieldConfig: {
-                defaults: {
-                  unit: 'ops', // operations per second, suitable for messages per second
-                },
-                overrides: [
-                  {
-                    matcher: { id: 'name' },
-                    properties: [
-                      {
-                        id: 'unit',
-                        value: 'ops',
-                      },
-                      {
-                        id: 'custom.label', // Specify custom label for Y-axis
-                        value: 'Messages per Second',
-                      },
-                    ],
-                  },
-                ],
-              },
+              // Remove options and fieldConfig for a minimal setup
             },
           ],
         },
         folderId: 0,
         overwrite: false,
       };
+      
 
       const response = await axios.post(`${grafanaApiUrl}/dashboards/db`, newDashboardData, {
         headers: { Authorization: `Bearer ${grafanaApiKey}` },
