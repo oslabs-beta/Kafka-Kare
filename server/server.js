@@ -8,6 +8,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const axios = require('axios');
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
@@ -76,39 +77,61 @@ app.prepare().then(() => {
     }
   });
 
-  // TEST POST route to create a new user 
-  server.post('/users', async (req, res) => {
-    try {
-      const newUser = new User({
-        username: req.body.username,
-        password: req.body.password
-      });
-      await newUser.save();
-      res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
-
-  // TEST GET route to fetch all users
-  server.get('/users', async (req, res) => {
-    try {
-      const users = await User.find({}, 'username'); // Exclude passwords from the response
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
 
 //=========================== TEST 
 
-  
+//=========================== TEST
+server.get('/api/get-datasources', async (req, res) => {
+  try {
+    const response = await axios.get('http://grafana:3000/api/datasources', {
+      headers: {
+        'Authorization': `Bearer ${process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN}`
+      }
+    });
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Failed to get datasources:', error.response.data);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//================================================================================================
+// this is the code to update the datasource file in the backend server so it won't be overwritten
+// const fs = require('fs');
+// const yaml = require('js-yaml');
+
+// server.put('/api/update-datasource-file/:id', (req, res) => {
+//   try {
+//     // Load the datasource configuration from the yml file
+//     const fileContents = fs.readFileSync('/path/to/your/datasource.yml', 'utf8');
+//     const data = yaml.safeLoad(fileContents);
+
+//     // Update the port in the datasource configuration
+//     data.datasources[0].url = `http://prometheus:${newPort}/api/v1/query_range`;
+
+//     // Write the updated configuration back to the yml file
+//     const newYaml = yaml.safeDump(data);
+//     fs.writeFileSync('/path/to/your/datasource.yml', newYaml, 'utf8');
+
+//     // Return a success response
+//     res.status(200).json({ message: 'Datasource file updated successfully' });
+//   } catch (error) {
+//     // Return an error response
+//     console.error('Failed to update datasource file:', error);
+//     res.status(500).json({ message: error.message });
+//   }
+// });
+
+
+//=============================  
   // Custom routes
   server.use("/auth", authRoutes); 
   server.use("/clusters", clustersRoutes); 
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
+  server.use("/api", grafanaApiRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {
