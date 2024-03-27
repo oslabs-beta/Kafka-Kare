@@ -81,6 +81,8 @@ export const handleNewCluster = async (toast) => {
   const clusterNotFavoriteMap = clustersStore.getState().clusterNotFavoriteMap;
   const clusterNotFavoriteDisplayMap = clustersStore.getState().clusterNotFavoriteDisplayMap;
 
+  console.log('testing');
+
   // check name and port input format
   if (clusterName === '') clustersStore.setState({isClusterNameEmpty: true});
   if (clusterPort === '') clustersStore.setState({isClusterPortEmpty: true});
@@ -92,6 +94,12 @@ export const handleNewCluster = async (toast) => {
       const response = await axios.post('http://localhost:3001/clusters/addCluster', {name: clusterName, hostnameAndPort: clusterPort}, {withCredentials: true});
       console.log('New Cluster Response:', response.data);
       addToast('Cluster Created', 'We\'ve created your cluster for you.', 'success', 3000, toast);
+
+
+      // second axios post request to create Grafana dashboard and connect to datasource
+      const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
+      console.log('Grafana API Response:', responseGrafana.data);
+
 
       // update states about user clusters
       clustersStore.setState({
