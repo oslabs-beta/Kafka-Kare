@@ -120,6 +120,48 @@ app.prepare().then(() => {
 
 
 
+//=================
+//===============
+const grafanaApiUrl = 'http://grafana:3000/api';
+const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
+
+
+  server.post('/api/create-dashboard', async (req, res) => {
+    try {
+      const newDashboardData = {
+        dashboard: {
+          id: null,
+          title: 'New dashboard',
+          panels: [
+            {
+              type: 'graph',
+              title: 'New graph',
+              gridPos: { x: 0, y: 0, w: 24, h: 9 },
+              targets: [
+                {
+                  refId: 'A',
+                  expr: 'rate(http_requests_total[5m])',
+                },
+              ],
+            },
+          ],
+        },
+        folderId: 0,
+        overwrite: false,
+      };
+
+      const response = await axios.post(`${grafanaApiUrl}/dashboards/db`, newDashboardData, {
+        headers: { Authorization: `Bearer ${grafanaApiKey}` },
+      });
+
+      res.status(200).json(response.data);
+    } catch (error) {
+      console.error('Failed to create dashboard:', error.response.data);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+//=================
   // Endpoint to create the datasource
   server.post("/api/create-datasource", async (req, res) => {
     const { url } = req.body;
