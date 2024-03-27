@@ -116,7 +116,7 @@ app.prepare().then(() => {
   //=========================== TEST
 
   // Define your service account token
-  const serviceAccountToken = "glsa_uGqGjZKB1hL9MoGo3CeLAjALae8wSPUy_d4008537";
+  const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
 
 
 
