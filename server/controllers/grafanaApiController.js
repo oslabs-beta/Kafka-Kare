@@ -100,10 +100,13 @@ grafanaApiController.createDashboard = async (req, res, next) => {
 
     console.log(`Dashboard using data from <${url}> created successfully`);
     
+    /* -------------------------------- LOOK HERE ------------------------------- */
+    console.log('response: ', response);
+    
     // Persist uid
-    res.locals.uid = response.data.data.uid;
-    console.log('response.data.data.uid: ', response.data.data.uid);
     console.log('response.data.uid: ', response.data.uid)
+    console.log('response.data.data.uid: ', response.data.data.uid);
+    res.locals.uid = response.data.data.uid;
 
     res.locals.data = response.data;
     return next();
