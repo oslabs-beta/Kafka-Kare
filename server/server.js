@@ -131,16 +131,16 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
       const newDashboardData = {
         dashboard: {
           id: null,
-          title: 'New dashboard',
+          title: 'New Dashboard',
           panels: [
             {
               type: 'graph',
-              title: 'New graph',
+              title: 'New Throughput Graph',
               gridPos: { x: 0, y: 0, w: 24, h: 9 },
               targets: [
                 {
                   refId: 'A',
-                  expr: 'rate(http_requests_total[5m])',
+                  expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
                 },
               ],
             },
