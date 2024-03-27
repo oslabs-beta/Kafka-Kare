@@ -93,6 +93,7 @@ services:
     volumes:
       - ./grafana-data:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources #needed for provisioning
     depends_on:
      - kafka-kare-server
     networks:

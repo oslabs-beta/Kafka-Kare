@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 // import { auth, signIn } from '../../NextAuth/auth.js';
 import {
   Stack,
@@ -49,7 +51,7 @@ const SignupForm = () => {
     // Form component to handle form submission
     <FormControl>
       <form onSubmit={(e) => handleSignUp(e, toast, router)}>
-        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='400px' maxH='550px' h="65vh" borderRadius="10px" justifyContent='center'>
+        <Stack spacing={8} px="4.5rem" backgroundColor="whiteAlpha.900" boxShadow="xl" minH='550px' maxH='650px' h="70vh"  borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
           <Box mb={6} display='flex' justifyContent='center'>
             <Image w={260} src='kafka-kare-logo-v3.png' />

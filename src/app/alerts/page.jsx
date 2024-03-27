@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/index/navbar';
+import Navbar from '../../components/index/navbar';
 
 const Alerts = () => {
 

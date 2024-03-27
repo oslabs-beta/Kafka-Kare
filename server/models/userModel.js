@@ -13,7 +13,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false
   },
   createdAt: {
     type: Date,
@@ -42,7 +42,25 @@ const userSchema = new Schema({
   promUrl: {
     type: String,
     default: ''
-  }
+  },
+  settings: {
+    colorMode: {
+      type: String,
+      default: 'light'
+    },
+    language: {
+      type: String,
+      default: 'English'
+    }
+  },
+  oAuthProvider: {
+    type: String,
+    default: 'none'
+  },
+  graphs: {
+    type: [{}],
+    default: []
+  },
 });
 
 // Pre-save hook to encrypt password using bcrypt.hash() 

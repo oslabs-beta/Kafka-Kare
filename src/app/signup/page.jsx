@@ -3,7 +3,7 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import SignupForm from '../components/signup/signupForm.jsx'; // Import the SignupForm component
+import SignupForm from '../../components/signup/signupForm'; // Import the SignupForm component
 
 const Signup = () => {
 
