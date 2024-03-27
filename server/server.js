@@ -123,105 +123,105 @@ app.prepare().then(() => {
 
 //=================
 //===============
-const grafanaApiUrl = 'http://grafana:3000/api';
-const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
+// const grafanaApiUrl = 'http://grafana:3000/api';
+// const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
 
 
-  server.post('/api/create-dashboard', async (req, res) => {
-    try {
-      const newDashboardData = {
-        dashboard: {
-          id: null,
-          refresh: '5s', // Refresh every 5 seconds
-          title: 'New Dashboard',
-          time: {
-            from: "now-5m",
-            to: "now"
-          },
-          panels: [
-            {
-              type: 'timeseries',
-              title: 'New Throughput Graph',
-              gridPos: { x: 0, y: 0, w: 24, h: 9 },
-              targets: [
-                {
-                  refId: 'A',
-                  expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
-                },
-              ],
-              // Remove options and fieldConfig for a minimal setup
-            },
-          ],
-        },
-        folderId: 0,
-        overwrite: false,
-      };
+//   server.post('/api/create-dashboard', async (req, res) => {
+//     try {
+//       const newDashboardData = {
+//         dashboard: {
+//           id: null,
+//           refresh: '5s', // Refresh every 5 seconds
+//           title: 'New Dashboard',
+//           time: {
+//             from: "now-5m",
+//             to: "now"
+//           },
+//           panels: [
+//             {
+//               type: 'timeseries',
+//               title: 'New Throughput Graph',
+//               gridPos: { x: 0, y: 0, w: 24, h: 9 },
+//               targets: [
+//                 {
+//                   refId: 'A',
+//                   expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
+//                 },
+//               ],
+//               // Remove options and fieldConfig for a minimal setup
+//             },
+//           ],
+//         },
+//         folderId: 0,
+//         overwrite: false,
+//       };
       
 
-      const response = await axios.post(`${grafanaApiUrl}/dashboards/db`, newDashboardData, {
-        headers: { Authorization: `Bearer ${grafanaApiKey}` },
-      });
+//       const response = await axios.post(`${grafanaApiUrl}/dashboards/db`, newDashboardData, {
+//         headers: { Authorization: `Bearer ${grafanaApiKey}` },
+//       });
 
-      res.status(200).json(response.data);
-    } catch (error) {
-      console.error('Failed to create dashboard:', error.response.data);
-      res.status(500).json({ message: error.message });
-    }
-  });
+//       res.status(200).json(response.data);
+//     } catch (error) {
+//       console.error('Failed to create dashboard:', error.response.data);
+//       res.status(500).json({ message: error.message });
+//     }
+//   });
 
-//=================
-  // Endpoint to create the datasource
-  server.post("/api/create-datasource", async (req, res) => {
-    const { url } = req.body;
-    console.log('url: ', url);
+// //=================
+//   // Endpoint to create the datasource
+//   server.post("/api/create-datasource", async (req, res) => {
+//     const { url } = req.body;
+//     console.log('url: ', url);
 
-    // Define your datasource configuration // Check datasourceConfig format
-    // const datasourceConfig = {
-    //   name: "Prometheus",
-    //   type: "prometheus",
-    //   url: `${url}`,
-    //   access: "proxy",
-    //   jsonData: {},
-    //   secureJsonData: {},
-    //   version: 1,
-    //   editable: true,
-    // };
-    const datasourceConfig = {
-      name: "PrometheusZZZ",
-      type: "prometheus",
-      url: `${url}`,
-      access: "proxy",
-    };
+//     // Define your datasource configuration // Check datasourceConfig format
+//     // const datasourceConfig = {
+//     //   name: "Prometheus",
+//     //   type: "prometheus",
+//     //   url: `${url}`,
+//     //   access: "proxy",
+//     //   jsonData: {},
+//     //   secureJsonData: {},
+//     //   version: 1,
+//     //   editable: true,
+//     // };
+//     const datasourceConfig = {
+//       name: "PrometheusZZZ",
+//       type: "prometheus",
+//       url: `${url}`,
+//       access: "proxy",
+//     };
 
-    try {
-      console.log("datasourceConfig: ", datasourceConfig);
-      // Perform the POST request to create the datasource
-      const response = await axios.post(
-        "http://grafana:3000/api/datasources",
-        datasourceConfig,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${serviceAccountToken}`,
-          },
-        }
-      );
+//     try {
+//       console.log("datasourceConfig: ", datasourceConfig);
+//       // Perform the POST request to create the datasource
+//       const response = await axios.post(
+//         "http://grafana:3000/api/datasources",
+//         datasourceConfig,
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${serviceAccountToken}`,
+//           },
+//         }
+//       );
       
-      console.log('response: ', response);
+//       console.log('response: ', response);
 
-      // Return a success response
-      res
-        .status(200)
-        .json({
-          message: "Datasource created successfully",
-          data: response.data,
-        });
-    } catch (error) {
-      // Return an error response
-      console.error("Failed to create datasource:");
-      res.status(500).json({ message: "Failed to create datasource" });
-    }
-  });
+//       // Return a success response
+//       res
+//         .status(200)
+//         .json({
+//           message: "Datasource created successfully",
+//           data: response.data,
+//         });
+//     } catch (error) {
+//       // Return an error response
+//       console.error("Failed to create datasource:");
+//       res.status(500).json({ message: "Failed to create datasource" });
+//     }
+//   });
 
   //==============================
 
