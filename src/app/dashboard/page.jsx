@@ -1,8 +1,10 @@
+'use client';
+
 import React, { useRef, useEffect, useState } from 'react';
-import { Chart } from 'chart.js/auto'; //auto will import entire library
-import Navbar from '../components/index/navbar';
+// import { Chart } from 'chart.js/auto'; //auto will import entire library
+import Navbar from '../../components/index/navbar';
 import { Select, Box } from '@chakra-ui/react';
-import Graph from '../components/graphs/graph';
+import Graph from '../../components/graphs/graph';
 // import { 
 //   Chart as ChartJS,
 //   CategoryScale,
@@ -63,8 +65,6 @@ const allMetrics = {
 
   )
 };
-
-
 
 
 export default Graphs;

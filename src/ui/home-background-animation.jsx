@@ -41,8 +41,8 @@ const BackgroundAnimation = ({
   const handleMouseMove = (event) => {
     if (interactiveRef.current) {
       const rect = interactiveRef.current.getBoundingClientRect();
-      setTgX(event.clientX - rect.left);
-      setTgY(event.clientY - rect.top);
+      setTgX(event.clientX - rect.left - window.innerWidth/2);
+      setTgY(event.clientY - rect.top - window.innerHeight/2);
     }
   };
 
