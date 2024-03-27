@@ -24,6 +24,7 @@
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",
+    "chartjs-adapter-date-fns": "^3.0.0",
     "clsx": "^2.1.0",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
