@@ -1,9 +1,7 @@
 'use client';
-
 import React from 'react';
 import {
-  Icon, Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar, useColorModeValue
-} from '@chakra-ui/react';
+  Icon, Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider, Avatar, useColorModeValue} from '@chakra-ui/react';
 import { MdOutlineLockReset } from 'react-icons/md';
 import { RiImageAddFill, RiUserUnfollowFill, RiDownload2Fill } from 'react-icons/ri';
 import { FaSignOutAlt } from 'react-icons/fa';
@@ -13,8 +11,10 @@ import DeleteAccountModal from './accountMenu/deleteAccountModal';
 import LogoutModal from './accountMenu/logoutModal';
 
 const AccountMenu = () => {
+  
   const username = clustersStore(state => state.username);
   const accountMenuColor = useColorModeValue('black', 'light');
+
 
   return (
     /* Account Menu */

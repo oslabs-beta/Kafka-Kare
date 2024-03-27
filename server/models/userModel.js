@@ -55,7 +55,11 @@ const userSchema = new Schema({
   oAuthProvider: {
     type: String,
     default: 'none'
-  }
+  },
+  graphs: {
+    type: [{}],
+    default: []
+  },
 });
 userSchema.index({ username: 1, email: 1, oAuthProvider: 1 }, { unique: true });
 

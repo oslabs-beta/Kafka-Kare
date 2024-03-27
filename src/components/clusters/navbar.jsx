@@ -25,15 +25,20 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
 
       {/* Logo */}
       <Image src='/kafka-kare-logo-v3-dark.png' h={10} borderRadius={8} />
+     
 
       <Spacer />
       <Spacer />
+
+      
       
       {/* Search input */}
       <SearchInput />
 
       <Spacer />
       <Spacer />
+
+      
       
       {/* Add Cluster Button */}
       <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant={addClusterButtonVariant}>
@@ -45,6 +50,7 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
 
       <Spacer />
       <Spacer />
+  
 
       {/* Account Menu */}
       <AccountMenu />
@@ -61,11 +67,15 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
         }}
       />
       
+
       <Spacer />
+
       
+     
       {/* Open Menu Button */}
       <IconButton aria-label='open drawer' icon={<HamburgerIcon boxSize={5} />} variant='ghost'
       onClick={() => clustersStore.setState({isDrawerOpen: true})} />
+      
 
       {/* Menu Drawer */}
       <MenuDrawer />

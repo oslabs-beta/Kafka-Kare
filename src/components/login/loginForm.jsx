@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
@@ -21,8 +20,8 @@ import {
   useToast,
   Divider,
   AbsoluteCenter,
-  useColorModeValue
-} from '@chakra-ui/react';
+  useColorModeValue,
+ } from '@chakra-ui/react';
 import { FaUserAlt, FaLock, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { userStore } from '../../store/user';

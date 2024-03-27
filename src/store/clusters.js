@@ -47,6 +47,9 @@ const initialState = {
   // User Color Mode Value
   userColorMode: 'light',
 
+  // User Color Mode Value
+  userColorMode: 'light',
+
   // render clusters page or not
   renderClustersPage: false,
 
