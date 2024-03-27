@@ -105,8 +105,6 @@ grafanaApiController.createDashboard = async (req, res, next) => {
 
     console.log(`Dashboard using data from <${url}> created successfully`);
     
-    /* -------------------------------- LOOK HERE ------------------------------- */
-    
     // Persist uid
     console.log('response.data.uid: ', response.data.uid)
     res.locals.uid = response.data.uid;
@@ -145,6 +143,16 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
     console.log('API call to Grafana successful');
 
     res.locals.dashboardConfig = dashboardConfig;
+
+    // Working on iFrame
+    const iFrame = `http://grafana:3000/d-solo/${dashboardConfig.uid}/${dashboardConfig.id}?orgId=1&theme=light`;
+
+    console.log('iFrame: ', iFrame);
+
+    //http://grafana:3000/d-solo/fdgy6ul23iadca/20?orgId=1&theme=light
+
+    // <iframe src="http://<grafana-host>:<grafana-port>/d-solo/<dashboard-uid>/<panel-id>?orgId=<org-id>&theme=<theme>" width="450" height="200" frameborder="0"></iframe>
+//http://<grafana-host>:<grafana-port>/d-solo/<dashboard-uid>/<panel-id>?orgId=<org-id>&theme=<theme>
 
     return next();
   } catch (err) {
