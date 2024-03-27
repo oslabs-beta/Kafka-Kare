@@ -56,7 +56,11 @@ const userSchema = new Schema({
   oAuthProvider: {
     type: String,
     default: 'none'
-  }
+  },
+  graphs: {
+    type: [{}],
+    default: []
+  },
 });
 
 // Pre-save hook to encrypt password using bcrypt.hash() 

@@ -161,22 +161,28 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
 
 
 
-
-
-
 /* ------------------------- SAVE DASHBOARD TO USER ------------------------- */
-grafanaApiController.saveUid = async (req, res, next) => {
+// grafanaApiController.saveUid = async (req, res, next) => {
+//   console.log("In grafanaApiController.saveUid"); // testing
+//   const { userId, uid } = res.locals;
 
-} catch (err) {
-    return next({
-      log: `grafanaApiController.saveUid: ERROR ${err}`,
-      status: 500,
-      message: {
-        err: "Error occurred in grafanaApiController.saveUid.",
-      },
-    });
-  }
-};
+//   console.log(`Saving graph <${uid}> to user <${userId}>`);
+
+//   // Save to database
+//   try {
+
+
+//   return next();
+// } catch (err) {
+//     return next({
+//       log: `grafanaApiController.saveUid: ERROR ${err}`,
+//       status: 500,
+//       message: {
+//         err: "Error occurred in grafanaApiController.saveUid.",
+//       },
+//     });
+//   }
+// };
 
 
 // Export
