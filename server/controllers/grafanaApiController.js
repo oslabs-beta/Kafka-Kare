@@ -101,14 +101,11 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     console.log(`Dashboard using data from <${url}> created successfully`);
     
     /* -------------------------------- LOOK HERE ------------------------------- */
-    console.log('response: ', response);
     
     // Persist uid
     console.log('response.data.uid: ', response.data.uid)
-    // console.log('response.data.data.uid: ', response.data.data.uid);
     res.locals.uid = response.data.uid;
-
-    res.locals.data = response.data;
+    
     return next();
   } catch (err) {
     return next({
@@ -129,14 +126,16 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
   console.log('uid: ', uid);
   
   // const fakeUid = 'adgxqf88b1p1cb';
-
+  const requestHeaders = {
+    headers: { Authorization: `Bearer ${serviceAccountToken}` },
+  };
 
   // Send request to Grafana API to dislpay a dashboard
   try {
-    const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`);
-    // const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`);
+    const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`, requestHeaders);
+    // const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${fakeUid}`, requestHeaders);
 
-    console.log('response: ', response);
+    console.log('response from axios GET: ', response);
 
     const dashboardConfig = response.data.dashboard;
     console.log('dashboardConfig: ', dashboardConfig);
