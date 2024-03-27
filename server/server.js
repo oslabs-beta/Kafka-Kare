@@ -46,12 +46,60 @@ app.prepare().then(() => {
   const mongoURI = `mongodb://admin:supersecret@mongo`;
   const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURI);
+  mongoose.connect(mongoURIAtlas);
   mongoose.connection.once("open", () => {
-    console.log("Connected to Database");
-  });
-  
+      console.log("Connected to Database");
+    });
+  // options for mongoose.connect
+  //   {useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
+  // }
 
+//================== TEST
+
+  // Test MongoDB connection route
+  server.get('/test-db', async (req, res) => {
+    try {
+      await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+      const connectionState = mongoose.connection.readyState;
+      if (connectionState === 1) {
+        res.status(200).json({ message: 'Successfully connected to MongoDB' });
+      } else {
+        res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
+    }
+  });
+
+  // TEST POST route to create a new user 
+  server.post('/users', async (req, res) => {
+    try {
+      const newUser = new User({
+        username: req.body.username,
+        password: req.body.password
+      });
+      await newUser.save();
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+  // TEST GET route to fetch all users
+  server.get('/users', async (req, res) => {
+    try {
+      const users = await User.find({}, 'username'); // Exclude passwords from the response
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+//=========================== TEST 
+
+  
   // Custom routes
   server.use("/auth", authRoutes);
   server.use("/clusters", clustersRoutes);
@@ -62,7 +110,6 @@ app.prepare().then(() => {
   server.use("/oauth", oAuthRoutes);
   server.use("/api", grafanaApiRoutes);
 
-  
   // Fallback route
   server.get("*", (req, res) => {
     return handle(req, res);

@@ -33,15 +33,13 @@ export default function Home() {
 
   // declare state variables
   const renderClustersPage = clustersStore(state => state.renderClustersPage);
-  const clustersStoreReset = clustersStore(state => state.reset);
 
   // fetch clusters and slack webhook url before rendering page
   useEffect(() => {
-    // clustersStoreReset();
+    setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 1500);
     clustersStore.setState({isLoadingModalOpen: true});
     console.log(colorMode);
     handleFetchClustersAndSlackWebhookURL(toast, push, colorMode, toggleColorMode);
-    setTimeout(() => {clustersStore.setState({isLoadingModalOpen: false});}, 1500);
   }, []);
 
   if (renderClustersPage) {

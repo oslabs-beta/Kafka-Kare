@@ -13,7 +13,7 @@ userController.createUser = async (req, res, next) => {
   // Create user in database
   try {
     // Query database for existing user with input username
-    const uniqueUser = await User.findOne({username}); // Returns an array of documents that match the username
+    const uniqueUser = await User.findOne({username, oAuthProvider: 'none'}); // Returns an array of documents that match the username
     console.log('uniqueUser: ', uniqueUser);
 
     if (uniqueUser) {
@@ -53,7 +53,7 @@ userController.verifyUser = async (req, res, next) => {
 
   // Find user in database
   try {
-    const user = await User.findOne({ username: username })
+    const user = await User.findOne({ username: username, oAuthProvider: 'none' })
     // No user found
     if (!user) {
       return res.status(401).json({ err: 'Invalid credentials.' });
@@ -209,15 +209,8 @@ userController.deleteAccount = async (req, res, next) => {
   }
 };
 
-/* ----------------------------- CHECK IF USER IS NEW ----------------------------- */
-// userController.checkNewUsers = async (req, res, next) => {
-//   try {
-//     const { username } = req.params;
-//     const currentDate = new Date();
-//     const user = await User.findOne( { username });
 
-//   }
-// }
+
 
 // Export
 module.exports = userController;

@@ -7,6 +7,7 @@ import AccountMenu from './navbar/accountMenu';
 import MenuDrawer from './navbar/menuDrawer';
 import AddClusterModal from './navbar/addClusterModal';
 import axios from 'axios';
+import { handleGetUserColorMode } from '../../utils/clustersHandler';
 
 const Navbar = ({ colorMode, toggleColorMode }) => {
 
@@ -16,18 +17,7 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
   const addClusterButtonVariant = useColorModeValue('solid', 'ghost');
   console.log(colorMode);
   useEffect(() => {
-    const getUserColorMode = async () => {
-      // update states about user's recent color mode
-      const responseColorMode = await axios('http://localhost:3001/settings/colorMode', {withCredentials: true});
-      console.log('Get User\'s Recent Color Mode Response:', responseColorMode.data);
-      console.log('user colormode:', responseColorMode.data.colorMode);
-      console.log('current colormode:', colorMode);
-      if (responseColorMode.data.colorMode !== colorMode) {
-        console.log('user colormode:', responseColorMode.data.colorMode);
-        toggleColorMode();
-      }
-    }
-    getUserColorMode();
+    handleGetUserColorMode(colorMode, toggleColorMode);
   }, []);
 
   return (
@@ -35,15 +25,20 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
 
       {/* Logo */}
       <Image src='/kafka-kare-logo-v3-dark.png' h={10} borderRadius={8} />
+     
 
       <Spacer />
       <Spacer />
+
+      
       
       {/* Search input */}
       <SearchInput />
 
       <Spacer />
       <Spacer />
+
+      
       
       {/* Add Cluster Button */}
       <Button onClick={() => clustersStore.setState({isNewClusterOpen: true})} leftIcon={<AddIcon />} colorScheme='teal' variant={addClusterButtonVariant}>
@@ -55,6 +50,7 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
 
       <Spacer />
       <Spacer />
+  
 
       {/* Account Menu */}
       <AccountMenu />
@@ -71,11 +67,15 @@ const Navbar = ({ colorMode, toggleColorMode }) => {
         }}
       />
       
+
       <Spacer />
+
       
+     
       {/* Open Menu Button */}
       <IconButton aria-label='open drawer' icon={<HamburgerIcon boxSize={5} />} variant='ghost'
       onClick={() => clustersStore.setState({isDrawerOpen: true})} />
+      
 
       {/* Menu Drawer */}
       <MenuDrawer />

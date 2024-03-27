@@ -1,9 +1,7 @@
 'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { FcGoogle } from "react-icons/fc";
+import { useSession, signIn } from 'next-auth/react';
 import { 
   Input,
   Box,
@@ -22,11 +20,12 @@ import {
   useToast,
   Divider,
   AbsoluteCenter,
-  useColorModeValue
-} from '@chakra-ui/react';
-import { FaUserAlt, FaLock } from "react-icons/fa";
+  useColorModeValue,
+ } from '@chakra-ui/react';
+import { FaUserAlt, FaLock, FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { userStore } from '../../store/user';
-import { handleLogin } from '../../utils/userHandler'; 
+import { handleLogin, handleLoggedInOAuth } from '../../utils/userHandler';
 
 
 const LoginForm = () => {
@@ -37,34 +36,35 @@ const LoginForm = () => {
   const usernameErrorMessage = userStore(state => state.usernameErrorMessage); // State to store username error message
   const passwordInvalid = userStore(state => state.passwordInvalid); // State to manage username validity
   const passwordErrorMessage = userStore(state => state.passwordErrorMessage); // State to store password error message
-  const resetUserStore = userStore(state => state.reset);
-  const loginFormBGColor = useColorModeValue('whiteAlpha.900', 'gray.600');
-  const router = useRouter();
-  const toast = useToast();
-  const initialRef = useRef(null);
+  const resetUserStore = userStore(state => state.reset); // State to reset the whole store
+  const loginFormBGColor = useColorModeValue('whiteAlpha.900', 'gray.600'); // State manage properties in different color mode
+  const router = useRouter(); // Hook to change endpoint
+  const toast = useToast(); // Hook to use toast
+  const initialRef = useRef(null); // Reference to focus when modal opened
+  const { data: session, status } = useSession(); // State for nextAuth
   useEffect(() => {
     resetUserStore();
     initialRef.current.focus();
   }, []);
   // Function to toggle password visibility
   const handleShowClick = () => userStore.setState({showPassword: !showPassword});
-  //handles click of submit and calls handleLogin
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    handleLogin(toast, router);
-  };
   // Function to handle navigation to the login page
   const handleSignup = () => {
     router.push('/signup'); // Navigate to the sign-up page when clicked
   }
 
+  // If user logged in using nextAuth, check and redirect to clusters page
+  if (session) {
+    console.log(session);
+    handleLoggedInOAuth(session, router, toast);
+  }
   return (
     // Form component to handle form submission
     <FormControl>
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={8} px="4.5rem" backgroundColor={loginFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh" borderRadius="10px" justifyContent='center'>
+      <form onSubmit={(e) => handleLogin(e, toast, router)}>
+        <Stack spacing={6} px="4.5rem" backgroundColor={loginFormBGColor} boxShadow="xl" minH='550px' maxH='650px' h="70vh" borderRadius="10px" justifyContent='center'>
           {/* Logo and heading */}
-          <Box mb={6} display='flex' justifyContent='center'>
+          <Box mb={5} display='flex' justifyContent='center'>
             <Image w={260} src='kafka-kare-logo-v3-dark.png' />
             {/* <Heading size='2xl' color="brand.text" mb={2} textAlign='center'>Kafka Kare</Heading>
             <Text fontFamily='-apple-system, BlinkMacSystemFont' fontSize='lg' textAlign='center'>Becuase we Kare.</Text> */}
@@ -96,6 +96,7 @@ const LoginForm = () => {
             {/* Display error message if any */}
             <FormErrorMessage>{passwordErrorMessage}</FormErrorMessage>
           </FormControl>
+          {/* Submit button */}
           <FormControl>
             <Button borderRadius="9px" type="submit" variant="solid" colorScheme="telegram" width="full">Login</Button>
           </FormControl>
@@ -106,8 +107,9 @@ const LoginForm = () => {
             </AbsoluteCenter>
           </Box>
           <Button leftIcon={<FcGoogle size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('google')}>Continue with Google</Button>
+          <Button leftIcon={<FaGithub size={20} />} borderRadius="9px" variant="outline" width="full" onClick={() => signIn('github')}>Continue with Github</Button>
           {/* Link to navigate to the signup page */}
-          <Box mt={-2} textAlign='center'>
+          <Box textAlign='center'>
             New to us?{' '}
             <Link color="brand.bg" onClick={handleSignup}>
               Sign Up
