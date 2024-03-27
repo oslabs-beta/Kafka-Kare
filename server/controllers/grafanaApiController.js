@@ -87,7 +87,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   };
 
   const requestHeaders = {
-    headers: { Authorization: `Bearer ${grafanaApiKey}` },
+    headers: { Authorization: `Bearer ${serviceAccountToken}` },
   };
 
   // Send request to Grafana API to create a dashboard
