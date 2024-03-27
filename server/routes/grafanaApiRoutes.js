@@ -9,8 +9,10 @@ router.post(
   tokenController.verifyToken,
   grafanaApiController.addDatasource,
   grafanaApiController.createDashboard,
+  grafanaApiController.displayDashboard,
   (req, res) => {
-    return res.status(200).json({message: "Dashboard created from datasource successfully", data: res.locals.data});
+    // return res.status(200).json({message: "Dashboard created from datasource successfully", data: res.locals.data});
+    return res.status(200).json(res.locals.dashboardConfig);
   }
 );
 

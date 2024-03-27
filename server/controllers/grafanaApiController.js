@@ -23,7 +23,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${serviceAccountToken}`,
-    }
+    },
   };
 
   // Send request to Grafana API to add a datasource
@@ -99,6 +99,12 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     );
 
     console.log(`Dashboard using data from <${url}> created successfully`);
+    
+    // Persist uid
+    res.locals.uid = response.data.data.uid;
+    console.log('response.data.data.uid: ', response.data.data.uid);
+    console.log('response.data.uid: ', response.data.uid)
+
     res.locals.data = response.data;
     return next();
   } catch (err) {
@@ -107,6 +113,37 @@ grafanaApiController.createDashboard = async (req, res, next) => {
       status: 500,
       message: {
         err: "Error occurred in grafanaApiController.createDashboard.",
+      },
+    });
+  }
+};
+
+
+/* ---------------------------- DISPLAY DASHBOARD --------------------------- */
+grafanaApiController.displayDashboard = async (req, res, next) => {
+  console.log("In grafanaApiController.displayDashboard"); // testing
+//   const { uid } = res.locals;
+  const uid = 'adgxqf88b1p1cb';
+  console.log('uid: ', uid);
+
+  // Send request to Grafana API to dislpay a dashboard
+  try {
+    // const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`);
+    const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`);
+
+    const dashboardConfig = response.data.dashboard;
+    console.log('dashboardConfig: ', dashboardConfig);
+    console.log('API call to Grafana successful');
+
+    res.locals.dashboardConfig = dashboardConfig;
+
+    return next();
+  } catch (err) {
+    return next({
+      log: `grafanaApiController.displayDashboard: ERROR ${err}`,
+      status: 500,
+      message: {
+        err: "Error occurred in grafanaApiController.displayDashboard.",
       },
     });
   }
