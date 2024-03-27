@@ -1,6 +1,6 @@
 // Access to environmental variables
 require("dotenv").config();
-const User = require('./models/userModel');//delete later, this is for testing
+const User = require("./models/userModel"); //delete later, this is for testing
 // Import dependencies
 const express = require("express");
 const next = require("next");
@@ -13,10 +13,10 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
-const testingRoutes = require('./routes/testingRoutes');
-const slackRoutes = require('./routes/slackRoutes');
-const settingsRoutes = require('./routes/settingsRoutes');
-const oAuthRoutes = require('./routes/oAuthRoutes');
+const testingRoutes = require("./routes/testingRoutes");
+const slackRoutes = require("./routes/slackRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
+const oAuthRoutes = require("./routes/oAuthRoutes");
 
 // Setup Next app
 const PORT = 3001;
@@ -24,16 +24,15 @@ const dev = process.env.NODE_ENV !== "production"; // dev = true if node_env IS 
 const app = next({ dev }); // initializes an instance of a NextJS app
 const handle = app.getRequestHandler(); // handles page routing
 
-
 // Prepare to serve the NextJS app
 app.prepare().then(() => {
   const server = express();
 
   // CORS middleware
   const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true
-  }
+    origin: "http://localhost:3000",
+    credentials: true,
+  };
   server.use(cors(corsOptions));
 
   // Middleware
@@ -47,71 +46,117 @@ app.prepare().then(() => {
 
   // Connect to mongoDB
   // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
-  const mongoURI = `mongodb://admin:supersecret@mongo`
+  const mongoURI = `mongodb://admin:supersecret@mongo`;
   // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
   const mongoURIAtlas = process.env.MONGODB_URI;
 
   mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
-      console.log("Connected to Database");
-    });
+    console.log("Connected to Database");
+  });
   // options for mongoose.connect
   //   {useNewUrlParser: true,
   //   useUnifiedTopology: true,
   //   serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 10s
   // }
 
-//================== TEST
+  //================== TEST
 
   // Test MongoDB connection route
-  server.get('/test-db', async (req, res) => {
+  server.get("/test-db", async (req, res) => {
     try {
-      await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+      await mongoose.connect(mongoURI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
       const connectionState = mongoose.connection.readyState;
       if (connectionState === 1) {
-        res.status(200).json({ message: 'Successfully connected to MongoDB' });
+        res.status(200).json({ message: "Successfully connected to MongoDB" });
       } else {
-        res.status(500).json({ message: 'Failed to connect to MongoDB', connectionState });
+        res
+          .status(500)
+          .json({ message: "Failed to connect to MongoDB", connectionState });
       }
     } catch (error) {
-      res.status(500).json({ message: 'Error connecting to MongoDB', error: error.message });
+      res
+        .status(500)
+        .json({ message: "Error connecting to MongoDB", error: error.message });
     }
   });
 
-  // TEST POST route to create a new user 
-  server.post('/users', async (req, res) => {
+  // TEST POST route to create a new user
+  server.post("/users", async (req, res) => {
     try {
       const newUser = new User({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
       });
       await newUser.save();
-      res.status(201).json({ message: 'User created successfully' });
+      res.status(201).json({ message: "User created successfully" });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
   });
 
   // TEST GET route to fetch all users
-  server.get('/users', async (req, res) => {
+  server.get("/users", async (req, res) => {
     try {
-      const users = await User.find({}, 'username'); // Exclude passwords from the response
+      const users = await User.find({}, "username"); // Exclude passwords from the response
       res.status(200).json(users);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   });
 
-  server.get('/testwhat', (req, res) => {
-    return res.status(200).send('coolcoolcool');
-  })
+  server.get("/testwhat", (req, res) => {
+    return res.status(200).send("coolcoolcool");
+  });
 
-//=========================== TEST 
+  //=========================== TEST
+  const axios = require("axios");
 
-  
+  // Your API endpoint for handling user input
+  server.post("/api/create-datasource", async (req, res) => {
+    try {
+      // Get datasource URL from the request body (assuming it's in JSON format)
+      const { datasourceUrl } = req.body;
+
+      // Configure the datasource
+      const datasourceConfig = {
+        name: "My Datasource",
+        type: "prometheus",
+        url: datasourceUrl,
+        access: "proxy",
+        basicAuth: false,
+        isDefault: false,
+      };
+
+      // Send a POST request to the Grafana API to create the datasource
+      const bearerToken = 'glsa_uGqGjZKB1hL9MoGo3CeLAjALae8wSPUy_d4008537';
+
+      const response = await axios.post(
+        "http://grafana-url/api/datasources",
+        datasourceConfig,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        }
+      );
+
+      // Handle the response from the Grafana API
+      console.log("Datasource created:", response.data);
+      res.status(200).json({ message: "Datasource created successfully" });
+    } catch (error) {
+      console.error("Failed to create datasource:", error.response.data);
+      res.status(500).json({ message: "Failed to create datasource" });
+    }
+  });
+
   // Custom routes
-  server.use("/auth", authRoutes); 
-  server.use("/clusters", clustersRoutes); 
+  server.use("/auth", authRoutes);
+  server.use("/clusters", clustersRoutes);
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
