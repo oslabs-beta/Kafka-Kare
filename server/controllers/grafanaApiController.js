@@ -145,9 +145,10 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
     res.locals.dashboardConfig = dashboardConfig;
 
     // Working on iFrame
-    const iFrame = `http://grafana:3000/d-solo/${dashboardConfig.uid}/${dashboardConfig.id}?orgId=1&theme=light`;
+    const iFrame = `http://localhost:3002/d/${dashboardConfig.uid}/${dashboardConfig.id}?orgId=1&theme=light`;
 
     console.log('iFrame: ', iFrame);
+    res.locals.iFrame = iFrame;
 
     //http://grafana:3000/d-solo/fdgy6ul23iadca/20?orgId=1&theme=light
 

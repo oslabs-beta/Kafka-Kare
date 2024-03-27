@@ -11,9 +11,9 @@ router.post(
   grafanaApiController.createDashboard,
   grafanaApiController.displayDashboard,
   (req, res) => {
-    console.log('Sending Grafana dashboard configs back to client...');
+    console.log('Sending Grafana dashboard iFrame back to client...');
     // return res.status(200).json({message: "Dashboard created from datasource successfully", data: res.locals.data});
-    return res.status(200).json(res.locals.dashboardConfig);
+    return res.status(200).json(res.locals.iFrame);
   }
 );
 
