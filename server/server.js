@@ -8,6 +8,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const axios = require("axios");
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
@@ -113,46 +114,55 @@ app.prepare().then(() => {
   });
 
   //=========================== TEST
-  const axios = require("axios");
 
-  // Your API endpoint for handling user input
+  // Define your service account token
+  const serviceAccountToken = "glsa_uGqGjZKB1hL9MoGo3CeLAjALae8wSPUy_d4008537";
+
+  // Define your datasource configuration
+  const datasourceConfig = {
+    name: "Prometheus",
+    type: "prometheus",
+    access: "proxy",
+    url: "http://prometheus:9090",
+    jsonData: {
+      httpMethod: "POST",
+    },
+    secureJsonData: {},
+    version: 1,
+    editable: true,
+  };
+
+  // Endpoint to create the datasource
   server.post("/api/create-datasource", async (req, res) => {
     try {
-      // Get datasource URL from the request body (assuming it's in JSON format)
-      const { datasourceUrl } = req.body;
-
-      // Configure the datasource
-      const datasourceConfig = {
-        name: "My Datasource",
-        type: "prometheus",
-        url: datasourceUrl,
-        access: "proxy",
-        basicAuth: false,
-        isDefault: false,
-      };
-
-      // Send a POST request to the Grafana API to create the datasource
-      const bearerToken = 'glsa_uGqGjZKB1hL9MoGo3CeLAjALae8wSPUy_d4008537';
-
+      console.log("datasourceConfig: ", datasourceConfig);
+      // Perform the POST request to create the datasource
       const response = await axios.post(
-        "http://grafana-url/api/datasources",
+        "http://localhost:3002/api/datasources",
         datasourceConfig,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${bearerToken}`,
+            Authorization: `Bearer ${serviceAccountToken}`,
           },
         }
       );
 
-      // Handle the response from the Grafana API
-      console.log("Datasource created:", response.data);
-      res.status(200).json({ message: "Datasource created successfully" });
+      // Return a success response
+      res
+        .status(200)
+        .json({
+          message: "Datasource created successfully",
+          data: response.data,
+        });
     } catch (error) {
-      console.error("Failed to create datasource:", error.response.data);
+      // Return an error response
+      console.error("Failed to create datasource:");
       res.status(500).json({ message: "Failed to create datasource" });
     }
   });
+
+  //==============================
 
   // Custom routes
   server.use("/auth", authRoutes);
