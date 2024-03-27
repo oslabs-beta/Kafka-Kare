@@ -1,6 +1,6 @@
 "use client";
-import { Box, Link as ChakraLink, VStack, Stack, Image, Icon, IconButton } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, VStack, Link, Stack, Image, Icon, IconButton } from "@chakra-ui/react";
+import NextLink  from "next/link";
 import AccountMenu from "../clusters/navbar/accountMenu";
 import MenuDrawer from "../clusters/navbar/menuDrawer";
 import React, { useState } from "react";
@@ -33,13 +33,13 @@ const Navbar = () => {
       <VStack spacing="6">
         {/* Logo */}
         <Image src='/kafka-kare-logo-v3-dark.png' mt={4} h={10} borderRadius={8} />
-        <Link href="/clusters" passHref>
-          <ChakraLink>Home</ChakraLink>
+        <Link as={NextLink} href="/clusters">
+          Home
         </Link>
         <Stack spacing="2" alignItems="center">
           <Box>
-            <Link href="/dashboard" passHref>
-              <ChakraLink ml={10}>Dashboard</ChakraLink>
+            <Link as={NextLink} ml={10} href="/dashboard">
+              Dashboard
             </Link>
               <IconButton
                 aria-label='open dashboard list' icon={<ChevronDownIcon />} variant='link'
@@ -47,21 +47,21 @@ const Navbar = () => {
               />
           </Box>
           {showDashboardOptions && (
-          <Stack w={190} spacing="1" mt={2} pt={3} pb={3} pl={2} borderColor='white' borderWidth={2} borderRadius={4}>
-            <Link href="/dashboard" passHref>
-              <ChakraLink>All Kafka Metrics</ChakraLink>
+          <Stack w={190} spacing="1" mt={1} pt={3} pb={3} pl={2} borderColor='white' borderWidth={2} borderRadius={4}>
+            <Link as={NextLink} href="/dashboard">
+              All Kafka Metrics
             </Link>
-            <Link href="/consumer-lag" passHref>
-              <ChakraLink>Consumer Lag Analysis</ChakraLink>
+            <Link as={NextLink} href="/consumer-lag">
+              Consumer Lag Analysis
             </Link>
-            <Link href="/cluster-health" passHref>
-              <ChakraLink>Cluster Health Overview</ChakraLink>
+            <Link as={NextLink} href="/cluster-health">
+              Cluster Health Overview
             </Link>
           </Stack>
           )}
         </Stack>
-        <Link href="/alerts" passHref>
-          <ChakraLink>Alerts</ChakraLink>
+        <Link as={NextLink} href="/alerts">
+          Alerts
         </Link>
         {/* Open Menu Button */}
         <IconButton

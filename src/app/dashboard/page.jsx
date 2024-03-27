@@ -5,6 +5,7 @@ import { Select, Box, Button, Flex, Grid, Spacer } from "@chakra-ui/react";
 import Graph from "../../components/graphs/graph";
 
 const Dashboard = () => {
+  const [windowWidth, setWindowWidth] = useState(0);
   const [selectedMetricId, setSelectedMetricId] = useState([]);
   const [highlightDropdown, setHighlightDropdown] = useState(false);
   const [showFullDashboard, setShowFullDashboard] = useState(false);
@@ -31,6 +32,18 @@ const Dashboard = () => {
     if (typeof window !== "undefined")
     window.scrollTo(0, 0);
   }, [selectedMetricId]);
+
+  // update the window width
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  // useEffect to run the handleResize function on window resize
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const allMetrics = {
     "Log Segment Size By Topic": 17,
@@ -60,13 +73,13 @@ const Dashboard = () => {
   return (
     <Box h="100vh" w="100vw" overflow="hidden">
       <Navbar />
-      <Box textAlign="center" w="calc(100% - 200px)" ml="200px">
+      <Box textAlign="center" w="calc(100% - 200px)" ml={200}>
         {/* <Flex alignItems="center" justifyContent="center" flexDirection="column"> */}
         <Flex alignItems="center" width="100%">
           <Spacer />
           <Select
-            margin="20px"
-            width="400px"
+            m={10}
+            w={400}
             placeholder="Customize Your Dashboard Metrics"
             onChange={handleMetricChange}
             style={{ border: "2px solid teal" }}
@@ -78,8 +91,8 @@ const Dashboard = () => {
               </option>
             ))}
           </Select>
-          <Spacer />
           <Button
+            margin="20px"
             colorScheme="teal"
             onClick={handleFullDashboardClick}
             width="190px"
@@ -93,15 +106,15 @@ const Dashboard = () => {
       <iframe
         src="http://localhost:3002/public-dashboards/f489745f6dfa4a138641169652f668be"
         className="full-dashboard"
-        frameborder="0"
       ></iframe>)}
       <Grid
+        overflowY="auto"
+        ml={200}
+        px={10}
+        h={`calc(100% - ${windowWidth < 765 ? 180 : windowWidth < 895 ? 200 : 140}px)`}
+        w="calc(100% - 200px)"
         templateColumns="repeat(auto-fit, minmax(400px, 1fr))"
-        gap={6}
-        justifyContent="center"
-        alignItems="center"
-        margin="20px"
-        ml="220px"
+        gap={10}
       >
         {selectedMetricId.map((metric, index) => (
         <Graph

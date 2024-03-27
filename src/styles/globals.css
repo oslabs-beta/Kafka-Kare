@@ -3,10 +3,6 @@
   --size: 70%;
   --blending-value: hard-light;
 }
-:root {
-  --size: 70%;
-  --blending-value: hard-light;
-}
 .center-container {
   display: flex;
   flex-direction: column;
@@ -118,8 +114,9 @@
 /* STYLING FOR DASHBOARD PAGES */
 .graph {
   width: 100%;
+  height: calc(100% - 40px);
   max-width: 500px;
-  height: 300px;
+  min-height: 300px;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 }
@@ -130,41 +127,18 @@
   margin-left: 200px;
 }
 
-.graph-container {
-  max-width: 500px;
-  display: inline-block;
-  height: 200px;
-  margin-bottom: 120px;
-}
-
-.cluster-health-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-left: 200px;
-  flex-wrap: wrap;
-}
-
 .health-metric {
-    width: 100%;
-    max-width: 500px;
-    height: 300px;
-    border-radius: 15px;
-    margin: 10px;
-}
-
-.consumer-lag-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-left: 200px;
-  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  min-height: 300px;
+  border-radius: 15px;
 }
 
 .lag-metric {
-    width: 100%;
-    max-width: 500px;
-    height: 300px;
-    border-radius: 15px;
-    margin: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  min-height: 300px;
+  border-radius: 15px;
 }
