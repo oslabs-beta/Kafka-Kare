@@ -131,7 +131,12 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
       const newDashboardData = {
         dashboard: {
           id: null,
+          refresh: '5s',  // Refresh every 5 seconds
           title: 'New Dashboard',
+          time: {
+            from: "now-5m",
+            to: "now"
+          },
           panels: [
             {
               type: 'graph',
@@ -179,7 +184,7 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
     //   editable: true,
     // };
     const datasourceConfig = {
-      name: "PrometheusZZ",
+      name: "PrometheusZZZ",
       type: "prometheus",
       url: `${url}`,
       access: "proxy",
