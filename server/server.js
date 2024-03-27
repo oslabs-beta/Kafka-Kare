@@ -148,6 +148,13 @@ const grafanaApiKey = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
                   expr: 'rate(kafka_server_brokertopicmetrics_messagesin_total{topic="test-topic"}[1m])',
                 },
               ],
+              yaxes: [
+                {
+                  format: 'ops', // Use 'ops' to denote operations per second, which is suitable for messages per second
+                  label: 'Messages per Second',
+                  show: true, // Set to true to ensure the axis is displayed
+                }
+              ],
             },
           ],
         },
