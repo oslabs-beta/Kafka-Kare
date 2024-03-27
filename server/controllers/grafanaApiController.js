@@ -56,7 +56,8 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   console.log(`Creating dashboard for <${username}>`);
   console.log(`Datasource for dashboard: <${datasourceName}>`);
 
-  // Template for new dashboard
+
+  // // Template for new dashboard
   const newDashboardData = {
     dashboard: {
       id: null,
@@ -84,6 +85,8 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     folderId: 0,
     overwrite: false,
   };
+  // // End of Template for new dashboard
+
 
   // Use for API call
   const requestHeaders = {
@@ -105,7 +108,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     // Persist uid
     console.log('response.data.uid: ', response.data.uid)
     res.locals.uid = response.data.uid;
-    
+
     return next();
   } catch (err) {
     return next({
@@ -134,8 +137,6 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
   try {
     const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${uid}`, requestHeaders);
     // const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${fakeUid}`, requestHeaders);
-
-    console.log('response from axios GET: ', response);
 
     const dashboardConfig = response.data.dashboard;
     console.log('dashboardConfig: ', dashboardConfig);
