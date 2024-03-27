@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { Chart } from 'chart.js/auto'; //auto will import entire library
+// import { Chart } from 'chart.js/auto'; //auto will import entire library
 import Navbar from '../../components/index/navbar';
 import { Select, Box } from '@chakra-ui/react';
 import Graph from '../../components/graphs/graph';
