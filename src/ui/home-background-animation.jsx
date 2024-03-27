@@ -21,6 +21,10 @@ const BackgroundAnimation = ({
       "--gradient-background-end",
       gradientBackgroundEnd
     );
+    document.body.style.setProperty(
+      "height",
+      "100vh"
+    );
   }, []);
 
   useEffect(() => {
@@ -30,9 +34,7 @@ const BackgroundAnimation = ({
       }
       setCurX(curX + (tgX - curX) / 20);
       setCurY(curY + (tgY - curY) / 20);
-      interactiveRef.current.style.transform = `translate(${Math.round(
-        curX
-      )}px, ${Math.round(curY)}px)`;
+      interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
     }
 
     move();
@@ -41,8 +43,8 @@ const BackgroundAnimation = ({
   const handleMouseMove = (event) => {
     if (interactiveRef.current) {
       const rect = interactiveRef.current.getBoundingClientRect();
-      setTgX(event.clientX - rect.left);
-      setTgY(event.clientY - rect.top);
+      setTgX(event.clientX - rect.left - window.innerWidth/2);
+      setTgY(event.clientY - rect.top - window.innerHeight/2);
     }
   };
 
@@ -51,7 +53,10 @@ const BackgroundAnimation = ({
       className="h-screen w-screen relative overflow-hidden top-0 left-0"
       style={{
         background: `linear-gradient(40deg, ${gradientBackgroundStart}, ${gradientBackgroundEnd})`,
+        overflow: 'hidden',
+        height: '100%'
       }}
+      
     >
       <svg className="hidden">
         <defs>
@@ -83,21 +88,14 @@ const BackgroundAnimation = ({
           <div
             ref={interactiveRef}
             onMouseMove={handleMouseMove}
-            className="absolute"
-            style={{
-              background: `radial-gradient(circle at center, rgba(0, 0, 255, 0.8) 0%, rgba(255, 255, 255, 0) 50%) no-repeat`,
-              mixBlendMode: "hard-light",
-              width: "100%",
-              height: "100%",
-              top: "1/2",
-              left: "1/2",
-              transform: "translate(-50%, -50%)",
-              opacity: "0.7",
-            }}
+            className="absolute animate-cursor"
           ></div>
         )}
       </div>
-      <div className="center-container text-white">{children}</div>
+      <div
+        className="center-container text-white"
+        style={{marginTop: "-18vh"}}
+      >{children}</div>
     </div>
   );
 };

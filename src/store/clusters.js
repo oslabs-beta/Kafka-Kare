@@ -44,6 +44,9 @@ const initialState = {
   // Slack Webhook URL Input Value
   slackWebhookURL: '',
 
+  // User Color Mode Value
+  userColorMode: 'light',
+
   // render clusters page or not
   renderClustersPage: false,
 
@@ -67,6 +70,9 @@ const initialState = {
 
   // is Logout Modal Open
   isLogoutModalOpen: false,
+
+  // is Loading Modal Open
+  isLoadingModalOpen: false,
   
   // is Old Password Input Empty
   isOldPasswordEmpty: false,

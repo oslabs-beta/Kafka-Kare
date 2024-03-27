@@ -10,22 +10,21 @@ userController.createUser = async (req, res, next) => {
   console.log('req.body contains: ', req.body);
   const { username, password } = req.body; // Destructure from req.body
 
-
   // Create user in database
   try {
     // Query database for existing user with input username
-    const uniqueUser = await User.findOne({username}); // Returns an array of documents that match the username
+    const uniqueUser = await User.findOne({username, oAuthProvider: 'none'}); // Returns an array of documents that match the username
     console.log('uniqueUser: ', uniqueUser);
 
     if (uniqueUser) {
-      console.log('user existed');
+      console.log('User existed');
       return next({
         log: 'username was not unique',
         status: 500,
         message: { err: 'username already exists in database'}
       })
     } else {
-      console.log('username input is unique');
+      console.log('Username input is unique');
     }
 
     // Below means username is unique
@@ -54,7 +53,7 @@ userController.verifyUser = async (req, res, next) => {
 
   // Find user in database
   try {
-    const user = await User.findOne({ username: username })
+    const user = await User.findOne({ username: username, oAuthProvider: 'none' })
     // No user found
     if (!user) {
       return res.status(401).json({ err: 'Invalid credentials.' });
@@ -210,26 +209,8 @@ userController.deleteAccount = async (req, res, next) => {
   }
 };
 
-/* ----------------------------- CHECK IF USER IS NEW ----------------------------- */
-userController.checkNewUsers = async (req, res, next) => {
-  try {
-    const { username } = req.params;
-    const user = await User.findOne( { username });
 
-    if (!user) {
-      return res.status(404).json({ err: 'User not found' });
-    }
 
-    const newUserCutoff = new Date();
-    console.log('newUserCutoff: ', newUserCutoff)//date object
-    newUserCutoff.setDate(newUserCutoff.getDate() -1);
-    console.log('modified newUserCutoff: ', newUserCutoff);//subtract's one day from the current date
-    const isNewUser = user.createdAt >= newUserCutoff;
-    res.locals.isNewUser = isNewUser
-    
-
-  }
-}
 
 // Export
 module.exports = userController;

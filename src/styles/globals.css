@@ -3,6 +3,10 @@
   --size: 70%;
   --blending-value: hard-light;
 }
+:root {
+  --size: 70%;
+  --blending-value: hard-light;
+}
 .center-container {
   display: flex;
   flex-direction: column;
@@ -25,43 +29,53 @@
 .animate-fourth,
 .animate-fifth {
   position: absolute;
-  width: var(--size);
-  height: var(--size);
+  width: 100vmin;
+  height: 100vmin;
   top: calc(50% - var(--size) / 2);
   left: calc(50% - var(--size) / 2);
   mix-blend-mode: var(--blending-value);
-  /* border-radius: 50%; */
   opacity: 1;
+}
+
+.animate-cursor {
+  background: radial-gradient(circle at center, rgba(0, 0, 255, 0.8) 0%, rgba(255, 255, 255, 0) 40%) no-repeat;
+  mix-blend-mode: hard-light;
+  width: 100%;
+  height: 100%;
+  top: 1/2;
+  left: 1/2;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
 }
 
 .animate-first {
   animation: moveVertical 30s ease infinite;
-  background: radial-gradient(circle at center, rgba(233, 116, 233, 0.8) 0%, rgba(255, 255, 255, 0) 50%);
+  background: radial-gradient(circle at center, rgba(233, 116, 233, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
   transform-origin: center center;
  }
 
 .animate-second {
   animation: moveInCircle 20s reverse infinite;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 50%);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
   transform-origin: calc(50% - 400px);
 }
 
 .animate-third {
   animation: moveInCircle 40s linear infinite;
-  background: radial-gradient(circle at center, rgba(238, 235, 10, 0.8) 0%, rgba(238, 235, 10, 0) 50%);
+  background: radial-gradient(circle at center, rgba(238, 235, 10, 0.8) 0%, rgba(238, 235, 10, 0) 60%);
   transform-origin: calc(50% + 400px);
 }
 
 .animate-fourth {
   animation: moveHorizontal 40s ease infinite;
-  background: radial-gradient(circle at center, rgba(18, 46, 147, 0.8) 0%, rgba(18, 46, 147, 0) 50%);
+  background: radial-gradient(circle at center, rgba(18, 46, 147, 0.8) 0%, rgba(18, 46, 147, 0) 60%);
   opacity: 0.7;
   transform-origin: calc(50% - 200px);
 }
 
 .animate-fifth {
   animation: moveInCircle 20s ease infinite;
-  background: radial-gradient(circle at center, rgba(118, 228, 15, 0.8) 0%, rgba(118, 228, 15, 0) 50%);
+  background: radial-gradient(circle at center, rgba(118, 228, 15, 0.8) 0%, rgba(118, 228, 15, 0) 60%);
   transform-origin: calc(50% - 800px) calc(50% + 800px);
 }
 
@@ -101,14 +115,56 @@
   }
 }
 
-/* STYLING FOR LOGIN PAGE AND SIGNUP PAGE */
-.login-content,
-.signup-content {
-  background-image: url("../../public/kafka-kare-background-v2.jpg");
-}
-
 /* STYLING FOR DASHBOARD PAGES */
 .graph {
-  margin-left: 220px;
-  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.full-dashboard {
+  width: calc(100% - 200px);
+  height: calc(100% - 80px);
+  margin-left: 200px;
+}
+
+.graph-container {
+  max-width: 500px;
+  display: inline-block;
+  height: 200px;
+  margin-bottom: 120px;
+}
+
+.cluster-health-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-left: 200px;
+  flex-wrap: wrap;
+}
+
+.health-metric {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.consumer-lag-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-left: 200px;
+  flex-wrap: wrap;
+}
+
+.lag-metric {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    border-radius: 15px;
+    margin: 10px;
 }

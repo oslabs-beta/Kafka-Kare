@@ -15,6 +15,8 @@ const clustersRoutes = require("./routes/clustersRoutes");
 const metricsRoutes = require("./routes/metricsRoutes");
 const testingRoutes = require('./routes/testingRoutes');
 const slackRoutes = require('./routes/slackRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const oAuthRoutes = require('./routes/oAuthRoutes');
 
 // Setup Next app
 const PORT = 3001;
@@ -47,9 +49,9 @@ app.prepare().then(() => {
   // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
   const mongoURI = `mongodb://admin:supersecret@mongo`
   // const mongoURI = "mongodb://admin:password@localhost:27017" // when starting app locally, use this URL instead
-  const mongoURIAtlas = process.env.MONGODB_URI;
+  // const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURIAtlas);
+  mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
@@ -100,6 +102,10 @@ app.prepare().then(() => {
     }
   });
 
+  server.get('/testwhat', (req, res) => {
+    return res.status(200).send('coolcoolcool');
+  })
+
 //=========================== TEST 
 
   
@@ -109,6 +115,8 @@ app.prepare().then(() => {
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
+  server.use("/settings", settingsRoutes);
+  server.use("/oauth", oAuthRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {
