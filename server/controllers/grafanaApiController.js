@@ -35,6 +35,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
 
     // Persist datasource name
     res.locals.datasourceName = datasourceConfig.name;
+    res.locals.url = datasourceConfig.url;
     console.log("Datasource created successfully");
     return next();
   } catch (err) {
@@ -49,7 +50,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
 /* ----------------- CREATE DASHBOARD CONNECTED TO DATA SOURCE ----------------- */
 grafanaApiController.createDashboard = async (req, res, next) => {
   console.log("In grafanaApiController.createDashboard"); // testing
-  const { userId, username, datasourceName } = res.locals; // Destructure from prior middleware
+  const { userId, username, datasourceName, url } = res.locals; // Destructure from prior middleware
 
   console.log(`Creating dashboard for <${username}>`);
   console.log(`Datasource for dashboard: <${datasourceName}>`);
@@ -59,7 +60,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     dashboard: {
       id: null,
       refresh: "5s", // Refresh every 5 seconds
-      title: `${username} Dashboard`,
+      title: `${username}-${url}-Dashboard`,
       time: {
         from: "now-5m",
         to: "now",
@@ -95,7 +96,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
       requestHeaders
     );
 
-    console.log("Dashboard created successfully");
+    console.log(`Dashboard using data from <${url}> created successfully`);
     res.locals.data = response.data;
     return next();
   } catch (err) {
