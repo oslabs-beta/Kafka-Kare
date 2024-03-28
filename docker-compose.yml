@@ -3,7 +3,6 @@ version: '3.8'
 # This container includes 5 services - application-server, application-ui, mongo, mongo-express. and grafana
 services: 
   kafka-kare-server: 
-    # image: kafka-kare-server 
     build: 
       context: .
       dockerfile: Dockerfile-server    
@@ -31,14 +30,11 @@ services:
     #     - path: /package.json
     #       action: rebuild
   kafka-kare-ui:
-    # image: kafka-kare-ui
     build: 
       context: .
       dockerfile: Dockerfile-ui
     ports:
      - 3000:3000 #Frontend on localhost:3000
-     #might need to be taken out
-    # command: npm start
     depends_on:
      - kafka-kare-server
     networks:

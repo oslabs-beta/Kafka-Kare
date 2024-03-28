@@ -9,7 +9,8 @@
     "build": "next build",
     "prod": "set \"NODE_ENV=production\" && node server/server.js",
     "start": "next start",
-    "server": "nodemon server/server.js"
+    "server": "nodemon server/server.js",
+    "watch": "nodemon --watch server --ext js "
   },
   "keywords": [],
   "author": "",
