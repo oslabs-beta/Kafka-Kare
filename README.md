@@ -184,7 +184,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <br />
       <sub><b>Jules Mai</b></sub>
       <br />
-      <a href="http://www.linkedin.com/in/julesdmai">🖇️</a>
+      <a href="http://www.linkedin.com/in/julesmai">🖇️</a>
       <a href="https://github.com/julesdmai">🐙</a>
     </td>
      <td align="center">
