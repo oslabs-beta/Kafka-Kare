@@ -102,8 +102,9 @@ docker compose up -d
      
      
 4. Visit localhost:3000, create an account or log in. Click the 'Add Cluster' button, enter in the port number of your cluster, then click the dashboard button to start viewing your metrics!
-5. Click the 3 lines to enter in your Slack URL and head to the Alerts page to configure your custom alerting thresholds.
-6. Enjoy!
+   - Optional: Navigate to localhost:8080 to view your database. The username and password is located in the logs of the mongo-express container.
+6. Click the 3 lines to enter in your Slack URL and head to the Alerts page to configure your custom alerting thresholds.
+7. Enjoy!
 
 <p align="center">
   <img src="./public/kafkakareAddingcluster.gif" alt="create .env file" width="">
