@@ -8,8 +8,8 @@ iFrameController.getIFrame = async (req, res, next) => {
     console.log("In iFrameController.getIFrame"); // testing
     // const { clusterId } = req.params; // Destructure from req.params
 
-    // hard core in // testing
-    const clusterId = '6605b4f16e40539376809b16'; 
+    // hard code in // testing
+    const clusterId = '6605f8ad3a826dad6f0072c2'; 
 
     // Search Database
     try {

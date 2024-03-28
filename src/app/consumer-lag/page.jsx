@@ -30,7 +30,7 @@ const ConsumerLag = () => {
   const renderMetric = (metric) => (
     <GridItem key={metric.title} w="100%" justifyContent="center">
       <iframe
-        src={`http://localhost:3002/d-solo/cdgganhpqspvkd/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${metric.panelId}`}
+        src={`http://localhost:3002/d-solo/adh2gqdro90qob/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${metric.panelId}`}
         className="lag-metric"
         title={metric.title}
       />
