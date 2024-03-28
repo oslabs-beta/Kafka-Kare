@@ -5,12 +5,12 @@ const clusterController = {};
 // ---------------------------- GET CLUSTERS ---------------------------- //
 clusterController.getClusters = async (req, res, next) => {
   console.log("In clusterController.getClusters"); // testing
-  const userId = res.locals.userId; // Destructure from prior middleware
+  const { userId, username } = res.locals; // Destructure from prior middleware
 
   // Find clusters in database
   try {
     const clusters = await Cluster.find({ ownerId: userId });
-    console.log("Clusters found in database: ", clusters);
+    console.log(`<${clusters.length}> clusters found in database belonging to <${username}>`);
 
     res.locals.clusters = clusters;
     return next();
@@ -178,7 +178,7 @@ clusterController.getFavorites = async (req, res, next) => {
     if (!favoriteClusters) {
       return res.status(404).send('Favorite clusters not found');
     }
-    console.log('Favorite clusters found successfully');
+    console.log('Favorite clusters retrieved successfully');
     res.locals.favoriteClusters = favoriteClusters;
 
     return next();
@@ -209,7 +209,7 @@ clusterController.getNotFavorites = async (req, res, next) => {
     if (!notFavoriteClusters) {
       return res.status(404).send('Not-favorite clusters unable to be found');
     }
-    console.log('Not-favorite clusters found successfully');
+    console.log('Not-favorite clusters retrieved successfully');
     res.locals.notFavoriteClusters = notFavoriteClusters;
 
     return next();

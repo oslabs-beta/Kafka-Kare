@@ -1,11 +1,20 @@
-version: '3'
+version: '3.8'
 
 # This container includes 5 services - application-server, application-ui, mongo, mongo-express. and grafana
 services: 
   kafka-kare-server: 
-    image: kafka-kare-server 
+    build: 
+      context: .
+      dockerfile: Dockerfile-server    
     ports: 
       - "3001:3001"
+      #for hot reloading in server, not working now
+    # volumes:
+    #   - ./server:/app/server
+    #   - /app/node_modules
+    #overides CMD in Dockerfile-server. This will start the server in dev mode(using nodemon)   
+    command: npm run prod
+    #npm run server        
     depends_on:
       - mongo
     environment:
@@ -13,24 +22,35 @@ services:
      - MONGO_DB_PWD=supersecret
     networks:
      - kafka-kare-network
-
+    # develop:
+    #  watch:
+    #     # - path: ./server/server.js
+    #     #   target: /app/server
+    #     #   action: sync
+    #     - path: /package.json
+    #       action: rebuild
   kafka-kare-ui:
-    image: kafka-kare-ui
+    build: 
+      context: .
+      dockerfile: Dockerfile-ui
     ports:
      - 3000:3000 #Frontend on localhost:3000
     depends_on:
      - kafka-kare-server
     networks:
      - kafka-kare-network
-    develop:
-     watch:
-        - action: sync
-          path: ./
-          target: /
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json   
+    #volumes are necessary for hot reloading
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      # watch isn't working perfectly. Need to figure out how to sync files correctly. So hot reloading in dev mode works.
+    # develop:
+    #   watch:
+    #     - path: ./app/package.json
+    #       action: rebuild
+    #     - path: ./app/src/components
+    #       target: /usr/src/app
+    #       action: sync
   #does not work if you change name from mongo 
   mongo:
     image: mongo
@@ -70,6 +90,7 @@ services:
     volumes:
       - ./grafana-data:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources #needed for provisioning
     depends_on:
      - kafka-kare-server
     networks:

@@ -2,14 +2,14 @@
 
 ## Setup Instructions
 
-1. You will need a .env file. Look at the .env.example file for inspiration. 
-2. Install depenendencies: 'npm install'
+1. You will need a `.env` file. Look at the `.env.example` file for inspiration. 
+2. Install depenendencies: `npm install`
 3. Start the server: `npm run server`
 
 ## Docker Setup
 
 - Note: This server application was designed to run in Docker
-- Please visit the README.md file in the project root directory for setup instructions
+- Please visit the README.md file in the project root directory for Docker setup instructions
 
 ## Endpoints
 
@@ -18,6 +18,7 @@
 - **POST /auth/login**: Route for user login
 - **GET /auth/logout**: Route for user logout
 - **UPDATE /auth/password/update**: Route for updating user password
+- **DELETE /account/delete**: Route for deleting a user account
 
 /clusters
 - **GET /clusters/userClusters**: Route for getting all clusters from a user
@@ -29,17 +30,28 @@
 - **GET /clusters/notFavorites**: Route for getting not-favorite clusters
 
 /slack
-- **POST /slack/add**: Route for adding Slack link
 - **PATCH /slack/update**: Route for editing Slack link
 - **GET /slack**: Route for retrieving a Slack link
 
+/metrics
+- **GET /metrics/:clusterId**: Route for obtaining metrics from a cluster
 
+/settings
+- **GET /settings/colormode**: Route for obtaining user's color mode
+- **GET /settings/colormode/toggle**: Route for toggling a user's color mode
+
+/oauth/google
+- **POST /oauth/google**: Route for verifying user with Google OAuth
 
 ## Configuration
 
 Environment vairables: 
-- 'MONGO_DB_USERNAME': Description
-- 'MONGO_DB_PWD': Description
+- 'MONGO_DB_USERNAME': Username for MongoDB. Look in docker-compose.yml file
+- 'MONGO_DB_PWD': Password for MongoDB. Hop over to the docker-compose.yml file
+
+MongoURI Connection String in server.js: 
+- Use `mongoose.connect(mongoURI)` to connect to Docker containerized MongoDB image
+- Use `mongoose.connect(mongoURIAtlas)` to connect to external service MongoDB such as MongoDB Atlas
 
 ## Troubleshooting
 

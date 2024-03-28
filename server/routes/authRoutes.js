@@ -12,7 +12,6 @@ router.post(
     return res.status(201).json({ message: `User registered successfully: ${res.locals.username}` });
 });
 
-
 // Route for user login
 router.post(
   '/login', 
@@ -21,7 +20,6 @@ router.post(
   (req, res) => {
     return res.status(200).json({ message: `User logged in successfully: ${res.locals.username}` });
 });
-
 
 // Route for user logout
 router.get(
@@ -42,5 +40,24 @@ router.patch(
   }
 )
 
+// Route for deleting a user account
+router.delete(
+  '/account/delete',
+  tokenController.verifyToken,
+  userController.deleteAccount,
+  (req, res) => {
+    return res.status(200).json({ message: 'User account deleted successfully '});
+  }
+)
+
+//Route for checking is user is new
+// router.get(
+//   '/check-new-user',
+//   tokenController.verifyToken,
+//   userController.checkNewUsers,
+//   (req, res) => {
+//     return res.status(200).json({ isNewUser })
+//   }
+// )
 
 module.exports = router;

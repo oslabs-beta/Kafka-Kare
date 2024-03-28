@@ -5,4 +5,5 @@ COPY package*.json ./
 COPY . .
 RUN npm install
 EXPOSE 3001
+#will start server in dev mode with nodemon. Not recommended for production
 CMD [ "npm","run", "server" ]

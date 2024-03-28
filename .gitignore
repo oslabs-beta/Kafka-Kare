@@ -43,6 +43,8 @@ node_modules/
 jspm_packages/
 kafka-cluster/prometheus
 kafka/
+kafka-cluster/prometheus
+kafka/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -130,5 +132,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-.grafana-data

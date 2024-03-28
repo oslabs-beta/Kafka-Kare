@@ -9,11 +9,10 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true
   },
   password: {
     type: String,
-    required: true
+    required: false
   },
   createdAt: {
     type: Date,
@@ -42,12 +41,34 @@ const userSchema = new Schema({
   promUrl: {
     type: String,
     default: ''
-  }
+  },
+  settings: {
+    colorMode: {
+      type: String,
+      default: 'light'
+    },
+    language: {
+      type: String,
+      default: 'English'
+    }
+  },
+  oAuthProvider: {
+    type: String,
+    default: 'none'
+  },
+  graphs: {
+    type: [{}],
+    default: []
+  },
 });
+userSchema.index({ username: 1, email: 1, oAuthProvider: 1 }, { unique: true });
 
 // Pre-save hook to encrypt password using bcrypt.hash() 
 userSchema.pre("save", async function (next) {
   try {
+    // Only hash the password if it has been modified (or is new)
+    if (!this.isModified('password')) return next();
+
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
     this.password = await bcrypt.hash(this.password, salt);
     return next();

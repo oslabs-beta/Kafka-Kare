@@ -1,19 +1,25 @@
 # Front UI dockerfile
 FROM node:21-alpine
 
-WORKDIR /app/ui
-
+WORKDIR /usr/src/app
 # Copy package.json, package-lock.json, Next.js, Tailwind CSS configuration files
-# Necessary and differs from the backend for several reasons related to how Next.js and Tailwind CSS applications are built and run
-COPY package*.json ./
+COPY package.json package-lock.json ./
 COPY configs/next.config.js ./
 COPY configs/postcss.config.js ./
 COPY configs/tailwind.config.js ./
 
-COPY . .
 RUN npm install
+
+COPY . .
+
 RUN npm run build
+
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+
+# switch back to this if run dev
+#CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
+
+

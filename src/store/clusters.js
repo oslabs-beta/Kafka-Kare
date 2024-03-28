@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export const clustersStore = create((set) => ({
+const initialState = {
 
   // User's Clusters
   clusterMap: new Map(),
@@ -19,6 +19,12 @@ export const clustersStore = create((set) => ({
   
   // Not Favorite Clusters for Display
   clusterNotFavoriteDisplayMap: new Map(),
+
+  // Timeout Function to Debounce Search
+  clusterDebounceSearchTimeout: null,
+
+  // Username
+  username: '',
   
   // Name Input Value
   clusterName: '',
@@ -26,11 +32,26 @@ export const clustersStore = create((set) => ({
   // Port Input Value
   clusterPort: '',
 
-  // Search Input Value
+  // Cluster Search Input Value
   clusterSearchValue: '',
+
+  // Old Password Input Value
+  oldPassword: '',
+
+  // New Password Input Value
+  newPassword: '',
 
   // Slack Webhook URL Input Value
   slackWebhookURL: '',
+
+  // User Color Mode Value
+  userColorMode: 'light',
+
+  // User Color Mode Value
+  userColorMode: 'light',
+
+  // render clusters page or not
+  renderClustersPage: false,
 
   // is Name Input Empty
   isClusterNameEmpty: false,
@@ -53,6 +74,21 @@ export const clustersStore = create((set) => ({
   // is Logout Modal Open
   isLogoutModalOpen: false,
 
+  // is Loading Modal Open
+  isLoadingModalOpen: false,
+  
+  // is Old Password Input Empty
+  isOldPasswordEmpty: false,
+
+  // is New Password Input Empty
+  isNewPasswordEmpty: false,
+
+  // is Change Password Modal Open
+  isChangePasswordModalOpen: false,
+
+  // is Change Password Modal Open
+  isDeleteAccountModalOpen: false,
+
   // ID of Edited Cluster
   editClusterID: '',
   
@@ -61,4 +97,9 @@ export const clustersStore = create((set) => ({
 
   // Name before Edit
   oldClusterName: '',
+};
+
+export const clustersStore = create((set) => ({
+  ...initialState,
+  reset: () => {set(initialState)}
 }));

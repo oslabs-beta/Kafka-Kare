@@ -1,73 +1,144 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 /* STYLING FOR HOME PAGE */
-.center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+:root {
+  --size: 70%;
+  --blending-value: hard-light;
 }
-
-.menu-item {
-    cursor: pointer;
-    color: black;
-  }
-  
-  .menu-item:hover {
-    opacity: 0.9;
-  }
-
- 
- .menu-item-container {
-    display: inline-block;
-    margin-right: 20px;
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.gradient-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
  }
 
-  .menu-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    position: relative;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: border-color 0.3s ease;
-  }
-  
-  .menu-container:hover {
-    border-color: #000;
-  }
+.animate-first,
+.animate-second,
+.animate-third,
+.animate-fourth,
+.animate-fifth {
+  position: absolute;
+  width: 100vmin;
+  height: 100vmin;
+  top: calc(50% - var(--size) / 2);
+  left: calc(50% - var(--size) / 2);
+  mix-blend-mode: var(--blending-value);
+  opacity: 1;
+}
 
-  .hovered-link {
-    color: #3b82f6; /* Default text color */
-    transition: color 0.3s ease; /* Transition for color change on hover */
-  }
-  
-  .hovered-link:hover {
-    color: #000; /* Color on hover */
-  }
+.animate-cursor {
+  background: radial-gradient(circle at center, rgba(0, 0, 255, 0.8) 0%, rgba(255, 255, 255, 0) 40%) no-repeat;
+  mix-blend-mode: hard-light;
+  width: 100%;
+  height: 100%;
+  top: 1/2;
+  left: 1/2;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
+}
 
-.fixed-navbar {
-    position: fixed;
-    top: 10px;
-    inset: 0;
-    max-width: 2xl;
-    margin: 20 px auto 0;
-    z-index: 50;
-  }
-  
-  .menu-item-container {
-    padding: 1rem;
-  }
+.animate-first {
+  animation: moveVertical 30s ease infinite;
+  background: radial-gradient(circle at center, rgba(233, 116, 233, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
+  transform-origin: center center;
+ }
 
-  /* STYLING FOR LOGIN PAGE AND SIGNUP PAGE */
-  .login-content, .signup-content{
-    background-image: url('../../public/kafka-kare-background-v2.jpg');
-  }
-  
+.animate-second {
+  animation: moveInCircle 20s reverse infinite;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
+  transform-origin: calc(50% - 400px);
+}
 
-  
+.animate-third {
+  animation: moveInCircle 40s linear infinite;
+  background: radial-gradient(circle at center, rgba(238, 235, 10, 0.8) 0%, rgba(238, 235, 10, 0) 60%);
+  transform-origin: calc(50% + 400px);
+}
+
+.animate-fourth {
+  animation: moveHorizontal 40s ease infinite;
+  background: radial-gradient(circle at center, rgba(18, 46, 147, 0.8) 0%, rgba(18, 46, 147, 0) 60%);
+  opacity: 0.7;
+  transform-origin: calc(50% - 200px);
+}
+
+.animate-fifth {
+  animation: moveInCircle 20s ease infinite;
+  background: radial-gradient(circle at center, rgba(118, 228, 15, 0.8) 0%, rgba(118, 228, 15, 0) 60%);
+  transform-origin: calc(50% - 800px) calc(50% + 800px);
+}
+
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(50%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+}
+
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* STYLING FOR DASHBOARD PAGES */
+.graph {
+  width: 100%;
+  height: calc(100% - 40px);
+  max-width: 500px;
+  min-height: 300px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.full-dashboard {
+  width: calc(100% - 200px);
+  height: calc(100% - 80px);
+  margin-left: 200px;
+}
+
+.health-metric {
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  min-height: 300px;
+  border-radius: 15px;
+}
+
+.lag-metric {
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  min-height: 300px;
+  border-radius: 15px;
+}

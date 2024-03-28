@@ -35,7 +35,11 @@ const clusterSchema = new Schema({
   numberOfBrokers: {
     type: Number,
     default: 1
-  }
+  },
+  grafanaUrl: {
+    type: String,
+    default: ''
+  },
 });
 
 const Cluster = mongoose.model("Cluster", clusterSchema);
