@@ -3,12 +3,13 @@ import React, { useRef, useEffect, useState } from "react";
 import Navbar from "../../components/index/navbar";
 import { Select, Box, Button, Flex, Grid, Spacer } from "@chakra-ui/react";
 import Graph from "../../components/graphs/graph";
+import axios from 'axios';
 
 const Dashboard = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [selectedMetricId, setSelectedMetricId] = useState([]);
-  const [highlightDropdown, setHighlightDropdown] = useState(false);
   const [showFullDashboard, setShowFullDashboard] = useState(false);
+  const [iFrameUrl, setIFrameUrl] = useState('');
 
   //function to handle choosing a metric from drop down list
   const handleMetricChange = (e) => {
@@ -24,7 +25,6 @@ const Dashboard = () => {
 
   //function to toggle to the full dashboard view
   const handleFullDashboardClick = () => {
-    console.log('in func:" ', showFullDashboard)
     setShowFullDashboard(!showFullDashboard);
   };
 
@@ -43,6 +43,25 @@ const Dashboard = () => {
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  //function to fetch iframe for full dashboard from backend
+  useEffect(() => {
+    const fetchIFrame = async () => {
+      try {
+        // If we can send the specific cluster Id as params, then this will function as expected
+        // Need to modify iFrameController to use req.params
+        const response = await axios.get('http://localhost:3001/iframe/123');
+        console.log('response: ', response.data);
+        const rawIFrame = response.data;
+        const iFrame = `${rawIFrame}&kiosk`;        
+        console.log('iframe: ', iFrame);
+        setIFrameUrl(iFrame);
+      } catch (error) {
+        console.error('Error fetching full dashboard iFrame:', error);
+      }
+    };
+    fetchIFrame(); 
   }, []);
 
   const allMetrics = {
@@ -104,7 +123,8 @@ const Dashboard = () => {
       </Box>
       {showFullDashboard && (
       <iframe
-        src="http://localhost:3002/public-dashboards/f489745f6dfa4a138641169652f668be"
+        // src="http://localhost:3002/public-dashboards/f489745f6dfa4a138641169652f668be"
+        src={iFrameUrl}
         className="full-dashboard"
       ></iframe>)}
       <Grid
@@ -122,6 +142,7 @@ const Dashboard = () => {
           selectedMetricId={metric}
           onRemove={() => handleRemoveMetric(metric)}
           showFullDashboard={showFullDashboard}
+          iFrameUrl={iFrameUrl}
         />))}
       </Grid>
     </Box>
@@ -129,3 +150,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

@@ -103,10 +103,10 @@ export const handleNewCluster = async (toast) => {
       addToast('Cluster Created', 'We\'ve created your cluster for you.', 'success', 3000, toast);
 
 
-      // // second axios post request to create Grafana dashboard and connect to datasource
-      // const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
-      // console.log('Grafana API Response:', responseGrafana.data);
-      // // testing 
+      // second axios post request to create Grafana dashboard and connect to datasource
+      const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {name: clusterName, url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
+      console.log('Grafana API Response:', responseGrafana.data);
+      // testing 
 
 
       // update states about user clusters
