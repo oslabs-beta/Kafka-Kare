@@ -9,7 +9,6 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true
   },
   password: {
     type: String,
@@ -62,6 +61,7 @@ const userSchema = new Schema({
     default: []
   },
 });
+userSchema.index({ username: 1, email: 1, oAuthProvider: 1 }, { unique: true });
 
 // Pre-save hook to encrypt password using bcrypt.hash() 
 userSchema.pre("save", async function (next) {

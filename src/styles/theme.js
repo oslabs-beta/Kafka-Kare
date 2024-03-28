@@ -3,8 +3,8 @@ import { extendTheme } from '@chakra-ui/react';
 
 //if we want to use Chakra UI
 const theme = extendTheme({
-  initialColorMode: 'light',
-  useSystemColorMode: false,
+    initialColorMode: 'light',
+    useSystemColorMode: false,
   }   
 );
 

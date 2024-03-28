@@ -59,6 +59,15 @@ export const handleFetchClustersAndSlackWebhookURL = async (toast, push, colorMo
   }
 };
 
+// actions when getting user's color mode
+export const handleGetUserColorMode = async (colorMode, toggleColorMode) => {
+
+  // update states about user's recent color mode
+  const responseColorMode = await axios('http://localhost:3001/settings/colorMode', {withCredentials: true});
+  console.log('Get User\'s Recent Color Mode Response:', responseColorMode.data);
+  if (responseColorMode.data.colorMode !== colorMode) toggleColorMode();
+}
+
 // actions when addClusterModal closes
 export const handleNewClusterClose = () => {
   clustersStore.setState({
@@ -94,10 +103,10 @@ export const handleNewCluster = async (toast) => {
       addToast('Cluster Created', 'We\'ve created your cluster for you.', 'success', 3000, toast);
 
 
-      // second axios post request to create Grafana dashboard and connect to datasource
-      const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
-      console.log('Grafana API Response:', responseGrafana.data);
-      // testing 
+      // // second axios post request to create Grafana dashboard and connect to datasource
+      // const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
+      // console.log('Grafana API Response:', responseGrafana.data);
+      // // testing 
 
 
       // update states about user clusters
@@ -408,10 +417,11 @@ export const handleDeleteAccount = async (toast, push) => {
 /*
  * User Logout Event
  */
-export const handleLogout = async (toast, push) => {
+export const handleLogout = async (toast, push, oAuthLogout) => {
   try {
     const response = await axios.get(`http://localhost:3001/auth/logout`, {withCredentials: true});
     console.log('Logout Response:', response.data);
+    if (oAuthLogout.provider !== 'none') await oAuthLogout.signOut({redirect: false});
     clustersStore.setState({
       isLogoutModalOpen: false,
       clusterDisplayMap: new Map(),

@@ -47,6 +47,9 @@ const initialState = {
   // User Color Mode Value
   userColorMode: 'light',
 
+  // User Color Mode Value
+  userColorMode: 'light',
+
   // render clusters page or not
   renderClustersPage: false,
 
@@ -72,7 +75,7 @@ const initialState = {
   isLogoutModalOpen: false,
 
   // is Loading Modal Open
-  isLoadingModalOpen: true,
+  isLoadingModalOpen: false,
   
   // is Old Password Input Empty
   isOldPasswordEmpty: false,
