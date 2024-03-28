@@ -11,7 +11,7 @@
 3. [Getting Started](#getting-started-with-kafka-kare)
 4. [Interested in Contributing?](#interested-in-contributing)
 5. [Meet the Team](#meet-the-team)
-6. [License]
+6. [License](#license)
 
 
 ## About Kafka Kare
@@ -129,7 +129,7 @@ To start contributing, please fork and clone Kafka Kare, create a feature branch
 
 When you are ready to submit a pull request to the **dev branch**, please follow the checklist closely and request at least two people to review and approve your code. You can refer to the Kafka Kare team members [here](#meet-the-team).
 
-Prioritize any linked issues first before tackling the roadmap features and feel free to add any roadmap features as well that will continue to bring value to developers!
+Prioritize any linked issues first before tackling the roadmap features and feel free to add any roadmap features as well that will continue to bring value to developers! We appreciate your support!
 
 ### Roadmap
 
@@ -152,7 +152,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
 <table>
   <tr>
     <td align="center">
-      <img src=""140px;" alt=""/>
+      <img src="https://github.com/AllisonScott97.png"140px;" alt=""/>
       <br />
       <sub><b>Allison Scott</b></sub>
       <br />
@@ -160,7 +160,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/AllisonScott97">🐙</a>
     </td>
     <td align="center">
-      <img src="" width="140px;" alt=""/>
+      <img src="https://github.com/MattKonop.png" width="140px;" alt=""/>
       <br />
       <sub><b>Matt Konop</b></sub>
       <br />
@@ -168,7 +168,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/MattKonop">🐙</a>
     </td>
     <td align="center">
-      <img src="" width="140px;" alt=""/>
+      <img src="https://github.com/JustinTzHLin.png" width="140px;" alt=""/>
       <br />
       <sub><b>Justin Lin</b></sub>
       <br />
@@ -176,7 +176,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/JustinTzHLin">🐙</a>
     </td>
      <td align="center">
-      <img src="" width="140px;" alt=""/>
+      <img src="https://github.com/julesdmai.png" width="140px;" alt=""/>
       <br />
       <sub><b>Jules Mai</b></sub>
       <br />
@@ -184,7 +184,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/julesdmai">🐙</a>
     </td>
      <td align="center">
-      <img src="" width="140px;" alt=""/>
+      <img src="https://github.com/josuerole.png" width="140px;" alt=""/>
       <br />
       <sub><b>Ronal Garcia</b></sub>
       <br />
@@ -196,4 +196,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
 
 - 🖇️ = LinkedIn
 - 🐙 = Github
+
+## License
+This product is licensed under the MIT License without restriction.
 
