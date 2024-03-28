@@ -53,7 +53,8 @@ const Dashboard = () => {
         // Need to modify iFrameController to use req.params
         const response = await axios.get('http://localhost:3001/iframe/123');
         console.log('response: ', response.data);
-        const iFrame = response.data;        
+        const rawIFrame = response.data;
+        const iFrame = `${rawIFrame}&kiosk`;        
         console.log('iframe: ', iFrame);
         setIFrameUrl(iFrame);
       } catch (error) {
@@ -141,6 +142,7 @@ const Dashboard = () => {
           selectedMetricId={metric}
           onRemove={() => handleRemoveMetric(metric)}
           showFullDashboard={showFullDashboard}
+          iFrameUrl={iFrameUrl}
         />))}
       </Grid>
     </Box>
