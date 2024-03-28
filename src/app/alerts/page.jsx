@@ -59,6 +59,7 @@ const Alerts = () => {
     console.log("alerts");
   };
 
+
   return (
     <Box ml={210} mr={10}>
       <Navbar />

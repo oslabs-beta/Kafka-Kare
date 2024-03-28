@@ -57,5 +57,3 @@ const AlertsByMetricGraph = ({ allMetrics }) => {
 export default AlertsByMetricGraph;
 
 
-
-

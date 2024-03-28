@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import Chart from "chart.js/auto";
+import React, { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
+
 
 const AlertHistoryGraph = () => {
   const chartRef = useRef(null);
@@ -14,19 +15,19 @@ const AlertHistoryGraph = () => {
     const data = generateZerosArray(30);
 
     if (chartRef.current) {
-      const ctx = chartRef.current.getContext("2d");
-
+      const ctx = chartRef.current.getContext('2d');
+      
       // Destroy existing chart instance if it exists
       if (chartRef.current.chart) {
         chartRef.current.chart.destroy();
       }
-
+  
       // Create new chart instance
       chartRef.current.chart = new Chart(ctx, {
-        type: "line",
+        type: 'line',
         data: {
           labels: labels,
-          datasets: [
+        datasets: [
             {
               label: "Alerts Over Past 30 Days",
               data: data,
@@ -41,8 +42,7 @@ const AlertHistoryGraph = () => {
             x: {
               type: "linear",
               text: "Day",
-              ticks: {
-                // Set the x-axis labels to the past 30 days
+              ticks: { // Set the x-axis labels to the past 30 days
                 callback: (value, index) => {
                   const date = new Date();
                   date.setDate(date.getDate() - (29 - index));
@@ -75,5 +75,4 @@ const AlertHistoryGraph = () => {
 };
 
 export default AlertHistoryGraph;
-
 
