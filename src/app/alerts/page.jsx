@@ -32,25 +32,6 @@ const Alerts = () => {
     "Consumer Group Partition Assignment Strategy": 24,
   };
 
-  const lineGraphData = {
-    labels: ['2024-02-01', '2024-02-02', '2024-02-03', '2024-02-04', '2024-02-05'],
-    values: [10, 20, 15, 25, 30] // Example values for each day
-  };
-
-
-  const barGraphData = {
-    labels: ['Metric 1', 'Metric 2', 'Metric 3'],
-    datasets: [
-      {
-        label: 'Alerts',
-        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-        borderWidth: 1,
-        data: [15, 25, 20] 
-      }
-    ]
-  };
-
   const [selectedMetricId, setSelectedMetricId] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [minThresholds, setMinThresholds] = useState(
@@ -60,16 +41,6 @@ const Alerts = () => {
     Array(Object.keys(allMetrics).length).fill("")
   );
   const [alerts, setAlerts] = useState([]);
-
-  //   // Function to handle opening the configure custom alerts modal
-  //   const openModal = () => {
-  //     setIsOpen(true);
-  //   };
-
-  //   // Function to handle closing the configure custom alerts modal
-  //   const closeModal = () => {
-  //     setIsOpen(false);
-  //   };
 
   const openCloseCustomAlerts = () => {
     setIsOpen(!isOpen);
@@ -87,6 +58,7 @@ const Alerts = () => {
   const saveAlerts = () => {
     console.log("alerts");
   };
+
 
   return (
     <Box ml={210} mr={10}>
@@ -144,8 +116,9 @@ const Alerts = () => {
         >
           Alert History
         </Heading>
-        <AlertHistoryGraph data={lineGraphData} />
-        <AlertsByMetricGraph data ={barGraphData} />
+        <AlertHistoryGraph />
+        <div style={{ marginTop: "40px" }}></div>
+        <AlertsByMetricGraph allMetrics={allMetrics} />
       </div>
     </Box>
   );
