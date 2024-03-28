@@ -19,6 +19,7 @@ const slackRoutes = require("./routes/slackRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 const oAuthRoutes = require("./routes/oAuthRoutes");
 const grafanaApiRoutes = require("./routes/grafanaApiRoutes");
+const iFrameRoutes = require("./routes/iFrameRoutes");
 
 // Setup Next app
 const PORT = 3001;
@@ -130,6 +131,7 @@ server.get('/api/get-datasources', async (req, res) => {
   server.use("/settings", settingsRoutes);
   server.use("/oauth", oAuthRoutes);
   server.use("/api", grafanaApiRoutes);
+  server.use("/iframe", iFrameRoutes);
 
   // Fallback route
   server.get("*", (req, res) => {
