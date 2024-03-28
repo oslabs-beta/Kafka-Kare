@@ -41,11 +41,11 @@ const Alerts = () => {
     Array(Object.keys(allMetrics).length).fill("")
   );
   const [alerts, setAlerts] = useState([]);
- 
 
   const openCloseCustomAlerts = () => {
     setIsOpen(!isOpen);
   };
+
   const removeAlert = (indexToRemove) => {
     const updatedMinThresholds = [...minThresholds];
     const updatedMaxThresholds = [...maxThresholds];
@@ -54,6 +54,7 @@ const Alerts = () => {
     setMinThresholds(updatedMinThresholds);
     setMaxThresholds(updatedMaxThresholds);
   };
+
   const saveAlerts = () => {
     console.log("alerts");
   };

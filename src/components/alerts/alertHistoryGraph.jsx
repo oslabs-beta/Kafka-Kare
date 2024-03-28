@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
+
 const AlertHistoryGraph = () => {
   const chartRef = useRef(null);
 
@@ -39,8 +40,8 @@ const AlertHistoryGraph = () => {
         options: {
           scales: {
             x: {
-              type: 'linear',
-              text: "day",
+              type: "linear",
+              text: "Day",
               ticks: { // Set the x-axis labels to the past 30 days
                 callback: (value, index) => {
                   const date = new Date();
@@ -65,7 +66,7 @@ const AlertHistoryGraph = () => {
       });
     }
   }, []);
-  
+
   const generateZerosArray = (length) => {
     return Array.from({ length: length }, () => 0);
   };
