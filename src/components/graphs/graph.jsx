@@ -7,7 +7,8 @@ const Graphs = ({ selectedMetricId, onRemove, showFullDashboard }) => {
     {!showFullDashboard && (
       <GridItem className="graph-container" maxW={500} maxH={350}>
         <iframe
-          src={`http://localhost:3002/d-solo/cdgganhpqspvkd/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${selectedMetricId}`}
+          src="http://localhost:3002/d/cdh00mfkihmv4c/6?orgId=1&theme=light"
+          // src={`http://localhost:3002/d-solo/cdgganhpqspvkd/kafka-kare-dashboard?orgId=1&from=1711110287064&to=1711131887064&panelId=${selectedMetricId}`}
           className="graph"
         ></iframe>
         <Button

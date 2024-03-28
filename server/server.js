@@ -8,11 +8,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-<<<<<<< HEAD
 const axios = require('axios');
-=======
-const axios = require("axios");
->>>>>>> dev
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
@@ -50,7 +46,7 @@ app.prepare().then(() => {
   const mongoURI = `mongodb://admin:supersecret@mongo`;
   const mongoURIAtlas = process.env.MONGODB_URI;
 
-  mongoose.connect(mongoURIAtlas);
+  mongoose.connect(mongoURI);
   mongoose.connection.once("open", () => {
       console.log("Connected to Database");
     });
@@ -131,11 +127,8 @@ server.get('/api/get-datasources', async (req, res) => {
   server.use("/metrics", metricsRoutes);
   server.use("/testing", testingRoutes); // testing
   server.use("/slack", slackRoutes);
-<<<<<<< HEAD
-=======
   server.use("/settings", settingsRoutes);
   server.use("/oauth", oAuthRoutes);
->>>>>>> dev
   server.use("/api", grafanaApiRoutes);
 
   // Fallback route

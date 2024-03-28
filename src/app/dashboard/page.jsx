@@ -129,3 +129,138 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+// // "use client";
+// import React, { useRef, useEffect, useState } from "react";
+// import Navbar from "../../components/index/navbar";
+// import { Select, Box, Button, Flex, Grid, Spacer } from "@chakra-ui/react";
+// import Graph from "../../components/graphs/graph";
+// import axios from 'axios'; // Import axios
+
+// const Dashboard = () => {
+//   const [windowWidth, setWindowWidth] = useState(0);
+//   const [selectedMetricId, setSelectedMetricId] = useState([]);
+//   const [highlightDropdown, setHighlightDropdown] = useState(false);
+//   const [showFullDashboard, setShowFullDashboard] = useState(false);
+//   const [grafanaResponse, setGrafanaResponse] = useState(null); // State variable to store response
+
+//   // Function to handle choosing a metric from the drop-down list
+//   const handleMetricChange = (e) => {
+//     const selectedMetric = allMetrics[e.target.value];
+//     setSelectedMetricId([...selectedMetricId, selectedMetric]);
+//   };
+
+//   // Function to handle removing a metric from the custom dashboard
+//   const handleRemoveMetric = (metric) => {
+//     const updatedMetrics = selectedMetricId.filter((m) => m !== metric);
+//     setSelectedMetricId(updatedMetrics);
+//   };
+
+//   // Function to toggle to the full dashboard view
+//   const handleFullDashboardClick = async () => {
+//     // Send the Axios request when the button is clicked
+//     try {
+//       const responseGrafana = await axios.post('http://localhost:3001/api/create-datasource', {name: clusterName, url: `http://prometheus:${clusterPort}`}, {withCredentials: true});
+//       console.log('Grafana API Response:', responseGrafana.data);
+//       // Set the response in state
+//       setGrafanaResponse(responseGrafana.data);
+//     } catch (error) {
+//       console.error('Error while sending the Axios request:', error);
+//     }
+
+//     // Toggle the full dashboard view
+//     setShowFullDashboard(!showFullDashboard);
+//   };
+
+//   // Effect to scroll to the top when selectedMetricId changes
+//   useEffect(() => {
+//     if (typeof window !== "undefined")
+//       window.scrollTo(0, 0);
+//   }, [selectedMetricId]);
+
+//   // Update the window width
+//   const handleResize = () => {
+//     setWindowWidth(window.innerWidth);
+//   };
+
+//   // Effect to run the handleResize function on window resize
+//   useEffect(() => {
+//     window.addEventListener('resize', handleResize);
+//     handleResize();
+//     return () => window.removeEventListener('resize', handleResize);
+//   }, []);
+
+//   // Object containing all available metrics
+//   const allMetrics = {
+//     // Your metric definitions here...
+//   };
+
+//   return (
+//     <Box h="100vh" w="100vw" overflow="hidden">
+//       <Navbar />
+//       <Box textAlign="center" w="calc(100% - 200px)" ml={200}>
+//         <Flex alignItems="center" width="100%">
+//           <Spacer />
+//           <Select
+//             m={10}
+//             w={400}
+//             placeholder="Customize Your Dashboard Metrics"
+//             onChange={handleMetricChange}
+//             style={{ border: "2px solid teal" }}
+//             isDisabled={showFullDashboard}
+//           >
+//             {Object.keys(allMetrics).map((metric) => (
+//               <option key={metric} value={metric}>
+//                 {metric}
+//               </option>
+//             ))}
+//           </Select>
+//           <Button
+//             margin="20px"
+//             colorScheme="teal"
+//             onClick={handleFullDashboardClick}
+//             width="190px"
+//           >
+//             {showFullDashboard ? 'Close' : 'See'} Full Dashboard
+//           </Button>
+//           <Spacer />
+//         </Flex>
+//       </Box>
+//       {showFullDashboard && (
+//         <iframe
+//           src="http://localhost:3002/public-dashboards/f489745f6dfa4a138641169652f668be"
+//           className="full-dashboard"
+//         ></iframe>
+//       )}
+//       {/* Render the response here */}
+//       {grafanaResponse && (
+//         <Box mt={4}>
+//           <p>Grafana API Response:</p>
+//           <pre>{JSON.stringify(grafanaResponse, null, 2)}</pre>
+//         </Box>
+//       )}
+//       <Grid
+//         overflowY="auto"
+//         ml={200}
+//         px={10}
+//         h={`calc(100% - ${windowWidth < 765 ? 180 : windowWidth < 895 ? 200 : 140}px)`}
+//         w="calc(100% - 200px)"
+//         templateColumns="repeat(auto-fit, minmax(400px, 1fr))"
+//         gap={10}
+//       >
+//         {selectedMetricId.map((metric, index) => (
+//           <Graph
+//             key={`${metric}${index}`}
+//             selectedMetricId={metric}
+//             onRemove={() => handleRemoveMetric(metric)}
+//             showFullDashboard={showFullDashboard}
+//           />
+//         ))}
+//       </Grid>
+//     </Box>
+//   );
+// };
+
+// export default Dashboard;
+

@@ -1,25 +1,19 @@
 const axios = require("axios");
-<<<<<<< HEAD
-const grafanaApiController = {};
-const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
-
-=======
 const User = require("../models/userModel.js");
 const serviceAccountToken = process.env.GRAFANA_SERVICE_ACCOUNT_TOKEN;
 
 const grafanaApiController = {};
 
->>>>>>> dev
 /* ------------------ ADD PROMETHEUS DATA SOURCE TO GRAFANA ----------------- */
 grafanaApiController.addDatasource = async (req, res, next) => {
   console.log("In grafanaApiController.addDatasource"); // testing
   console.log("req.body contains: ", req.body);
-  const { url } = req.body; // Destructure from req.body
+  const { name, url } = req.body; // Destructure from req.body
   const { userId } = res.locals; // Destructure from prior middleware
 
   // Create object to use as API call payload
   const datasourceConfig = {
-    name: `Prometheus-${userId}`,
+    name: `Prometheus-${name}${userId}`,
     type: "prometheus",
     url: `${url}`,
     access: "proxy",
@@ -31,11 +25,7 @@ grafanaApiController.addDatasource = async (req, res, next) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${serviceAccountToken}`,
-<<<<<<< HEAD
-    }
-=======
     },
->>>>>>> dev
   };
 
   // Send request to Grafana API to add a datasource
@@ -68,12 +58,7 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   console.log(`Creating dashboard for <${username}>`);
   console.log(`Datasource for dashboard: <${datasourceName}>`);
 
-<<<<<<< HEAD
-  // Template for new dashboard
-=======
-
   // // Template for new dashboard
->>>>>>> dev
   const newDashboardData = {
     dashboard: {
       id: null,
@@ -101,11 +86,8 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     folderId: 0,
     overwrite: false,
   };
-<<<<<<< HEAD
-=======
   // // End of Template for new dashboard
 
->>>>>>> dev
 
   // Use for API call
   const requestHeaders = {
@@ -121,15 +103,11 @@ grafanaApiController.createDashboard = async (req, res, next) => {
     );
 
     console.log(`Dashboard using data from <${url}> created successfully`);
-<<<<<<< HEAD
-    res.locals.data = response.data;
-=======
     
     // Persist uid
     console.log('response.data.uid: ', response.data.uid)
     res.locals.uid = response.data.uid;
 
->>>>>>> dev
     return next();
   } catch (err) {
     return next({
@@ -142,8 +120,6 @@ grafanaApiController.createDashboard = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 
 /* ---------------------------- DISPLAY DASHBOARD --------------------------- */
 grafanaApiController.displayDashboard = async (req, res, next) => {
@@ -217,6 +193,5 @@ grafanaApiController.displayDashboard = async (req, res, next) => {
 // };
 
 
->>>>>>> dev
 // Export
 module.exports = grafanaApiController;
