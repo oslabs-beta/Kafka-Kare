@@ -1,7 +1,7 @@
 # Kafka-Kare
----------------INSERT KAFKA KARE LOGO HERE--------------------
+
 <p align="center">
-  <img src=" " width=500px>
+  <img src="./public/kafka-kare-logo-v2.png" width=500px>
 </p>
 
 
@@ -48,7 +48,7 @@ Kafka Kare's key features include:
   - Additionally, the alerting system allows users to define custom alert rules based on various Kafka metrics and thresholds. When predefined conditions are met, the system triggers alerts via 
     Slack, enabling timely response to potential issues and ensuring the stability of Kafka infrastructures.
 
-Read more about our build process on Medium, here!    -------------- link to medium article goes here-----------
+Read more about our build process on Medium, here!   
     
 ## Getting Started With Kafka Kare
 
@@ -63,13 +63,18 @@ Read more about our build process on Medium, here!    -------------- link to med
    - You will also need to set up your own Next Auth URL and secret key for security purposes: https://next-auth.js.org/configuration/options
    - Optional: If you would prefer to use Github or Google OAuth for your login, please fill in the corresponding ID and Secret Key in the .env file as well.
      
-   ---------------------Add gif of setting up .env file--------------------
+<p align="center">
+  <img src="./public/kafkaKare-creatingEnvfile.gif" alt="create .env file" width="">
+</p>
      
 3. Spin up the application container by running the below command:
 ```
 docker compose up -d
 ```
----------- add gif of running these 3 commands with docker desktop--------------
+<p align="center">
+  <img src="./public/kafkakare-dockercomposeup-d.gif" alt="create .env file" width="">
+</p>
+
 
 ### New to Kafka? Use steps 1 - 5 below to play around with our demo Kafka cluster!
 
@@ -95,14 +100,14 @@ docker compose up -d
   ```
   _5. Congratulations! You just set up your first Kafka cluster!_
      
-     ----------------- add gif of these steps ------------------------
      
 4. Visit localhost:3000, create an account or log in. Click the 'Add Cluster' button, enter in the port number of your cluster, then click the dashboard button to start viewing your metrics!
 5. Click the 3 lines to enter in your Slack URL and head to the Alerts page to configure your custom alerting thresholds.
 6. Enjoy!
-   ------------- gif of these steps -----------
 
-
+<p align="center">
+  <img src="./public/kafkakareAddingcluster.gif" alt="create .env file" width="">
+</p>
 
 ## Instructions to stop the application
 1. Spin down application container
@@ -124,7 +129,6 @@ Now seeking contributors to join the Kafka Kare team!
 
 ### How to Contribute 
 
-----------do we need to specify anything about running a prod vs. dev version?----------------
 To start contributing, please fork and clone Kafka Kare, create a feature branch with the pattern "(issue or feature)/what-you-are-working-on". 
 
 When you are ready to submit a pull request to the **dev branch**, please follow the checklist closely and request at least two people to review and approve your code. You can refer to the Kafka Kare team members [here](#meet-the-team).
@@ -152,7 +156,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/AllisonScott97.png"140px;" alt=""/>
+      <img src="https://github.com/AllisonScott97.png"140px;" alt="profile picture of allison"/>
       <br />
       <sub><b>Allison Scott</b></sub>
       <br />
@@ -160,7 +164,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/AllisonScott97">🐙</a>
     </td>
     <td align="center">
-      <img src="https://github.com/MattKonop.png" width="140px;" alt=""/>
+      <img src="https://github.com/MattKonop.png" width="140px;" alt="profile picture of matt"/>
       <br />
       <sub><b>Matt Konop</b></sub>
       <br />
@@ -168,7 +172,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/MattKonop">🐙</a>
     </td>
     <td align="center">
-      <img src="https://github.com/JustinTzHLin.png" width="140px;" alt=""/>
+      <img src="https://github.com/JustinTzHLin.png" width="140px;" alt="profile picture of justin"/>
       <br />
       <sub><b>Justin Lin</b></sub>
       <br />
@@ -176,7 +180,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/JustinTzHLin">🐙</a>
     </td>
      <td align="center">
-      <img src="https://github.com/julesdmai.png" width="140px;" alt=""/>
+      <img src="https://github.com/julesdmai.png" width="140px;" alt="profile picture of jules"/>
       <br />
       <sub><b>Jules Mai</b></sub>
       <br />
@@ -184,7 +188,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
       <a href="https://github.com/julesdmai">🐙</a>
     </td>
      <td align="center">
-      <img src="https://github.com/josuerole.png" width="140px;" alt=""/>
+      <img src="https://github.com/josuerole.png" width="140px;" alt="profile picture of ronal"/>
       <br />
       <sub><b>Ronal Garcia</b></sub>
       <br />
