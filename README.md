@@ -157,7 +157,7 @@ Prioritize any linked issues first before tackling the roadmap features and feel
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/AllisonScott97.png"140px;" alt="profile picture of allison"/>
+      <img src="https://github.com/AllisonScott97.png" width="140px;" alt="profile picture of allison"/>
       <br />
       <sub><b>Allison Scott</b></sub>
       <br />
