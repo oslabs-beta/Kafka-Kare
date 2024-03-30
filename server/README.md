@@ -43,6 +43,9 @@
 /oauth/google
 - **POST /oauth/google**: Route for verifying user with Google OAuth
 
+/api
+- **POST /api/create-datasource**: Route for connecting Prometheus and creating Grafana dashboard
+
 ## Configuration
 
 Environment vairables: 
