@@ -48,7 +48,7 @@ Kafka Kare's key features include:
   - Additionally, the alerting system allows users to define custom alert rules based on various Kafka metrics and thresholds. When predefined conditions are met, the system triggers alerts via 
     Slack, enabling timely response to potential issues and ensuring the stability of Kafka infrastructures.
 
-Read more about our build process on Medium, here!   
+Read more about our build process on Medium, [here](https://medium.com/@konomp/kafka-kare-simplifying-kafka-error-handling-for-small-teams-524a555a7eff)!   
     
 ## Getting Started With Kafka Kare
 
